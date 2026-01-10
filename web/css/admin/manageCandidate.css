@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+}
+
+.header {
+background: #0b3c8c;
+padding: 15px 25px;
+color: white;
+display: flex;
+justify-content: center; /* center title by default */
+align-items: center;
+position: relative; /* needed for absolute positioning of back button */
+}
+
+.header-title {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-top: 0;
+    color: #0b3c8c;
+}
+
+.btn, .btn-action {
+    padding: 10px 20px;
+    background: #0b3c8c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #0b3c8c;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+ .back_btn {
+    position: absolute; /* place it on the left side */
+    left: 25px;
+    padding: 8px 15px;
+    background-color: #222;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+.header-title {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
