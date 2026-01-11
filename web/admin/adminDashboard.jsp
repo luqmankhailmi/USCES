@@ -13,14 +13,28 @@ and open the template in the editor.
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/adminDashboard.css">
 </head>
 <body>
+    <%
+        // Get the existing session (don't create new one)
+        HttpSession userSession = request.getSession(false);
+        String staffNumber = null;
+        
+        // Check if session exists and has studentNumber
+        if (userSession != null && userSession.getAttribute("staffNumber") != null) {
+            staffNumber = (String) userSession.getAttribute("staffNumber");
+        } else {
+            // No session found - redirect to login
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
+        }
+    %>
 
     <!-- HEADER -->
     <div class="header">
         <div class="header-title">ADMIN DASHBOARD</div>
-
         <div class="top-menu">
-            <a href="${pageContext.request.contextPath}/admin/adminProfile.jsp">Profile</a>
-            <a href="${pageContext.request.contextPath}/index.jsp">Logout</a>
+            <span>Welcome, <%= staffNumber %></span>
+            <a href="${pageContext.request.contextPath}/admin_profile">Profile</a>
+            <a href="${pageContext.request.contextPath}/user_logout">Logout</a>
         </div>
     </div>
 

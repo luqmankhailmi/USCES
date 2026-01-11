@@ -12,42 +12,37 @@ and open the template in the editor.
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/adminProfile.css">
 </head>
 <body>
-    <a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp" class="back_btn">Back</a>
+    <%
+        String adminName = (String) request.getAttribute("adminName");
+        String staffNumber = (String) request.getAttribute("staffNumber");
+        String adminEmail = (String) request.getAttribute("adminEmail");
+        Integer facultyId = (Integer) request.getAttribute("facultyId");  // Cast to Integer
+        String facultyName = (String) request.getAttribute("facultyName");
+    %>
 
 <div class="container">
     <div class="profile-header">
         
-        <h2>Ahmad Nasrullah</h2>
-        <p>Student ID: 2025128281</p>
+        <h2><%= adminName %></h2>
+        <p>Staff ID: <%= staffNumber %></p>
     </div>
 
     <div class="profile-info">
         
         <div>
-            <label>Name:</label>
-            <span>MUHAMMAD MUAZ BIN ADNAN </span>
-        </div><br>
-        
-        <div>
-            <label>Staff ID:</label>
-            <span>2000123654</span>
-        </div><br>
-       
-        
-        <div>
             <label>Email:</label>
-            <span>2000123654@staff.uitm.edu.my</span>
+            <span><%= adminEmail %></span>
         </div><br>
        
        
         <div>
-            <label>Phone:</label>
-            <span>+6012-3456789</span>
+            <label>Faculty:</label>
+            <span><%= facultyName %></span>
         </div><br>
     </div>
 
     <div class="btn-group">
-        <a href="${pageContext.request.contextPath}/admin/editProfile.jsp" class="btn-edit">Edit Profile</a>
+        <a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp" class="btn-edit">Back to Dashboard</a>
         
     </div>
 </div>

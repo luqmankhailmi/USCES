@@ -46,7 +46,7 @@ public class AdminLoginServlet extends HttpServlet {
             if (adminValidate.equals("SUCCESS")) {
                 // Login successful - create session
                 HttpSession session = request.getSession();
-                session.setAttribute("studentNumber", staffNumber);
+                session.setAttribute("staffNumber", staffNumber);
 
                 // Redirect to home page or dashboard
                 response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp");
