@@ -13,42 +13,38 @@ and open the template in the editor.
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/user/userProfile.css">
 </head>
 <body>
-    <a href="${pageContext.request.contextPath}/user/userDashboard.jsp" class="back_btn">Back</a>
+    <%
+        String studentName = (String) request.getAttribute("studentName");
+        String studentNumber = (String) request.getAttribute("studentNumber");
+        String studentEmail = (String) request.getAttribute("studentEmail");
+        Integer facultyId = (Integer) request.getAttribute("facultyId");  // Cast to Integer
+        String facultyName = (String) request.getAttribute("facultyName");
+    %>
 
 <div class="container">
     <div class="profile-header">
         
-        <h2>Ahmad Nasrullah</h2>
-        <p>Student ID: 2025128281</p>
+        <h2><%= studentName %></h2>
+        <p>Student ID: <%= studentNumber %></p>
     </div>
 
     <div class="profile-info">
         
         <div>
             <label>Faculty:</label>
-            <span>Faculty of Computer and Mathematical Sciences </span>
-        </div><br>
-        
-        <div>
-            <label>Semester:</label>
-            <span>4</span>
+            <span><%= facultyName %></span>
         </div><br>
        
         
         <div>
             <label>Email:</label>
-            <span>2025128281@student.uitm.edu.my</span>
+            <span><%= studentEmail %></span>
         </div><br>
        
-       
-        <div>
-            <label>Phone:</label>
-            <span>+6012-3456789</span>
-        </div><br>
     </div>
 
     <div class="btn-group">
-        <a href="${pageContext.request.contextPath}/user/editProfile.jsp" class="btn-edit">Edit Profile</a>
+        <a href="${pageContext.request.contextPath}/user/userDashboard.jsp" class="btn-edit">Back to Dashboard</a>
         
     </div>
 </div>

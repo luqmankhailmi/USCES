@@ -8,6 +8,10 @@
         <servlet-name>UserLogoutServlet</servlet-name>
         <servlet-class>controller.UserLogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserProfileServlet</servlet-name>
+        <servlet-class>controller.UserProfileServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>UserLogoutServlet</servlet-name>
         <url-pattern>/user_logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserProfileServlet</servlet-name>
+        <url-pattern>/user_profile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

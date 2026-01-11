@@ -27,7 +27,7 @@
         <div class="header-title">STUDENT ELECTION SYSTEM</div>
         <div class="top-menu">
             <span>Welcome, <%= studentNumber %></span>
-            <a href="${pageContext.request.contextPath}/user/userProfile.jsp">Profile</a>
+            <a href="${pageContext.request.contextPath}/user_profile">Profile</a>
             <a href="${pageContext.request.contextPath}/user_logout">Logout</a>
         </div>
     </div>
