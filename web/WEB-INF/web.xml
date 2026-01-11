@@ -12,6 +12,10 @@
         <servlet-name>UserProfileServlet</servlet-name>
         <servlet-class>controller.UserProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <servlet-class>controller.AdminLoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>UserProfileServlet</servlet-name>
         <url-pattern>/user_profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminLoginServlet</servlet-name>
+        <url-pattern>/admin_login</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -15,20 +15,20 @@
     <div class="login_box">
         <h1>Student Election System</h1>
 
-        <form action="${pageContext.request.contextPath}/admin/adminDashboard.jsp">
+        <form action="${pageContext.request.contextPath}/admin_login" method="post">
             <table border="0" width="100%">
                 <tr>
                     <td>Staff ID:</td>
                 </tr>
                 <tr>
-                    <td><input type="text" name="username" ></td>
+                    <td><input type="text" name="staffNumber" required></td>
                 </tr>
 
                 <tr>
                     <td>Password:</td>
                 </tr>
                 <tr>
-                    <td><input type="password" name="password" ></td>
+                    <td><input type="password" name="password" required></td>
                 </tr>
             </table>
 
@@ -37,6 +37,14 @@
 
        
     </div>
-
+    <!-- Display Error Message as Alert -->
+    <% 
+        String errorMessage = (String) request.getAttribute("errorMessage");
+        if (errorMessage != null) {
+    %>
+        <script type="text/javascript">
+            alert("<%= errorMessage %>");
+        </script>
+    <% } %>
 </body>
 </html>
