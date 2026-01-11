@@ -9,15 +9,15 @@ CREATE SEQUENCE vote_seq START WITH 1 INCREMENT BY 1;
 
 -- 1. FACULTY Table
 CREATE TABLE FACULTY (
-    faculty_id NUMBER PRIMARY KEY,
+    faculty_id INTEGER PRIMARY KEY,
     faculty_name VARCHAR(255) NOT NULL
 );
 
 -- 2. ADMIN Table
 CREATE TABLE ADMIN (
-    admin_id NUMBER PRIMARY KEY,
+    admin_id INTEGER PRIMARY KEY,
     admin_name VARCHAR(255) NOT NULL,
-    faculty_id NUMBER NOT NULL,
+    faculty_id INTEGER NOT NULL,
     admin_email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     CONSTRAINT fk_admin_faculty FOREIGN KEY (faculty_id) REFERENCES FACULTY(faculty_id)
@@ -25,9 +25,9 @@ CREATE TABLE ADMIN (
 
 -- 3. STUDENT Table
 CREATE TABLE STUDENT (
-    student_id NUMBER PRIMARY KEY,
+    student_id INTEGER PRIMARY KEY,
     student_name VARCHAR(255) NOT NULL,
-    faculty_id NUMBER NOT NULL,
+    faculty_id INTEGER NOT NULL,
     student_email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     CONSTRAINT fk_student_faculty FOREIGN KEY (faculty_id) REFERENCES FACULTY(faculty_id)
@@ -35,7 +35,7 @@ CREATE TABLE STUDENT (
 
 -- 4. MANIFESTO Table
 CREATE TABLE MANIFESTO (
-    manifesto_id NUMBER PRIMARY KEY,
+    manifesto_id INTEGER PRIMARY KEY,
     manifesto_content VARCHAR(2000) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -43,9 +43,9 @@ CREATE TABLE MANIFESTO (
 
 -- 5. ELECTION Table
 CREATE TABLE ELECTION (
-    election_id NUMBER PRIMARY KEY,
+    election_id INTEGER PRIMARY KEY,
     election_name VARCHAR(255) NOT NULL,
-    faculty_id NUMBER NOT NULL,
+    faculty_id INTEGER NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     CONSTRAINT fk_election_faculty FOREIGN KEY (faculty_id) REFERENCES FACULTY(faculty_id)
@@ -53,10 +53,10 @@ CREATE TABLE ELECTION (
 
 -- 6. CANDIDATE Table
 CREATE TABLE CANDIDATE (
-    candidate_id NUMBER PRIMARY KEY,
-    student_id NUMBER NOT NULL,
-    election_id NUMBER NOT NULL,
-    manifesto_id NUMBER,
+    candidate_id INTEGER PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    election_id INTEGER NOT NULL,
+    manifesto_id INTEGER NOT NULL,
     CONSTRAINT fk_candidate_student FOREIGN KEY (student_id) REFERENCES STUDENT(student_id),
     CONSTRAINT fk_candidate_election FOREIGN KEY (election_id) REFERENCES ELECTION(election_id),
     CONSTRAINT fk_candidate_manifesto FOREIGN KEY (manifesto_id) REFERENCES MANIFESTO(manifesto_id)
@@ -64,10 +64,10 @@ CREATE TABLE CANDIDATE (
 
 -- 7. VOTE Table
 CREATE TABLE VOTE (
-    vote_id NUMBER PRIMARY KEY,
-    student_id NUMBER NOT NULL,
-    election_id NUMBER NOT NULL,
-    candidate_id NUMBER NOT NULL,
+    vote_id INTEGER PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    election_id INTEGER NOT NULL,
+    candidate_id INTEGER NOT NULL,
     voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_vote_student FOREIGN KEY (student_id) REFERENCES STUDENT(student_id),
     CONSTRAINT fk_vote_election FOREIGN KEY (election_id) REFERENCES ELECTION(election_id),
