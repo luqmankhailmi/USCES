@@ -16,7 +16,7 @@ and open the template in the editor.
 <body>
 
     <div class="header">
-    <a href="${pageContext.request.contextPath}/admin/adminDashboard.jsp" class="back_btn">Back</a>
+    <a href="${pageContext.request.contextPath}/admin_list_election" class="back_btn">Back</a>
     <div class="header-title">Manage Candidates</div>
 </div>
 

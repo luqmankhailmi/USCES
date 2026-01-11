@@ -28,6 +28,14 @@
         <servlet-name>AdminProfileServlet</servlet-name>
         <servlet-class>controller.AdminProfileServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AListElectionServlet</servlet-name>
+        <servlet-class>controller.AListElectionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UListElectionServlet</servlet-name>
+        <servlet-class>controller.UListElectionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -55,6 +63,14 @@
     <servlet-mapping>
         <servlet-name>AdminProfileServlet</servlet-name>
         <url-pattern>/admin_profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AListElectionServlet</servlet-name>
+        <url-pattern>/admin_list_election</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UListElectionServlet</servlet-name>
+        <url-pattern>/user_list_election</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

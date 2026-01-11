@@ -49,7 +49,7 @@ public class AdminLoginServlet extends HttpServlet {
                 session.setAttribute("staffNumber", staffNumber);
 
                 // Redirect to home page or dashboard
-                response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin_list_election");
 
             } else {
                 // Login failed - send back to login page with error
