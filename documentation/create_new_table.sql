@@ -27,6 +27,7 @@ CREATE TABLE ADMIN (
 CREATE TABLE STUDENT (
     student_id INTEGER PRIMARY KEY,
     student_name VARCHAR(255) NOT NULL,
+    student_number VARCHAR(12) NOT NULL,
     faculty_id INTEGER NOT NULL,
     student_email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
