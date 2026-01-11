@@ -1,0 +1,150 @@
+package dao;
+
+import bean.CandidateBean;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import util.DBConnection;
+
+public class CandidateDAO {
+    
+    /**
+     * Get candidate details with manifesto by candidate ID
+     */
+    public CandidateBean getCandidateById(int candidateId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            con = DBConnection.createConnection();
+            String query = "SELECT " +
+                "c.candidate_id, c.student_id, c.election_id, c.manifesto_id, " +
+                "s.student_name, s.student_number, s.student_email, s.faculty_id, " +
+                "f.faculty_name, " +
+                "e.election_name, " +
+                "m.manifesto_content " +
+                "FROM candidate c " +
+                "INNER JOIN student s ON c.student_id = s.student_id " +
+                "INNER JOIN faculty f ON s.faculty_id = f.faculty_id " +
+                "INNER JOIN election e ON c.election_id = e.election_id " +
+                "INNER JOIN manifesto m ON c.manifesto_id = m.manifesto_id " +
+                "WHERE c.candidate_id = ?";
+            
+            ps = con.prepareStatement(query);
+            ps.setInt(1, candidateId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int studentId = rs.getInt("student_id");
+                String studentName = rs.getString("student_name");
+                String studentNumber = rs.getString("student_number");
+                String studentEmail = rs.getString("student_email");
+                int facultyId = rs.getInt("faculty_id");
+                String facultyName = rs.getString("faculty_name");
+                int electionId = rs.getInt("election_id");
+                String electionName = rs.getString("election_name");
+                int manifestoId = rs.getInt("manifesto_id");
+                String manifestoContent = rs.getString("manifesto_content");
+
+                return new CandidateBean(candidateId, studentId, studentName, studentNumber,
+                    studentEmail, facultyId, facultyName, electionId, electionName,
+                    manifestoId, manifestoContent);
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    /**
+     * Delete candidate by candidate ID
+     * Note: This also deletes associated votes and manifesto if needed
+     */
+    public boolean deleteCandidate(int candidateId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+
+        try {
+            con = DBConnection.createConnection();
+            
+            // First, get manifesto_id to potentially delete it
+            String getManifestoQuery = "SELECT manifesto_id FROM candidate WHERE candidate_id = ?";
+            ps = con.prepareStatement(getManifestoQuery);
+            ps.setInt(1, candidateId);
+            ResultSet rs = ps.executeQuery();
+            int manifestoId = 0;
+            if (rs.next()) {
+                manifestoId = rs.getInt("manifesto_id");
+            }
+            rs.close();
+            ps.close();
+            
+            // Delete votes associated with this candidate
+            String deleteVotesQuery = "DELETE FROM vote WHERE candidate_id = ?";
+            ps = con.prepareStatement(deleteVotesQuery);
+            ps.setInt(1, candidateId);
+            ps.executeUpdate();
+            ps.close();
+            
+            // Delete the candidate
+            String deleteCandidateQuery = "DELETE FROM candidate WHERE candidate_id = ?";
+            ps = con.prepareStatement(deleteCandidateQuery);
+            ps.setInt(1, candidateId);
+            int rowsAffected = ps.executeUpdate();
+            ps.close();
+            
+            if (rowsAffected > 0) {
+                // Optionally delete manifesto if no other candidate uses it
+                // Check if manifesto is used by other candidates
+                if (manifestoId > 0) {
+                    String checkManifestoQuery = "SELECT COUNT(*) FROM candidate WHERE manifesto_id = ?";
+                    ps = con.prepareStatement(checkManifestoQuery);
+                    ps.setInt(1, manifestoId);
+                    ResultSet rs2 = ps.executeQuery();
+                    if (rs2.next() && rs2.getInt(1) == 0) {
+                        // No other candidate uses this manifesto, delete it
+                        rs2.close();
+                        ps.close();
+                        String deleteManifestoQuery = "DELETE FROM manifesto WHERE manifesto_id = ?";
+                        ps = con.prepareStatement(deleteManifestoQuery);
+                        ps.setInt(1, manifestoId);
+                        ps.executeUpdate();
+                        ps.close();
+                    } else {
+                        rs2.close();
+                        ps.close();
+                    }
+                }
+                success = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            success = false;
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return success;
+    }
+}
+
