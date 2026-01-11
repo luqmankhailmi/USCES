@@ -10,24 +10,26 @@ CREATE SEQUENCE vote_seq START WITH 1 INCREMENT BY 1;
 -- 1. FACULTY Table
 CREATE TABLE FACULTY (
     faculty_id NUMBER PRIMARY KEY,
-    faculty_name VARCHAR2(255) NOT NULL
+    faculty_name VARCHAR(255) NOT NULL
 );
 
 -- 2. ADMIN Table
 CREATE TABLE ADMIN (
     admin_id NUMBER PRIMARY KEY,
-    admin_name VARCHAR2(255) NOT NULL,
+    admin_name VARCHAR(255) NOT NULL,
     faculty_id NUMBER NOT NULL,
-    admin_email VARCHAR2(255) NOT NULL UNIQUE,
+    admin_email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     CONSTRAINT fk_admin_faculty FOREIGN KEY (faculty_id) REFERENCES FACULTY(faculty_id)
 );
 
 -- 3. STUDENT Table
 CREATE TABLE STUDENT (
     student_id NUMBER PRIMARY KEY,
-    student_name VARCHAR2(255) NOT NULL,
+    student_name VARCHAR(255) NOT NULL,
     faculty_id NUMBER NOT NULL,
-    student_email VARCHAR2(255) NOT NULL UNIQUE,
+    student_email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     CONSTRAINT fk_student_faculty FOREIGN KEY (faculty_id) REFERENCES FACULTY(faculty_id)
 );
 
@@ -42,7 +44,7 @@ CREATE TABLE MANIFESTO (
 -- 5. ELECTION Table
 CREATE TABLE ELECTION (
     election_id NUMBER PRIMARY KEY,
-    election_name VARCHAR2(255) NOT NULL,
+    election_name VARCHAR(255) NOT NULL,
     faculty_id NUMBER NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
