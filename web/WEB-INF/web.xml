@@ -13,8 +13,12 @@
         <servlet-class>controller.UserProfileServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AdminLoginServlet</servlet-name>
-        <servlet-class>controller.AdminLoginServlet</servlet-class>
+        <servlet-name>ViewCandidateServlet</servlet-name>
+        <servlet-class>controller.ViewCandidateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCandidateServlet</servlet-name>
+        <servlet-class>controller.DeleteCandidateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
@@ -29,8 +33,12 @@
         <url-pattern>/user_profile</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminLoginServlet</servlet-name>
-        <url-pattern>/admin_login</url-pattern>
+        <servlet-name>ViewCandidateServlet</servlet-name>
+        <url-pattern>/viewCandidate</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCandidateServlet</servlet-name>
+        <url-pattern>/DeleteCandidateServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
