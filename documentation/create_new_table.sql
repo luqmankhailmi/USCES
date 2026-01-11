@@ -17,6 +17,7 @@ CREATE TABLE FACULTY (
 CREATE TABLE ADMIN (
     admin_id INTEGER PRIMARY KEY,
     admin_name VARCHAR(255) NOT NULL,
+    staff_number VARCHAR(12) NOT NULL,
     faculty_id INTEGER NOT NULL,
     admin_email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
