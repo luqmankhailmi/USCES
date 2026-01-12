@@ -64,12 +64,12 @@ body {
 .profile-header::after {
     content: '';
     position: absolute;
-    bottom: -1px;
+    bottom: -5px;
     left: 0;
     right: 0;
     height: 30px;
     background: white;
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    border-radius: 10% 10% 0 0 / 100% 100% 0 0;
 }
 
 .profile-icon {
