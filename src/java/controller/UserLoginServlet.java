@@ -49,7 +49,7 @@ public class UserLoginServlet extends HttpServlet {
                 session.setAttribute("studentNumber", studentNumber);
 
                 // Redirect to home page or dashboard
-                response.sendRedirect(request.getContextPath() + "/user/userDashboard.jsp");
+                response.sendRedirect(request.getContextPath() + "/user_list_election");
 
             } else {
                 // Login failed - send back to login page with error
