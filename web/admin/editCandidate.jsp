@@ -14,35 +14,29 @@ and open the template in the editor.
 </head>
 
 <body>
-
     <div class="header">
-        <div class="header-title">Edit Candidate</div>
+        <div class="header-title">Edit Candidate Profile</div>
     </div>
 
     <div class="form-container">
-        <form action="EditCandidateServlet" method="POST">
+        <form action="${pageContext.request.contextPath}/UpdateCandidateServlet" method="POST">
 
-            <!-- Hidden ID -->
-            <input type="hidden" name="candidateId" value="1">
+            <input type="hidden" name="candidateId" value="${candidate.candidateId}">
+            <input type="hidden" name="manifestoId" value="${candidate.manifestoId}">
 
-            <label>Candidate Name</label>
-            <input type="text" name="candidateName" value="John Doe" required>
+            <label>Candidate Name (Read Only)</label>
+            <input type="text" value="${candidate.studentName}" readonly style="background-color: #f0f0f0;">
 
-            <label>Programmes</label>
-            <select name="electionId" required>
-                <option value="1" selected>CDCS230</option>
-                <option value="2">CDCS254</option>
-            </select>
+            <label>Election / Programme</label>
+            <input type="text" value="${candidate.electionName}" readonly style="background-color: #f0f0f0;">
 
-            <label>Candidate Description</label>
-            <input type="text" name="description" value="Committed to transparency">
+            <label>Manifesto / Description</label>
+            <textarea name="manifestoContent" rows="10" required style="width: 100%; border-radius: 5px; border: 1px solid #ccc; padding: 10px;"><%= (request.getAttribute("manifestoContent") != null) ? request.getAttribute("manifestoContent") : "" %></textarea>
 
-            <button class="btn" type="submit">Save Changes</button>
-
+            <button class="btn" type="submit">Update Manifesto</button>
         </form>
 
-        <a href="${pageContext.request.contextPath}/admin/manageCandidate.jsp" class="back-link">Back to Manage Candidates</a>
+        <a href="CandidateDetailServlet?id=${candidate.candidateId}" class="back-link">Cancel and Go Back</a>
     </div>
-
 </body>
 </html>

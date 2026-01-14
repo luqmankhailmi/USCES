@@ -1,0 +1,96 @@
+/* General page styling */
+body {
+    background-color: #f4f7f6; /* Light gray background to match dashboard */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px; /* Softer corners */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12); /* Deeper shadow for depth */
+}
+
+/* Header and Back Button styling */
+.header-nav {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.back-link {
+    text-decoration: none;
+    color: #1a2a6c; /* Matching your primary dashboard blue */
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #b21f1f; /* Matching your dashboard red/maroon on hover */
+}
+
+/* Form Typography */
+h2 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+label { 
+    display: block; 
+    margin-top: 20px; 
+    font-weight: 600; 
+    color: #555;
+    font-size: 14px;
+}
+
+/* Input styling with focus effects */
+input { 
+    width: 100%; 
+    padding: 12px; 
+    margin-top: 8px; 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+    box-sizing: border-box; /* Prevents padding from breaking width */
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: #1a2a6c;
+    box-shadow: 0 0 0 3px rgba(26, 42, 108, 0.1);
+}
+
+/* Button styling with hover effect */
+.btn-primary { 
+    margin-top: 35px; 
+    width: 100%; 
+    padding: 14px; 
+    background: #1a2a6c; 
+    color: white; 
+    border: none; 
+    border-radius: 6px;
+    cursor: pointer; 
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    transition: background 0.3s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background: #253b94; /* Slightly lighter blue on hover */
+}
+
+.btn-primary:active {
+    transform: scale(0.98); /* Click effect */
+}

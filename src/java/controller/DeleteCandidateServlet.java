@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package controller;
+
 import dao.CandidateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HP
  */
-public class AddCandidateServlet extends HttpServlet {
+public class DeleteCandidateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,27 +31,17 @@ public class AddCandidateServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       try {
-            // 1. Get parameters from the form/request
-            // Using studentId and electionId passed from the JSP
-            int studentId = Integer.parseInt(request.getParameter("studentId"));
-            int electionId = Integer.parseInt(request.getParameter("electionId"));
-            
-            // 2. Initialize DAO and call the register method
-            CandidateDAO dao = new CandidateDAO();
-            boolean isAdded = dao.registerCandidate(studentId, electionId);
-            
-            if (isAdded) {
-                // Redirect to the main management list so the new candidate appears in the table
-                response.sendRedirect(request.getContextPath() + "/ManageCandidateServlet?msg=CandidateAdded");
-            } else {
-                // Redirect back to add page with an error message
-                response.sendRedirect("admin/addCandidate.jsp?electionId=" + electionId + "&error=db_error");
-            }
-            
-        } catch (NumberFormatException e) {
-            // Handle cases where IDs are missing or not numbers
-            response.sendRedirect("adminDashboard.jsp?error=invalid_params");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet DeleteCandidateServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet DeleteCandidateServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -66,7 +57,24 @@ public class AddCandidateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // 1. Get the ID from the URL link
+        String idStr = request.getParameter("id");
+        
+        if (idStr != null && !idStr.isEmpty()) {
+            try {
+                int candidateId = Integer.parseInt(idStr);
+                
+                // 2. Call your DAO to delete from the database
+                CandidateDAO dao = new CandidateDAO();
+                dao.deleteCandidate(candidateId);
+                
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        // 3. Go back to the Manage Candidates list
+        response.sendRedirect(request.getContextPath() + "/ManageCandidateServlet");
     }
 
     /**

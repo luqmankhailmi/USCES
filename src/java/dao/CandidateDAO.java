@@ -199,6 +199,7 @@ public class CandidateDAO {
         return candidateList;
     }
     
+    
     public boolean registerCandidate(int studentId, int electionId) {
     Connection con = null;
     PreparedStatement psManifesto = null;
@@ -248,5 +249,63 @@ public class CandidateDAO {
     }
     return success;
 }
+    
+    
+    public boolean updateManifesto(int manifestoId, String newContent) {
+    Connection con = null;
+    PreparedStatement ps = null;
+    boolean success = false;
+
+    try {
+        con = DBConnection.createConnection();
+        // We update the content in the MANIFESTO table
+        String query = "UPDATE manifesto SET manifesto_content = ? WHERE manifesto_id = ?";
+        ps = con.prepareStatement(query);
+        ps.setString(1, newContent);
+        ps.setInt(2, manifestoId);
+
+        int rowsAffected = ps.executeUpdate();
+        if (rowsAffected > 0) {
+            success = true;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        // Standard manual closing logic
+        try {
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    return success;
+}
+    
+    
+    public ArrayList<CandidateBean> getAllCandidates() {
+      ArrayList<CandidateBean> list = new ArrayList<>();
+      // We must JOIN with student and election tables to get the actual names
+      String query = "SELECT c.candidate_id, s.student_name, e.election_name " +
+                     "FROM candidate c " +
+                     "INNER JOIN student s ON c.student_id = s.student_id " +
+                     "INNER JOIN election e ON c.election_id = e.election_id"; 
+
+      try (Connection con = DBConnection.createConnection();
+           PreparedStatement ps = con.prepareStatement(query);
+           ResultSet rs = ps.executeQuery()) {
+
+          while (rs.next()) {
+              CandidateBean candidate = new CandidateBean();
+              candidate.setCandidateId(rs.getInt("candidate_id"));
+              candidate.setStudentName(rs.getString("student_name")); // Matches database "student_name"
+              candidate.setElectionName(rs.getString("election_name")); 
+              list.add(candidate);
+          }
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
+      return list;
+  }
 }
 

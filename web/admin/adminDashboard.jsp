@@ -64,16 +64,31 @@
         <!-- Quick Actions -->
         <div class="quick-actions">
             <h2 class="section-title">Quick Actions</h2>
-            <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/admin/addElection.jsp'">
-                <div class="action-icon">
-                    <i class="fas fa-plus-circle"></i>
+
+            <div class="action-cards-wrapper">
+                <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/admin/addElection.jsp'">
+                    <div class="action-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Create New Election</h3>
+                        <p>Set up a new election with candidates and schedules</p>
+                    </div>
                 </div>
-                <div class="action-content">
-                    <h3>Create New Election</h3>
-                    <p>Set up a new election with candidates and schedules</p>
+
+                <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/admin/manageCandidate.jsp'">
+                    <div class="action-icon manage-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Manage Candidates</h3>
+                        <p>View, edit, or remove candidates from elections</p>
+                    </div>
                 </div>
             </div>
         </div>
+                
+         
         <!-- Faculty Info -->
         <% if (facultyName != null) { %>
         <div class="faculty-info">

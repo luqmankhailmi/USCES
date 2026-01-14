@@ -21,10 +21,6 @@
         <servlet-class>controller.ViewCandidateServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DeleteCandidateServlet</servlet-name>
-        <servlet-class>controller.DeleteCandidateServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AdminProfileServlet</servlet-name>
         <servlet-class>controller.AdminProfileServlet</servlet-class>
     </servlet>
@@ -48,6 +44,18 @@
         <servlet-name>CandidateDetailServlet</servlet-name>
         <servlet-class>controller.CandidateDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateCandidateServlet</servlet-name>
+        <servlet-class>controller.UpdateCandidateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageCandidateServlet</servlet-name>
+        <servlet-class>controller.ManageCandidateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCandidateServlet</servlet-name>
+        <servlet-class>controller.DeleteCandidateServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -63,10 +71,6 @@
     <servlet-mapping>
         <servlet-name>ViewCandidateServlet</servlet-name>
         <url-pattern>/viewCandidate</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteCandidateServlet</servlet-name>
-        <url-pattern>/DeleteCandidateServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminLoginServlet</servlet-name>
@@ -95,6 +99,18 @@
     <servlet-mapping>
         <servlet-name>CandidateDetailServlet</servlet-name>
         <url-pattern>/CandidateDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCandidateServlet</servlet-name>
+        <url-pattern>/UpdateCandidateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageCandidateServlet</servlet-name>
+        <url-pattern>/ManageCandidateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCandidateServlet</servlet-name>
+        <url-pattern>/DeleteCandidateServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -4,9 +4,11 @@
  * and open the template in the editor.
  */
 package controller;
+import bean.CandidateBean;
 import dao.CandidateDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author HP
  */
-public class AddCandidateServlet extends HttpServlet {
+public class ManageCandidateServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,27 +32,17 @@ public class AddCandidateServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       try {
-            // 1. Get parameters from the form/request
-            // Using studentId and electionId passed from the JSP
-            int studentId = Integer.parseInt(request.getParameter("studentId"));
-            int electionId = Integer.parseInt(request.getParameter("electionId"));
-            
-            // 2. Initialize DAO and call the register method
-            CandidateDAO dao = new CandidateDAO();
-            boolean isAdded = dao.registerCandidate(studentId, electionId);
-            
-            if (isAdded) {
-                // Redirect to the main management list so the new candidate appears in the table
-                response.sendRedirect(request.getContextPath() + "/ManageCandidateServlet?msg=CandidateAdded");
-            } else {
-                // Redirect back to add page with an error message
-                response.sendRedirect("admin/addCandidate.jsp?electionId=" + electionId + "&error=db_error");
-            }
-            
-        } catch (NumberFormatException e) {
-            // Handle cases where IDs are missing or not numbers
-            response.sendRedirect("adminDashboard.jsp?error=invalid_params");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ManageCandidateServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ManageCandidateServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -66,7 +58,17 @@ public class AddCandidateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // 1. Initialize DAO to fetch data
+        CandidateDAO dao = new CandidateDAO();
+        
+        // 2. Get the list of all candidates from database
+        ArrayList<CandidateBean> candidateList = dao.getAllCandidates();
+        
+        // 3. Set the list as a request attribute for the JSP to read
+        request.setAttribute("candidateList", candidateList);
+        
+        // 4. Forward to the JSP file in the admin folder
+        request.getRequestDispatcher("/admin/manageCandidate.jsp").forward(request, response);
     }
 
     /**
