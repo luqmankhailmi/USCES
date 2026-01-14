@@ -1,83 +1,134 @@
-body {
+/* Reset */
+* {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #eef2f7;
-    display: flex;
-    flex-direction: column;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
 }
 
-header {
-    background: #0b3c8c;
+/* Container */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+/* Hero Section */
+.hero h1 {
+    font-size: 2.5rem;
     color: white;
-    padding: 20px;
-    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 28px;
+.tagline {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
 }
 
+/* Graphic */
 .graphic {
-    text-align: center; 
-    margin-top: 20px;
+    margin: 2rem 0;
 }
 
-.graphic-img {
-     width: 40%;            
-     height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+.graphic i {
+    font-size: 8rem;
+    color: white;
+    opacity: 0.9;
 }
 
-
-.content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 20px;
-    text-align: center;
+/* Login Cards */
+.login-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
 }
 
-.content h2 {
-    color: #0b3c8c;
-    margin-bottom: 20px;
+.card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
 }
 
-.content p {
-    max-width: 700px;
-    margin-bottom: 30px;
-    line-height: 1.6;
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
     color: #333;
 }
 
-.btn-container {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+.card p {
+    color: #666;
+    margin-bottom: 1.5rem;
 }
 
+/* Buttons */
 .btn {
-    padding: 12px 25px;
-    background-color: #0b3c8c;
-    color: white;
-    text-decoration: none;
+    display: inline-block;
+    padding: 0.875rem 2rem;
     border-radius: 8px;
-    font-weight: bold;
-    transition: background 0.3s;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-.btn:hover {
-    background-color: #074182;
+.btn-student {
+    background: #667eea;
+    color: white;
 }
 
+.btn-student:hover {
+    background: #5568d3;
+}
+
+.btn-staff {
+    background: #764ba2;
+    color: white;
+}
+
+.btn-staff:hover {
+    background: #5f3c85;
+}
+
+/* Footer */
 footer {
-    background: #0b3c8c;
+    background: rgba(0, 0, 0, 0.2);
     color: white;
     text-align: center;
-    padding: 15px;
+    padding: 1.5rem;
+    margin-top: 3rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .tagline {
+        font-size: 1rem;
+    }
+
+    .login-cards {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .graphic i {
+        font-size: 5rem;
+    }
 }

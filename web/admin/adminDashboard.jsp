@@ -2,12 +2,13 @@
 <%@ page import="bean.ElectionBean" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Dashboard - Student Election System</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/adminDashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <%
@@ -27,90 +28,126 @@
         // Get the election list from request attribute
         ArrayList<ElectionBean> electionList = (ArrayList<ElectionBean>) request.getAttribute("electionList");
         
+        // Get admin name from request attribute
+        String adminName = (String) request.getAttribute("adminName");
+        
+        // Get faculty name from request attribute
+        String facultyName = (String) request.getAttribute("facultyName");
+        
         // Date formatter for displaying dates
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     %>
-    <!-- HEADER -->
-    <div class="header">
-        <div class="header-title">ADMIN DASHBOARD</div>
-        <div class="top-menu">
-            <span>Welcome, <%= staffNumber %></span>
-            <a href="${pageContext.request.contextPath}/admin_profile">Profile</a>
-            <a href="${pageContext.request.contextPath}/user_logout">Logout</a>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="header-title">
+                <i class="fas fa-chart-line"></i>
+                Admin Dashboard
+            </h1>
+            <div class="header-menu">
+                <span class="welcome-text">
+                    <i class="fas fa-user"></i> <%= adminName %>
+                </span>
+                <a href="${pageContext.request.contextPath}/admin_profile" class="header-link">
+                    <i class="fas fa-user-cog"></i> Profile
+                </a>
+                <a href="${pageContext.request.contextPath}/user_logout" class="header-link logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
         </div>
-    </div>
+    </header>
     
     <div class="container">
+        
         <!-- Quick Actions -->
-        <div class="grid">
-            <div class="card" onclick="location.href='${pageContext.request.contextPath}/admin/manageCandidate.jsp'">
-                <div class="icon-box">##</div>
-                <div class="card-title">Manage Candidates</div>
-            </div>
-            <div class="card" onclick="location.href='${pageContext.request.contextPath}/admin/addElection.jsp'">
-                <div class="icon-box">+</div>
-                <div class="card-title">Add New Election</div>
+        <div class="quick-actions">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/admin/addElection.jsp'">
+                <div class="action-icon">
+                    <i class="fas fa-plus-circle"></i>
+                </div>
+                <div class="action-content">
+                    <h3>Create New Election</h3>
+                    <p>Set up a new election with candidates and schedules</p>
+                </div>
             </div>
         </div>
-        
+        <!-- Faculty Info -->
+        <% if (facultyName != null) { %>
+        <div class="faculty-info">
+            <i class="fas fa-building"></i>
+            <span>Managing Faculty: <strong><%= facultyName %></strong></span>
+        </div>
+        <% } %>
         <!-- Elections Section -->
         <div class="elections-section">
-            <h2>Elections</h2>
+            <div class="section-header">
+                <h2 class="section-title">All Elections</h2>
+            </div>
             
             <%
                 if (electionList != null && !electionList.isEmpty()) {
             %>
-                <table class="elections-table">
-                    <thead>
-                        <tr>
-                            <th>Election ID</th>
-                            <th>Election Name</th>
-                            <th>Faculty ID</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%
-                            java.time.LocalDateTime now = java.time.LocalDateTime.now();
-                            for (ElectionBean election : electionList) {
-                                String status = "";
-                                String statusClass = "";
-                                
-                                if (now.isBefore(election.getStartDate())) {
-                                    status = "Upcoming";
-                                    statusClass = "status-upcoming";
-                                } else if (now.isAfter(election.getEndDate())) {
-                                    status = "Ended";
-                                    statusClass = "status-ended";
-                                } else {
-                                    status = "Ongoing";
-                                    statusClass = "status-ongoing";
+                <div class="table-wrapper">
+                    <table class="elections-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Election Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%
+                                java.time.LocalDateTime now = java.time.LocalDateTime.now();
+                                for (ElectionBean election : electionList) {
+                                    String status = "";
+                                    String statusClass = "";
+                                    
+                                    if (now.isBefore(election.getStartDate())) {
+                                        status = "Upcoming";
+                                        statusClass = "status-upcoming";
+                                    } else if (now.isAfter(election.getEndDate())) {
+                                        status = "Ended";
+                                        statusClass = "status-ended";
+                                    } else {
+                                        status = "Ongoing";
+                                        statusClass = "status-ongoing";
+                                    }
+                            %>
+                            <tr>
+                                <td><strong>#<%= election.getElectionID() %></strong></td>
+                                <td class="election-name"><%= election.getElectionName() %></td>
+                                <td><%= election.getStartDate().format(formatter) %></td>
+                                <td><%= election.getEndDate().format(formatter) %></td>
+                                <td><span class="status-badge <%= statusClass %>"><%= status %></span></td>
+                                <td class="action-buttons">
+                                    <a href="${pageContext.request.contextPath}/admin/viewElection.jsp?id=<%= election.getElectionID() %>" class="btn-action btn-view">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                    <a href="${pageContext.request.contextPath}/admin/editElection.jsp?id=<%= election.getElectionID() %>" class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                </td>
+                            </tr>
+                            <%
                                 }
-                        %>
-                        <tr>
-                            <td><%= election.getElectionID() %></td>
-                            <td><%= election.getElectionName() %></td>
-                            <td><%= election.getFacultyID() %></td>
-                            <td><%= election.getStartDate().format(formatter) %></td>
-                            <td><%= election.getEndDate().format(formatter) %></td>
-                            <td><span class="status-badge <%= statusClass %>"><%= status %></span></td>
-                            <td>
-                                <a href="${pageContext.request.contextPath}/admin/viewElection.jsp?id=<%= election.getElectionID() %>" class="action-btn">View</a>
-                                <a href="${pageContext.request.contextPath}/admin/editElection.jsp?id=<%= election.getElectionID() %>" class="action-btn">Edit</a>
-                            </td>
-                        </tr>
-                        <%
-                            }
-                        %>
-                    </tbody>
-                </table>
+                            %>
+                        </tbody>
+                    </table>
+                </div>
             <%
                 } else {
             %>
-                <p class="no-data">No elections found.</p>
+                <div class="no-data">
+                    <i class="fas fa-inbox"></i>
+                    <p>No elections found.</p>
+                </div>
             <%
                 }
             %>
