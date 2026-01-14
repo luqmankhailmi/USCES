@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import util.DBConnection;
 
 public class CandidateDAO {
@@ -146,5 +147,106 @@ public class CandidateDAO {
         
         return success;
     }
+    
+    
+    
+    /**
+     * Fetch all candidates for a specific election
+     */
+    public ArrayList<CandidateBean> fetchCandidatesByElection(int electionId) {
+        ArrayList<CandidateBean> candidateList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            con = DBConnection.createConnection();
+            // Join with STUDENT to get the name and number to display in the list
+            String query = "SELECT c.candidate_id, c.student_id, c.election_id, c.manifesto_id, " +
+                           "s.student_name, s.student_number " +
+                           "FROM candidate c " +
+                           "INNER JOIN student s ON c.student_id = s.student_id " +
+                           "WHERE c.election_id = ?";
+            
+            ps = con.prepareStatement(query);
+            ps.setInt(1, electionId);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                // Creating a simplified bean for the list view
+                // You can use your existing constructor and pass null/0 for fields you don't need in the list
+                CandidateBean candidate = new CandidateBean();
+                candidate.setCandidateId(rs.getInt("candidate_id"));
+                candidate.setStudentId(rs.getInt("student_id"));
+                candidate.setStudentName(rs.getString("student_name"));
+                candidate.setStudentNumber(rs.getString("student_number"));
+                candidate.setElectionId(rs.getInt("election_id"));
+                candidate.setManifestoId(rs.getInt("manifesto_id"));
+                
+                candidateList.add(candidate);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return candidateList;
+    }
+    
+    public boolean registerCandidate(int studentId, int electionId) {
+    Connection con = null;
+    PreparedStatement psManifesto = null;
+    PreparedStatement psCandidate = null;
+    ResultSet rs = null;
+    boolean success = false;
+
+    try {
+        con = DBConnection.createConnection();
+        con.setAutoCommit(false); // Start transaction
+
+        // 1. Insert empty Manifesto to get the ID
+        String manifestoSql = "INSERT INTO manifesto (manifesto_content) VALUES ('No manifesto yet.')";
+        psManifesto = con.prepareStatement(manifestoSql, PreparedStatement.RETURN_GENERATED_KEYS);
+        psManifesto.executeUpdate();
+        
+        rs = psManifesto.getGeneratedKeys();
+        int manifestoId = 0;
+        if (rs.next()) {
+            manifestoId = rs.getInt(1);
+        }
+
+        // 2. Insert Candidate using the studentId, electionId, and manifestoId
+        String candidateSql = "INSERT INTO candidate (student_id, election_id, manifesto_id) VALUES (?, ?, ?)";
+        psCandidate = con.prepareStatement(candidateSql);
+        psCandidate.setInt(1, studentId);
+        psCandidate.setInt(2, electionId);
+        psCandidate.setInt(3, manifestoId);
+        
+        int rows = psCandidate.executeUpdate();
+        
+        if (rows > 0) {
+            con.commit(); // Save everything
+            success = true;
+        }
+
+    } catch (SQLException e) {
+        if (con != null) try { con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (psManifesto != null) psManifesto.close();
+            if (psCandidate != null) psCandidate.close();
+            if (con != null) con.close();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+    return success;
+}
 }
 

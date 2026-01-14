@@ -36,6 +36,18 @@
         <servlet-name>UListElectionServlet</servlet-name>
         <servlet-class>controller.UListElectionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewElectionServlet</servlet-name>
+        <servlet-class>controller.ViewElectionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddCandidateServlet</servlet-name>
+        <servlet-class>controller.AddCandidateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CandidateDetailServlet</servlet-name>
+        <servlet-class>controller.CandidateDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -71,6 +83,18 @@
     <servlet-mapping>
         <servlet-name>UListElectionServlet</servlet-name>
         <url-pattern>/user_list_election</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewElectionServlet</servlet-name>
+        <url-pattern>/ViewElectionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddCandidateServlet</servlet-name>
+        <url-pattern>/AddCandidateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CandidateDetailServlet</servlet-name>
+        <url-pattern>/CandidateDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

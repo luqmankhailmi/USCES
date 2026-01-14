@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import bean.StudentBean;
@@ -12,11 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import util.DBConnection;
 
-/**
- *
- * @author User
- */
 public class UserProfileDAO {
+    
     public StudentBean getUserDetails(String studentNumber) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -30,13 +22,18 @@ public class UserProfileDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Extract data and create Student object
-                String name = rs.getString("student_name");
-                String number = rs.getString("student_number");
-                int facultyId = rs.getInt("faculty_id");
-                String email = rs.getString("student_email");
+                // We create the bean and use setters to ensure we get the ID
+                StudentBean student = new StudentBean();
+                
+                // ADDED THIS: We need the primary key ID for adding candidates
+                student.setStudentId(rs.getInt("student_id")); 
+                
+                student.setStudentName(rs.getString("student_name"));
+                student.setStudentNumber(rs.getString("student_number"));
+                student.setFacultyId(rs.getInt("faculty_id"));
+                student.setStudentEmail(rs.getString("student_email"));
 
-                return new StudentBean(name, number, facultyId, email);
+                return student;
             } else {
                 return null;
             }
@@ -45,7 +42,7 @@ public class UserProfileDAO {
             e.printStackTrace();
             return null;
         } finally {
-            // Now safe to close because we've extracted the data
+            // REMAINED: Your original manual closing logic
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
@@ -55,28 +52,21 @@ public class UserProfileDAO {
             }
         }
     }
-    
-    // Get Faculty
+
     public String getFaculty(int facultyId) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         
         try {
-            // Get database connection
             con = DBConnection.createConnection();
-            
-            // SQL query to check user credentials
-            String query = "SELECT * FROM faculty WHERE faculty_id = ?";
+            String query = "SELECT faculty_name FROM faculty WHERE faculty_id = ?";
             ps = con.prepareStatement(query);
             ps.setInt(1, facultyId);
-            
-            // Execute query
             rs = ps.executeQuery();
             
-            // Check if user exists
             if (rs.next()) {
-                return (String) rs.getString("faculty_name");
+                return rs.getString("faculty_name");
             } else {
                 return null;
             }
@@ -85,7 +75,7 @@ public class UserProfileDAO {
             e.printStackTrace();
             return null;
         } finally {
-            // Close resources in reverse order
+            // REMAINED: Your original manual closing logic
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
