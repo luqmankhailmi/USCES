@@ -1,7 +1,6 @@
 package dao;
 
 import bean.ElectionBean;
-import bean.CandidateBean; // Assuming you have this bean
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import util.DBConnection;
 
@@ -28,6 +28,27 @@ public class ElectionDAO {
                 while (rs.next()) {
                     electionList.add(mapRowToElection(rs));
                 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return electionList;
+    }
+
+    /**
+     * UPDATED: Fetches all elections across all faculties.
+     * This resolves the "Create method" error in AddCandidateServlet.
+     */
+    public List<ElectionBean> getAllElections() {
+        List<ElectionBean> electionList = new ArrayList<>();
+        String query = "SELECT * FROM election ORDER BY election_name ASC";
+
+        try (Connection conn = DBConnection.createConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                electionList.add(mapRowToElection(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,7 +77,6 @@ public class ElectionDAO {
     // NEW: Get statistics (Vote count per candidate)
     public Map<String, Integer> getElectionStatistics(int electionId) {
         Map<String, Integer> stats = new HashMap<>();
-        // Query joins candidate and student to get names for the chart/display
         String query = "SELECT s.student_name, COUNT(v.vote_id) as vote_count " +
                        "FROM candidate c " +
                        "JOIN student s ON c.student_id = s.student_id " +
@@ -79,7 +99,7 @@ public class ElectionDAO {
         return stats;
     }
 
-    // NEW: Delete election (Note: Dependent records must be handled)
+    // NEW: Delete election
     public boolean deleteElection(int electionId) {
         String query = "DELETE FROM election WHERE election_id = ?";
         try (Connection conn = DBConnection.createConnection();

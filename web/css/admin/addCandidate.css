@@ -1,63 +1,103 @@
+/* General page styling */
 body {
+    background-color: #f4f7f6; /* Light gray background to match dashboard */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #eef2f7;
+    padding: 0;
 }
 
+/* Updated Purple Gradient Header to match Manage Candidates */
 .header {
-    background: #0b3c8c;
-    padding: 15px 25px;
+    background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%); /* Matches your reference gradient */
     color: white;
-    text-align: center;
+    padding: 30px 50px;
+    display: flex;
+    justify-content: space-between; /* Places title left and button right */
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .header-title {
-    font-size: 22px;
+    font-size: 28px;
     font-weight: bold;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space for the icon */
 }
 
+/* White Button styling for "Back to Dashboard" in the header */
+.btn-back-header {
+    background: rgba(255, 255, 255, 0.2); /* Translucent effect */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.btn-back-header:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Form Container Card with Overlap */
 .form-container {
     max-width: 600px;
-    margin: 40px auto;
-    background: white;
-    padding: 30px;
+    margin: -30px auto 40px; /* Overlaps the header for a modern look */
+    padding: 40px;
+    background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    position: relative;
+    z-index: 10;
 }
 
-label {
-    font-weight: bold;
-    color: #0b3c8c;
+/* Typography and Inputs */
+label { 
+    display: block; 
+    margin-top: 20px; 
+    font-weight: 600; 
+    color: #1a2a6c; /* Dashboard primary blue */
+    font-size: 14px;
 }
 
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0 20px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
+input, select { 
+    width: 100%; 
+    padding: 12px; 
+    margin-top: 8px; 
+    border: 1px solid #e0e0e0; 
+    border-radius: 8px; 
+    box-sizing: border-box;
+    font-size: 15px;
 }
 
-.btn {
-    background: #0b3c8c;
-    color: white;
-    padding: 12px 20px;
-    border: none;
+input:focus, select:focus {
+    outline: none;
+    border-color: #6a11cb;
+    box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+}
+
+/* Action Button matches Manage Candidate primary colors */
+.btn { 
+    margin-top: 30px; 
+    width: 100%; 
+    padding: 14px; 
+    background: #6a11cb; /* Purple theme */
+    color: white; 
+    border: none; 
     border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
+    cursor: pointer; 
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.1s;
 }
 
 .btn:hover {
-    background: #093679;
+    background: #5a0eb1;
 }
 
-.back-link {
-    display: block;
-    margin-top: 15px;
-    text-align: center;
-    text-decoration: none;
-    color: #0b3c8c;
+.btn:active {
+    transform: scale(0.98);
 }
-

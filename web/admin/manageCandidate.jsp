@@ -1,4 +1,5 @@
-<%@page import="java.util.ArrayList"%>
+<%-- Import List to match your Servlet's return type --%>
+<%@page import="java.util.List"%>
 <%@page import="bean.CandidateBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,25 +12,26 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/manageCandidate.css">
 </head>
 <body>
-<header class="header">
-    <div class="header-content">
-        <h1 class="header-title">
-            <i class="fas fa-users-cog"></i>
-            Manage Candidates
-        </h1>
-        <div class="header-menu">
-            <a href="${pageContext.request.contextPath}/admin_list_election" class="header-link">
-                <i class="fas fa-arrow-left"></i> Back to Dashboard
-            </a>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="header-title">
+                <i class="fas fa-users-cog"></i>
+                Manage Candidates
+            </h1>
+            <div class="header-menu">
+                <%-- Fixed Link: Usually, admins go back to the dashboard --%>
+                <a href="${pageContext.request.contextPath}/adminDashboard.jsp" class="header-link">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
     <div class="container">
-        
         <div class="section-header">
             <h2 class="section-title">Candidate List</h2>
-            <a href="${pageContext.request.contextPath}/admin/addCandidate.jsp" class="btn-add">
+            <%-- Redirect to Servlet instead of direct JSP to ensure dropdowns load --%>
+            <a href="${pageContext.request.contextPath}/AddCandidateServlet" class="btn-add">
                 <i class="fas fa-plus-circle"></i> Add New Candidate
             </a>
         </div>
@@ -45,53 +47,50 @@
                         </tr>
                     </thead>
                     <tbody>
-                            <%
-                                // Get the list from the request attribute (passed from Servlet)
-                                ArrayList<CandidateBean> candidateList = (ArrayList<CandidateBean>) request.getAttribute("candidateList");
+                        <%
+                            // Use List interface for better compatibility with ArrayList
+                            List<CandidateBean> candidateList = (List<CandidateBean>) request.getAttribute("candidateList");
 
-                                if (candidateList != null && !candidateList.isEmpty()) {
-                                    for (CandidateBean candidate : candidateList) {
-                            %>
-                                <tr>
-                                    <td>
-                                        <div class="candidate-cell">
-                                            <div class="candidate-avatar">
-                                                <i class="fas fa-user"></i>
-                                            </div>
-                                            <span class="candidate-name"><%= candidate.getStudentName() %></span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="election-badge"><%= candidate.getElectionName() %></span>
-                                    </td>
-                                    <td class="action-buttons">
-                                        <a href="${pageContext.request.contextPath}/admin/editCandidate.jsp?id=<%= candidate.getCandidateId() %>" class="btn-action btn-edit">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </a>
+                            if (candidateList != null && !candidateList.isEmpty()) {
+                                for (CandidateBean candidate : candidateList) {
+                        %>
+                            <tr>
+                                <td>
+                                    <div class="candidate-cell">
+                                        <div class="candidate-avatar"><i class="fas fa-user"></i></div>
+                                        <span class="candidate-name"><%= candidate.getStudentName() %></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="election-badge"><%= candidate.getElectionName() %></span>
+                                </td>
+                                <td class="action-buttons">
+                                    <a href="${pageContext.request.contextPath}/EditCandidateServlet?id=<%= candidate.getCandidateId() %>" class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
 
-                                        <a href="${pageContext.request.contextPath}/DeleteCandidateServlet?id=<%= candidate.getCandidateId() %>" 
-                                           class="btn-action btn-delete" 
-                                           onclick="return confirm('Are you sure you want to delete <%= candidate.getStudentName() %>?')">
-                                            <i class="fas fa-trash-alt"></i> Delete
-                                        </a>
-                                    </td>
-                                </tr>
-                            <% 
-                                    } 
-                                } else { 
-                            %>
-                                <tr>
-                                    <td colspan="3" style="text-align: center; padding: 3rem; color: #666;">
-                                        <i class="fas fa-folder-open" style="font-size: 2rem; display: block; margin-bottom: 1rem; opacity: 0.5;"></i>
-                                        No candidates found in the database.
-                                    </td>
-                                </tr>
-                            <% } %>
-                        </tbody>
+                                    <a href="${pageContext.request.contextPath}/DeleteCandidateServlet?id=<%= candidate.getCandidateId() %>" 
+                                       class="btn-action btn-delete" 
+                                       onclick="return confirm('Are you sure you want to delete <%= candidate.getStudentName() %>?')">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        <% 
+                                } 
+                            } else { 
+                        %>
+                            <tr>
+                                <td colspan="3" style="text-align: center; padding: 3rem; color: #666;">
+                                    <i class="fas fa-folder-open" style="font-size: 2rem; display: block; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                    No candidates found in the database.
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-
 </body>
 </html>
