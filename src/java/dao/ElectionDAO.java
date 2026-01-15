@@ -127,4 +127,31 @@ public class ElectionDAO {
         
         return new ElectionBean(id, name, facId, start, end);
     }
+    
+    
+ public boolean addElection(String name, int facultyId, String start, String end) {
+    // 1. Ensure columns match your schema (UPPERCASE for Derby is safest)
+    String query = "INSERT INTO ELECTION (ELECTION_NAME, FACULTY_ID, START_DATE, END_DATE) VALUES (?, ?, ?, ?)";
+    
+    try (Connection con = DBConnection.createConnection();
+         PreparedStatement ps = con.prepareStatement(query)) {
+        
+        ps.setString(1, name);
+        ps.setInt(2, facultyId);
+        
+        // 2. DERBY FIX: Add ":00" for seconds, otherwise Derby rejects it
+        // From: 2026-01-15T22:00 -> To: 2026-01-15 22:00:00
+        String formattedStart = start.replace("T", " ") + ":00";
+        String formattedEnd = end.replace("T", " ") + ":00";
+        
+        ps.setString(3, formattedStart); 
+        ps.setString(4, formattedEnd);
+        
+        return ps.executeUpdate() > 0;
+    } catch (SQLException e) {
+        System.out.println("SQL ERROR: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+}
 }

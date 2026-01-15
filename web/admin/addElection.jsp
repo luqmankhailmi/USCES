@@ -31,7 +31,7 @@
             <select name="facultyId" required>
                 <option value="">-- Select Faculty --</option>
                 <c:forEach var="faculty" items="${facultyList}">
-                    <option value="${faculty.facultyId}">${faculty.facultyName}</option>
+                    <option value="${faculty.facultyID}">${faculty.facultyName}</option>
                 </c:forEach>
             </select>
 

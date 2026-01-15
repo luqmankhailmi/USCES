@@ -11,6 +11,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+    <%-- 1. SUCCESS ALERT LOGIC --%>
+    <%
+        String msg = request.getParameter("msg");
+        if ("success".equals(msg)) {
+    %>
+        <div class="alert-container">
+            <div class="alert-box success">
+                <i class="fas fa-check-circle"></i>
+                <span>Election successfully created!</span>
+                <button class="close-alert" onclick="this.parentElement.style.display='none'">&times;</button>
+            </div>
+        </div>
+    <% } %>
+    
+    
+    
     <%
         // Get the existing session (don't create new one)
         HttpSession userSession = request.getSession(false);
@@ -66,17 +82,22 @@
             <h2 class="section-title">Quick Actions</h2>
 
             <div class="action-cards-wrapper">
-                <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/admin/addElection.jsp'">
-                    <div class="action-icon">
-                        <i class="fas fa-plus-circle"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Create New Election</h3>
-                        <p>Set up a new election with candidates and schedules</p>
-                    </div>
+                
+                            <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/AddElectionServlet'">
+                <div class="action-icon">
+                    <i class="fas fa-plus-circle"></i>
                 </div>
+                <div class="action-content">
+                    <h3>Create New Election</h3>
+                    <p>Set up a new election with candidates and schedules</p>
+                </div>
+            </div>
+                    
+                    
+            
 
-                <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/admin/manageCandidate.jsp'">
+               <%-- FIXED: Points to ManageCandidateServlet --%>
+                <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/ManageCandidateServlet'">
                     <div class="action-icon manage-icon">
                         <i class="fas fa-users-cog"></i>
                     </div>
