@@ -76,6 +76,18 @@
         <servlet-name>UpdateElectionServlet</servlet-name>
         <servlet-class>controller.UpdateElectionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StudentVoteServlet</servlet-name>
+        <servlet-class>controller.StudentVoteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentResultsServlet</servlet-name>
+        <servlet-class>controller.StudentResultsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SubmitVoteServlet</servlet-name>
+        <servlet-class>controller.SubmitVoteServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -151,6 +163,18 @@
     <servlet-mapping>
         <servlet-name>UpdateElectionServlet</servlet-name>
         <url-pattern>/UpdateElectionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentVoteServlet</servlet-name>
+        <url-pattern>/student_vote</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentResultsServlet</servlet-name>
+        <url-pattern>/view_results</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SubmitVoteServlet</servlet-name>
+        <url-pattern>/submit_vote</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
