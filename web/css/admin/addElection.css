@@ -1,6 +1,6 @@
 /* General page styling */
 body {
-    background-color: #f4f7f6; /* Light gray background to match dashboard */
+    background-color: #f4f7f6;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
@@ -8,9 +8,9 @@ body {
 
 /* Purple Gradient Header - Perfectly matches Manage Candidates */
 .header {
-    background: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);
+    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
     color: white;
-    padding: 30px 50px;
+    padding: 60px 10% 100px; /* Extra bottom padding to facilitate the overlap */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,7 +23,7 @@ body {
     margin: 0;
     display: flex;
     align-items: center;
-    gap: 12px; /* Space for the calendar-plus icon */
+    gap: 12px;
 }
 
 /* White Translucent Button for Header */
@@ -43,13 +43,13 @@ body {
 
 .btn-back-header:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateX(-3px); /* Subtle nudge to indicate "back" */
+    transform: translateX(-3px);
 }
 
 /* Overlapping Card Container */
 .form-container {
-    max-width: 550px; /* Slightly narrower for a cleaner vertical election form */
-    margin: -40px auto 50px; /* Stronger overlap for better depth */
+    max-width: 650px; 
+    margin: -60px auto 50px; /* Negative margin creates the overlap effect */
     padding: 40px;
     background: #fff;
     border-radius: 12px;
@@ -63,8 +63,8 @@ label {
     display: block; 
     margin-top: 22px; 
     font-weight: 600; 
-    color: #1a2a6c; /* Dashboard primary blue */
-    font-size: 14px;
+    color: #2d3436;
+    font-size: 0.9rem;
     letter-spacing: 0.3px;
 }
 
@@ -75,27 +75,19 @@ select {
     width: 100%; 
     padding: 12px 15px; 
     margin-top: 8px; 
-    border: 1px solid #e0e0e0; 
+    border: 1px solid #dfe6e9; 
     border-radius: 8px; 
     box-sizing: border-box;
     font-size: 15px;
     color: #333;
-    background-color: #fafafa;
+    background-color: #fff;
     transition: all 0.2s ease;
 }
 
-/* Specific styling for Date-Time Pickers */
-input[type="datetime-local"] {
-    cursor: pointer;
-    font-family: inherit;
-}
-
-/* Focus States - Consistent Purple Glow */
 input:focus, select:focus {
     outline: none;
-    border-color: #6a11cb;
-    background-color: #fff;
-    box-shadow: 0 0 0 4px rgba(106, 17, 203, 0.1);
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
 }
 
 /* Primary Action Button (Purple) */
@@ -103,7 +95,7 @@ input:focus, select:focus {
     margin-top: 35px; 
     width: 100%; 
     padding: 15px; 
-    background: linear-gradient(to right, #6a11cb, #2575fc); /* Gradient button to match header */
+    background: #6c5ce7; 
     color: white; 
     border: none; 
     border-radius: 8px;
@@ -114,22 +106,11 @@ input:focus, select:focus {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease;
 }
 
 .btn:hover {
+    background: #5849c4;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
-}
-
-.btn:active {
-    transform: scale(0.98);
-}
-
-/* Info Paragraph Styling */
-.form-container p {
-    line-height: 1.5;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
 }
