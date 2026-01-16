@@ -115,11 +115,13 @@
                                 <td><span class="status-badge <%= statusClass %>"><%= status %></span></td>
                                 <td class="action-buttons">
                                     <% if (canVote) { %>
-                                        <a href="${pageContext.request.contextPath}/user/vote.jsp?id=<%= election.getElectionID() %>" class="btn-action btn-vote">
+                                        <a href="${pageContext.request.contextPath}/student_vote?id=<%= election.getElectionID() %>"
+                                           class="btn-action btn-vote">
                                             <i class="fas fa-check-circle"></i> Vote Now
                                         </a>
                                     <% } else if (status.equals("Ended")) { %>
-                                        <a href="${pageContext.request.contextPath}/user/viewResults.jsp?id=<%= election.getElectionID() %>" class="btn-action btn-results">
+                                        <a href="${pageContext.request.contextPath}/view_results?id=<%= election.getElectionID() %>"
+                                           class="btn-action btn-results">
                                             <i class="fas fa-chart-bar"></i> View Results
                                         </a>
                                     <% } else { %>
