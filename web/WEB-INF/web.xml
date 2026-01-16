@@ -64,6 +64,18 @@
         <servlet-name>EditCandidateDetailServlet</servlet-name>
         <servlet-class>controller.EditCandidateDetailServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditElectionServlet</servlet-name>
+        <servlet-class>controller.EditElectionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>controller.NewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateElectionServlet</servlet-name>
+        <servlet-class>controller.UpdateElectionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -127,6 +139,18 @@
     <servlet-mapping>
         <servlet-name>EditCandidateDetailServlet</servlet-name>
         <url-pattern>/EditCandidateDetailServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditElectionServlet</servlet-name>
+        <url-pattern>/EditElectionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateElectionServlet</servlet-name>
+        <url-pattern>/UpdateElectionServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -14,8 +14,9 @@
         <header>
             <h1>Election Management</h1>
             <div class="nav-links">
-                <a href="adminDashboard.jsp" class="back-link">← Back to Dashboard</a>
-            </div>
+    <%-- Change from adminDashboard.jsp to the Servlet URL --%>
+    <a href="${pageContext.request.contextPath}/admin_list_election" class="back-link">← Back to Dashboard</a>
+</div>
         </header>
 
         <hr>

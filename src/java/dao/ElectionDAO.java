@@ -154,4 +154,32 @@ public class ElectionDAO {
         return false;
     }
 }
+ 
+ public boolean updateElection(int electionId, String name, String start, String end) {
+    // Matches your ELECTION table columns
+    String query = "UPDATE ELECTION SET ELECTION_NAME = ?, START_DATE = ?, END_DATE = ? WHERE ELECTION_ID = ?";
+    
+    try (Connection con = DBConnection.createConnection();
+         PreparedStatement ps = con.prepareStatement(query)) {
+        
+        ps.setString(1, name);
+        
+        // DERBY/SQL FIX: Ensure correct timestamp formatting with seconds
+        String formattedStart = start.replace("T", " ");
+        if (formattedStart.length() == 16) formattedStart += ":00";
+        
+        String formattedEnd = end.replace("T", " ");
+        if (formattedEnd.length() == 16) formattedEnd += ":00";
+        
+        ps.setString(2, formattedStart);
+        ps.setString(3, formattedEnd);
+        ps.setInt(4, electionId);
+        
+        return ps.executeUpdate() > 0;
+    } catch (SQLException e) {
+        System.out.println("UPDATE ERROR: " + e.getMessage());
+        e.printStackTrace();
+        return false;
+    }
+}
 }

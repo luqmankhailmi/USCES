@@ -166,7 +166,7 @@
                                     <a href="${pageContext.request.contextPath}/admin/viewElection.jsp?id=<%= election.getElectionID() %>" class="btn-action btn-view">
                                         <i class="fas fa-eye"></i> View
                                     </a>
-                                    <a href="${pageContext.request.contextPath}/admin/editElection.jsp?id=<%= election.getElectionID() %>" class="btn-action btn-edit">
+                                    <a href="${pageContext.request.contextPath}/EditElectionServlet?id=<%= election.getElectionID() %>" class="btn-action btn-edit">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
                                 </td>

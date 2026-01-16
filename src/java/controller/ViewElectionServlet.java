@@ -35,7 +35,7 @@ public class ViewElectionServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 1. Get the election_id from the request
+    // 1. Get the election_id from the request
         String idParam = request.getParameter("id");
         
         if (idParam != null && !idParam.isEmpty()) {
@@ -46,28 +46,36 @@ public class ViewElectionServlet extends HttpServlet {
                 ElectionDAO electionDao = new ElectionDAO();
                 CandidateDAO candidateDao = new CandidateDAO();
                 
-                // 3. Call DAO methods to fetch data
+                // 3. Fetch data from DAOs
+                // Fetches basic election info (Name, dates, etc.)
                 ElectionBean election = electionDao.getElectionById(electionId);
+                
+                // Fetches live vote counts for each candidate
                 Map<String, Integer> statistics = electionDao.getElectionStatistics(electionId);
                 
-                // Fetch candidate list (Ensure this method exists in CandidateDAO)
+                // Fetches the list of candidates assigned to this election
                 ArrayList<CandidateBean> candidateList = candidateDao.fetchCandidatesByElection(electionId);
                 
-                // 4. Set attributes for the JSP
-                request.setAttribute("election", election);
-                request.setAttribute("stats", statistics);
-                request.setAttribute("candidateList", candidateList);
-                
-                // 5. Forward to the view page
-                request.getRequestDispatcher("admin/viewElection.jsp").forward(request, response);
+                if (election != null) {
+                    // 4. Set attributes for the JSP (Matching your EL tags like ${election.electionName})
+                    request.setAttribute("election", election);
+                    request.setAttribute("stats", statistics);
+                    request.setAttribute("candidateList", candidateList);
+                    
+                    // 5. Forward to the view page in the admin folder
+                    request.getRequestDispatcher("/admin/viewElection.jsp").forward(request, response);
+                } else {
+                    // If the election ID doesn't exist in the database
+                    response.sendRedirect(request.getContextPath() + "/admin_list_election?error=NotFound");
+                }
                 
             } catch (NumberFormatException e) {
-                // Handle case where 'id' is not a valid number
-                response.sendRedirect("adminDashboard.jsp?error=invalidID");
+                // If the ID parameter is not a valid number
+                response.sendRedirect(request.getContextPath() + "/admin_list_election?error=InvalidID");
             }
         } else {
-            // Redirect back to dashboard if no ID is provided
-            response.sendRedirect("adminDashboard.jsp?error=missingID");
+            // If no ID was provided in the URL
+            response.sendRedirect(request.getContextPath() + "/admin_list_election");
         }
     }
 
