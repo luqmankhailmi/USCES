@@ -103,7 +103,7 @@
                     </div>
                     <div class="action-content">
                         <h3>Manage Candidates</h3>
-                        <p>View, edit, or remove candidates from elections</p>
+                        <p>Add, edit, or remove candidates from elections</p>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,11 @@
+/* Core Layout */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #eef2f7;
 }
 
+/* Header matching the dark blue theme */
 .header {
     background: #0b3c8c;
     padding: 15px 25px;
@@ -16,6 +18,7 @@ body {
     font-weight: bold;
 }
 
+/* Form Container matching manage candidate card style */
 .form-container {
     max-width: 600px;
     margin: 40px auto;
@@ -25,20 +28,41 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+/* Label Styling */
 label {
+    display: block;
     font-weight: bold;
     color: #0b3c8c;
+    margin-bottom: 8px;
 }
 
-input, select {
+/* Input, Select, and Textarea styling */
+input, select, textarea {
     width: 100%;
     padding: 10px;
     margin: 8px 0 20px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
+    box-sizing: border-box; /* Critical for keeping alignment */
 }
 
+/* Specifically for Read-Only fields to make them look disabled */
+input[readonly] {
+    background-color: #f0f0f0;
+    color: #666;
+    cursor: not-allowed;
+    border-color: #ddd;
+}
+
+/* Styling for the manifesto text box */
+textarea {
+    resize: vertical;
+    min-height: 150px;
+    font-family: Arial, sans-serif;
+}
+
+/* Main Button Class matching manage candidate */
 .btn {
     background: #0b3c8c;
     color: white;
@@ -47,16 +71,23 @@ input, select {
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .btn:hover {
     background: #093679;
 }
 
+/* Link at the bottom */
 .back-link {
     display: block;
     margin-top: 15px;
     text-align: center;
     text-decoration: none;
     color: #0b3c8c;
+}
+
+.back-link:hover {
+    text-decoration: underline;
 }

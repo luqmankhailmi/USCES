@@ -1,95 +1,59 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 import dao.CandidateDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet; // Ensure this is present if not using web.xml
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author HP
- */
 public class UpdateCandidateServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
             // 1. Get parameters from the form in editCandidate.jsp
-            int candidateId = Integer.parseInt(request.getParameter("candidateId"));
-            int manifestoId = Integer.parseInt(request.getParameter("manifestoId"));
+            // Matches names: candidateId, manifestoId, manifestoContent
+            String cIdStr = request.getParameter("candidateId");
+            String mIdStr = request.getParameter("manifestoId");
             String newContent = request.getParameter("manifestoContent");
 
-            // 2. Execute the update via DAO
-            CandidateDAO dao = new CandidateDAO();
-            boolean isUpdated = dao.updateManifesto(manifestoId, newContent);
+            if (cIdStr != null && mIdStr != null) {
+                int candidateId = Integer.parseInt(cIdStr);
+                int manifestoId = Integer.parseInt(mIdStr);
 
-            if (isUpdated) {
-                // Success: Redirect back to the detail view to see changes
-                response.sendRedirect("CandidateDetailServlet?id=" + candidateId + "&msg=update_success");
+                // 2. Execute the update via DAO
+                CandidateDAO dao = new CandidateDAO();
+                boolean isUpdated = dao.updateManifesto(manifestoId, newContent);
+
+                if (isUpdated) {
+                    // Success: Redirect back to the detail view through the Servlet
+                    // Using "id" to match CandidateDetailServlet's expected parameter
+                    response.sendRedirect("CandidateDetailServlet?id=" + candidateId + "&msg=update_success");
+                } else {
+                    // Failure: Go back to edit page via the DetailServlet mode
+                    response.sendRedirect("CandidateDetailServlet?id=" + candidateId + "&mode=edit&error=db_error");
+                }
             } else {
-                // Failure: Go back to edit page with error
-                response.sendRedirect("editCandidate.jsp?id=" + candidateId + "&error=db_error");
+                response.sendRedirect("AListElectionServlet?error=missing_id");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("admin/manageCandidate.jsp?error=invalid_input");
+            // Redirect to the main list if something breaks completely
+            response.sendRedirect("AListElectionServlet?error=invalid_input");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

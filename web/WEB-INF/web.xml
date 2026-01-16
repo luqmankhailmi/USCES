@@ -60,6 +60,10 @@
         <servlet-name>AddElectionServlet</servlet-name>
         <servlet-class>controller.AddElectionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditCandidateDetailServlet</servlet-name>
+        <servlet-class>controller.EditCandidateDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>AddElectionServlet</servlet-name>
         <url-pattern>/AddElectionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCandidateDetailServlet</servlet-name>
+        <url-pattern>/EditCandidateDetailServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

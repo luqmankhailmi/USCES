@@ -65,7 +65,7 @@
                                     <span class="election-badge"><%= candidate.getElectionName() %></span>
                                 </td>
                                 <td class="action-buttons">
-                                    <a href="${pageContext.request.contextPath}/EditCandidateServlet?id=<%= candidate.getCandidateId() %>" class="btn-action btn-edit">
+                                    <a href="${pageContext.request.contextPath}/CandidateDetailServlet?id=<%= candidate.getCandidateId() %>" class="btn-action btn-edit">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
 

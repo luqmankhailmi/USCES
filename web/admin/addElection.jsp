@@ -16,7 +16,7 @@
         <div class="header-title">
             <i class="fas fa-calendar-plus"></i> Create New Election
         </div>
-        <a href="${pageContext.request.contextPath}/ManageElectionServlet" class="btn-back-header">
+        <a href="${pageContext.request.contextPath}/admin_list_election" class="btn-back-header">
             <i class="fas fa-arrow-left"></i> Back to List
         </a>
     </div>
