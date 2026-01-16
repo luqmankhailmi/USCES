@@ -1,35 +1,42 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Election Details - Admin</title>
     
-    <link rel="stylesheet" type="text/css" href="../css/admin/manageCandidate.css">
-    <link rel="stylesheet" type="text/css" href="../css/admin/adminDashboard.css">
+    <%-- Absolute paths ensure CSS loads correctly regardless of URL depth --%>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/manageCandidate.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/adminDashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Election Management</h1>
             <div class="nav-links">
-    <%-- Change from adminDashboard.jsp to the Servlet URL --%>
-    <a href="${pageContext.request.contextPath}/admin_list_election" class="back-link">← Back to Dashboard</a>
-</div>
+               <%--<a href="${pageContext.request.contextPath}/admin_list_election" class="back-link">← Back to Dashboard</a> <%-- Remove this div and link from here --%>
+            </div>
         </header>
 
         <hr>
 
         <div class="section-card">
-            <h2>Election: ${election.electionName}</h2>
+            <h2>Election: ${election.electionName}</h2> 
+
             <div class="info-grid">
-                <p><strong>Election ID:</strong> ${election.electionId}</p>
-                <p><strong>Faculty ID:</strong> ${election.facultyId}</p>
+                <p><strong>Organizing Faculty:</strong> ${facultyName}</p>
+
                 <p><strong>Status:</strong> 
                     <c:choose>
-                        <c:when test="${not empty election.startDate}">Active Period</c:when>
-                        <c:otherwise>Draft</c:otherwise>
+                        <c:when test="${not empty election.startDate}">
+                            <span class="status-badge status-ongoing">Active Period</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="status-badge">Draft</span>
+                        </c:otherwise>
                     </c:choose>
                 </p>
                 <p><strong>Duration:</strong> ${election.startDate} to ${election.endDate}</p>
@@ -62,7 +69,6 @@
         <div class="section-card">
             <div class="header-with-btn">
                 <h3>Registered Candidates</h3>
-                <a href="addCandidate.jsp?electionId=${election.electionId}" class="btn-add">Add Candidate</a>
             </div>
             <table class="data-table">
                 <thead>
@@ -75,13 +81,15 @@
                 <tbody>
                     <c:forEach var="tempCandidate" items="${candidateList}">
                         <tr>
+                            
                             <td>${tempCandidate.studentNumber}</td>
                             <td>${tempCandidate.studentName}</td>
                             <td>
+                                <%-- Reverted to your original text-based action style --%>
                                 <a href="viewCandidate.jsp?id=${tempCandidate.candidateId}" class="action-view">View</a> | 
                                 <a href="../DeleteCandidateServlet?id=${tempCandidate.candidateId}" 
                                    class="action-delete" 
-                                   onclick="return confirm('Remove this candidate from the election?')">Delete</a>
+                                   onclick="return confirm('Remove ${tempCandidate.studentName} from this election?')">Delete</a>
                             </td>
                         </tr>
                     </c:forEach>
@@ -93,15 +101,23 @@
         </div>
 
         <div class="footer-actions">
-            <button class="btn-edit" onclick="location.href='editElection.jsp?id=${election.electionId}'">Edit Election Details</button>
-            <button class="btn-danger" onclick="confirmElectionDelete(${election.electionId})">Delete Entire Election</button>
+            <%-- The Back button styled to look like your other dashboard buttons --%>
+            <a href="${pageContext.request.contextPath}/admin_list_election" 
+               class="btn-action btn-view" 
+               style="text-decoration: none; display: inline-flex; align-items: center; padding: 10px 20px;">
+                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Back to Dashboard
+            </a>
+               
+            <button class="btn-danger" onclick="confirmElectionDelete(${election.electionID})">
+                <i class="fas fa-trash-alt"></i> Delete Entire Election
+            </button>
         </div>
     </div>
 
     <script>
         function confirmElectionDelete(id) {
             if (confirm("DANGER: This will delete the election and ALL associated votes/candidates. Continue?")) {
-                window.location.href = "../DeleteElectionServlet?id=" + id;
+                window.location.href = "${pageContext.request.contextPath}/DeleteElectionServlet?id=" + id;
             }
         }
     </script>

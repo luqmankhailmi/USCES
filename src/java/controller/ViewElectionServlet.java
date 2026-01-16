@@ -56,14 +56,18 @@ public class ViewElectionServlet extends HttpServlet {
                 // Fetches the list of candidates assigned to this election
                 ArrayList<CandidateBean> candidateList = candidateDao.fetchCandidatesByElection(electionId);
                 
-                if (election != null) {
-                    // 4. Set attributes for the JSP (Matching your EL tags like ${election.electionName})
-                    request.setAttribute("election", election);
-                    request.setAttribute("stats", statistics);
-                    request.setAttribute("candidateList", candidateList);
-                    
-                    // 5. Forward to the view page in the admin folder
-                    request.getRequestDispatcher("/admin/viewElection.jsp").forward(request, response);
+               if (election != null) {
+                // 1. Initialize Admin DAO to get faculty name
+                dao.AdminProfileDAO adminDAO = new dao.AdminProfileDAO();
+                String facultyName = adminDAO.getFaculty(election.getFacultyID());
+
+                // 2. Set the attributes
+                request.setAttribute("election", election);
+                request.setAttribute("facultyName", facultyName); // Pass name instead of ID
+                request.setAttribute("stats", statistics);
+                request.setAttribute("candidateList", candidateList);
+
+                request.getRequestDispatcher("/admin/viewElection.jsp").forward(request, response);
                 } else {
                     // If the election ID doesn't exist in the database
                     response.sendRedirect(request.getContextPath() + "/admin_list_election?error=NotFound");

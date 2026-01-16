@@ -219,7 +219,7 @@ public class CandidateDAO {
      */
     public ArrayList<CandidateBean> fetchCandidatesByElection(int electionId) {
         ArrayList<CandidateBean> list = new ArrayList<>();
-        String query = "SELECT c.candidate_id, s.student_name, e.election_name " +
+        String query = "SELECT c.candidate_id,s.student_number, s.student_name, e.election_name " +
                        "FROM candidate c " + 
                        "INNER JOIN student s ON c.student_id = s.student_id " +
                        "INNER JOIN election e ON c.election_id = e.election_id " +
@@ -234,6 +234,7 @@ public class CandidateDAO {
                     CandidateBean candidate = new CandidateBean();
                     candidate.setCandidateId(rs.getInt("candidate_id"));
                     candidate.setStudentName(rs.getString("student_name"));
+                    candidate.setStudentNumber(rs.getString("student_number"));
                     candidate.setElectionName(rs.getString("election_name"));
                     list.add(candidate);
                 }
