@@ -7,6 +7,7 @@ import dao.ElectionDAO;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,19 +40,22 @@ public class AddCandidateServlet extends HttpServlet {
                 request.getRequestDispatcher("/admin/addCandidate.jsp").forward(request, response);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.sendRedirect(request.getContextPath() + "/adminDashboard.jsp?error=load_failed");
-            }
+                 // CHANGE THIS: From adminDashboard.jsp to your actual dashboard name
+                 response.sendRedirect(request.getContextPath() + "/admin_list_election.jsp?error=load_failed");
+             }
 
         } else if (method.equalsIgnoreCase("POST")) {
             try {
                 // Get parameters from form
                 int studentId = Integer.parseInt(request.getParameter("studentId"));
+                // Fixed: Matching the 'electionId' name usually used in JSPs
                 int electionId = Integer.parseInt(request.getParameter("electionId"));
+                String manifesto = request.getParameter("manifesto"); // Get the text area content
 
                 CandidateDAO dao = new CandidateDAO();
-                
-                // registerCandidate handles database transactions
-                boolean isAdded = dao.registerCandidate(studentId, electionId);
+
+                // Call the updated method with 3 arguments
+                boolean isAdded = dao.registerCandidate(studentId, electionId, manifesto);
 
                 if (isAdded) {
                     response.sendRedirect(request.getContextPath() + "/ManageCandidateServlet?msg=CandidateAdded");
@@ -59,7 +63,8 @@ public class AddCandidateServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/AddCandidateServlet?error=db_error");
                 }
             } catch (NumberFormatException e) {
-                response.sendRedirect(request.getContextPath() + "/adminDashboard.jsp?error=invalid_params");
+                // Redirect to actual dashboard to avoid 404
+                response.sendRedirect(request.getContextPath() + "/admin_list_election.jsp?error=invalid_params");
             }
         }
     }

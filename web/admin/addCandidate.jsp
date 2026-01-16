@@ -31,7 +31,7 @@
             <select name="electionId" required>
                 <option value="">-- Select Election --</option>
                 <c:forEach var="election" items="${electionList}">
-                    <option value="${election.electionId}">
+                    <option value="${election.electionID}">
                         ${election.electionName}
                     </option>
                 </c:forEach>
@@ -41,6 +41,10 @@
                 * A default manifesto will be created automatically.
             </p>
 
+            <%-- Add this inside your <form> before the submit button --%>
+            <label>Candidate Manifesto</label>
+            <textarea name="manifesto" rows="5" placeholder="Enter candidate's vision and goals..." required 
+                      style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; margin-bottom: 1rem;"></textarea>
             <button class="btn" type="submit">Add Candidate</button>
         </form>
 

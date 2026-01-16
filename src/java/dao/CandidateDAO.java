@@ -243,4 +243,57 @@ public class CandidateDAO {
         }
         return list;
     }
+    
+    /**
+ * Registers a new candidate with a custom manifesto.
+ * 1. Creates a manifesto record with user-provided content.
+ * 2. Links the student to the election using the new manifesto ID.
+ */
+public boolean registerCandidate(int studentId, int electionId, String manifestoContent) {
+    // Use the provided manifestoContent instead of hardcoded text
+    String manifestoSql = "INSERT INTO manifesto (manifesto_content) VALUES (?)";
+    String candidateSql = "INSERT INTO candidate (student_id, election_id, manifesto_id) VALUES (?, ?, ?)";
+    boolean success = false;
+
+    Connection con = null;
+    try {
+        con = DBConnection.createConnection();
+        con.setAutoCommit(false); // Start transaction
+
+        int manifestoId = 0;
+        try (PreparedStatement psM = con.prepareStatement(manifestoSql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            psM.setString(1, manifestoContent); // Set the user's manifesto here
+            psM.executeUpdate();
+            try (ResultSet rs = psM.getGeneratedKeys()) {
+                if (rs.next()) {
+                    manifestoId = rs.getInt(1);
+                }
+            }
+        }
+
+        if (manifestoId > 0) {
+            try (PreparedStatement psC = con.prepareStatement(candidateSql)) {
+                psC.setInt(1, studentId);
+                psC.setInt(2, electionId);
+                psC.setInt(3, manifestoId);
+                int rows = psC.executeUpdate();
+                
+                if (rows > 0) {
+                    con.commit(); // Save transaction
+                    success = true;
+                }
+            }
+        }
+    } catch (SQLException e) {
+        if (con != null) {
+            try { con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+        }
+        e.printStackTrace();
+    } finally {
+        if (con != null) {
+            try { con.close(); } catch (SQLException e) { e.printStackTrace(); }
+        }
+    }
+    return success;
+}
 }

@@ -20,7 +20,7 @@
             </h1>
             <div class="header-menu">
                 <%-- Fixed Link: Usually, admins go back to the dashboard --%>
-                <a href="${pageContext.request.contextPath}/adminDashboard.jsp" class="header-link">
+                <a href="${pageContext.request.contextPath}/admin_list_election" class="header-link">
                     <i class="fas fa-arrow-left"></i> Back to Dashboard
                 </a>
             </div>

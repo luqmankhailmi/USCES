@@ -13,22 +13,19 @@ public class DeleteCandidateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. Get the ID from the URL link
         String idStr = request.getParameter("id");
-        String message = "error"; // Default status
+        String message = "error"; 
         
         if (idStr != null && !idStr.isEmpty()) {
             try {
                 int candidateId = Integer.parseInt(idStr);
-                
-                // 2. Call your DAO to delete from the database
                 CandidateDAO dao = new CandidateDAO();
                 
-                // Use the boolean return from your DAO
+                // This calls your transaction-safe DAO method
                 boolean isDeleted = dao.deleteCandidate(candidateId);
                 
                 if (isDeleted) {
-                    message = "success";
+                    message = "deleted"; // Matches the 'msg' check in JSP
                 } else {
                     message = "fail";
                 }
@@ -39,9 +36,9 @@ public class DeleteCandidateServlet extends HttpServlet {
             }
         }
         
-        // 3. Go back to the Manage Candidates list with a status message
-        // This allows the management page to show a "Candidate Deleted" alert
-        response.sendRedirect(request.getContextPath() + "/ManageCandidateServlet?status=" + message);
+        // Redirecting back to the ManageCandidateServlet so it can reload the list
+        // Changed "status" to "msg" to match the JSP alert logic
+        response.sendRedirect(request.getContextPath() + "/ManageCandidateServlet?msg=" + message);
     }
 
     @Override
