@@ -18,7 +18,7 @@
         </div>
         <%-- Matches the reference translucent button style --%>
         <a href="${pageContext.request.contextPath}/admin_list_election" class="btn-back-header">
-            <i class="fas fa-arrow-left"></i> Back to List
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
         </a>
     </div>
 
