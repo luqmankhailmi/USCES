@@ -88,6 +88,10 @@
         <servlet-name>SubmitVoteServlet</servlet-name>
         <servlet-class>controller.SubmitVoteServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteElectionServlet</servlet-name>
+        <servlet-class>controller.DeleteElectionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -175,6 +179,10 @@
     <servlet-mapping>
         <servlet-name>SubmitVoteServlet</servlet-name>
         <url-pattern>/submit_vote</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteElectionServlet</servlet-name>
+        <url-pattern>/DeleteElectionServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

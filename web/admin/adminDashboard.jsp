@@ -79,24 +79,21 @@
         
         <!-- Quick Actions -->
         <div class="quick-actions">
-            <h2 class="section-title">Quick Actions</h2>
+            <h2 class="section-title">Quick Actions</h2><br>
 
             <div class="action-cards-wrapper">
                 
-                            <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/AddElectionServlet'">
-                <div class="action-icon">
-                    <i class="fas fa-plus-circle"></i>
+                <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/AddElectionServlet'">
+                    <div class="action-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Create New Election</h3>
+                        <p>Set up a new election with candidates and schedules</p>
+                    </div>
                 </div>
-                <div class="action-content">
-                    <h3>Create New Election</h3>
-                    <p>Set up a new election with candidates and schedules</p>
-                </div>
-            </div>
                     
-                    
-            
-
-               <%-- FIXED: Points to ManageCandidateServlet --%>
+                   
                 <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/ManageCandidateServlet'">
                     <div class="action-icon manage-icon">
                         <i class="fas fa-users-cog"></i>
@@ -110,13 +107,7 @@
         </div>
                 
          
-        <!-- Faculty Info -->
-        <% if (facultyName != null) { %>
-        <div class="faculty-info">
-            <i class="fas fa-building"></i>
-            <span>Managing Faculty: <strong><%= facultyName %></strong></span>
-        </div>
-        <% } %>
+        
         <!-- Elections Section -->
         <div class="elections-section">
             <div class="section-header">

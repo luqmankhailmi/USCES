@@ -27,8 +27,8 @@
             <h2>Election: ${election.electionName}</h2> 
 
             <div class="info-grid">
-                <p><strong>Organizing Faculty:</strong> ${facultyName}</p>
-
+                
+                <p><strong>Duration:</strong> ${election.startDate} to ${election.endDate}</p>
                 <p><strong>Status:</strong> 
                     <c:choose>
                         <c:when test="${not empty election.startDate}">
@@ -39,7 +39,7 @@
                         </c:otherwise>
                     </c:choose>
                 </p>
-                <p><strong>Duration:</strong> ${election.startDate} to ${election.endDate}</p>
+                
             </div>
         </div>
 
@@ -85,11 +85,11 @@
                             <td>${tempCandidate.studentNumber}</td>
                             <td>${tempCandidate.studentName}</td>
                             <td>
-                                <%-- Reverted to your original text-based action style --%>
-                                <a href="viewCandidate.jsp?id=${tempCandidate.candidateId}" class="action-view">View</a> | 
-                                <a href="../DeleteCandidateServlet?id=${tempCandidate.candidateId}" 
-                                   class="action-delete" 
-                                   onclick="return confirm('Remove ${tempCandidate.studentName} from this election?')">Delete</a>
+                                <a href="${pageContext.request.contextPath}/DeleteCandidateServlet?id=${tempCandidate.candidateId}" 
+                                    style="color: #e74c3c; text-decoration: none; font-weight: 600; margin-left: 10px;"
+                                    onclick="return confirm('Are you sure you want to remove this candidate?')">
+                                    Delete
+                                 </a>
                             </td>
                         </tr>
                     </c:forEach>
