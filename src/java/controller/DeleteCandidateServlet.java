@@ -6,12 +6,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.WebServlet;
 
 public class DeleteCandidateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // 1. LOGIN CHECK
+        HttpSession userSession = request.getSession(false);
+        if (userSession == null || userSession.getAttribute("staffNumber") == null) {
+            // Unauthorized access, redirect to login
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
+        }
         
         String idStr = request.getParameter("id");
         String message = "error"; 

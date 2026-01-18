@@ -9,11 +9,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class AddElectionServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        HttpSession userSession = request.getSession(false);
+        String staffNumber = null;
+        
+        if (userSession != null && userSession.getAttribute("staffNumber") != null) {
+            staffNumber = (String) userSession.getAttribute("staffNumber");
+        } else {
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
+        }
         
         String method = request.getMethod();
 

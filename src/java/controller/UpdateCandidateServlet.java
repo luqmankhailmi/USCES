@@ -6,12 +6,22 @@ import javax.servlet.annotation.WebServlet; // Ensure this is present if not usi
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class UpdateCandidateServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        // 1. LOGIN CHECK
+        HttpSession userSession = request.getSession(false);
+        if (userSession == null || userSession.getAttribute("staffNumber") == null) {
+            // Unauthorized access, redirect back to login
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
+        }
+        
         try {
             // 1. Get parameters from the form in editCandidate.jsp
             // Matches names: candidateId, manifestoId, manifestoContent

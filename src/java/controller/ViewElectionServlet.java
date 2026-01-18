@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -35,6 +36,14 @@ public class ViewElectionServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+         HttpSession userSession = request.getSession(false);
+        if (userSession == null || userSession.getAttribute("staffNumber") == null) {
+            // Unauthorized access, redirect back to login
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
+        }
+        
     // 1. Get the election_id from the request
         String idParam = request.getParameter("id");
         
