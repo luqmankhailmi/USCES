@@ -15,13 +15,13 @@
 <body>
     <div class="container">
         <header>
-            <h1>Election Management</h1>
+            <h1>Election</h1>
             <div class="nav-links">
                <%--<a href="${pageContext.request.contextPath}/admin_list_election" class="back-link">← Back to Dashboard</a> <%-- Remove this div and link from here --%>
             </div>
         </header>
 
-        <hr>
+            <hr><br>
 
         <div class="section-card">
             <h2>Election: ${election.electionName}</h2> 

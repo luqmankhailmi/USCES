@@ -35,7 +35,7 @@
             </div>
 
             <button type="submit" class="btn">Save Changes</button>
-            <a href="AListElectionServlet" class="back-link">Cancel</a>
+            <a href="${pageContext.request.contextPath}/admin_list_election" class="back-link">Cancel</a>
         </form>
     </div>
 </body>
