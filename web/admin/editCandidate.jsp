@@ -27,7 +27,7 @@
             </div>
 
             <div class="form-group">
-                <label>Manifesto / Description</label>
+                <label>Manifesto</label>
                 <textarea name="manifestoContent" rows="8" required>${manifestoContent}</textarea>
             </div>
 
@@ -35,7 +35,7 @@
         </form>
         
         <div class="footer-links">
-            <a href="ManageCandidateServlet" class="back-link">Back to Manage Candidates</a>
+            <a href="ManageCandidateServlet" class="back-link">Cancel</a>
         </div>
     </div>
 </body>

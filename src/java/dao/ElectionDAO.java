@@ -101,17 +101,44 @@ public class ElectionDAO {
 
     // NEW: Delete election
     public boolean deleteElection(int electionId) {
-        String query = "DELETE FROM election WHERE election_id = ?";
-        try (Connection conn = DBConnection.createConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-            
-            ps.setInt(1, electionId);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    Connection conn = null;
+    try {
+        // FIX: Use the correct utility class name
+        conn = util.DBConnection.createConnection(); 
+        conn.setAutoCommit(false); // Start transaction
+
+        // STEP 1: Delete votes first (Crucial for image_1058a7.png scenario)
+        String sql0 = "DELETE FROM vote WHERE candidate_id IN (SELECT candidate_id FROM candidate WHERE election_id = ?)";
+        try (PreparedStatement ps0 = conn.prepareStatement(sql0)) {
+            ps0.setInt(1, electionId);
+            ps0.executeUpdate();
         }
+
+        // STEP 2: Delete candidates
+        String sql1 = "DELETE FROM candidate WHERE election_id = ?";
+        try (PreparedStatement ps1 = conn.prepareStatement(sql1)) {
+            ps1.setInt(1, electionId);
+            ps1.executeUpdate();
+        }
+
+        // STEP 3: Delete the election itself
+        String sql2 = "DELETE FROM election WHERE election_id = ?";
+        int rows;
+        try (PreparedStatement ps2 = conn.prepareStatement(sql2)) {
+            ps2.setInt(1, electionId);
+            rows = ps2.executeUpdate();
+        }
+
+        conn.commit(); 
+        return rows > 0; 
+    } catch (Exception e) {
+        if (conn != null) try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+        e.printStackTrace();
+        return false;
+    } finally {
+        if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
     }
+}
 
     // Helper method to keep code clean
     private ElectionBean mapRowToElection(ResultSet rs) throws SQLException {

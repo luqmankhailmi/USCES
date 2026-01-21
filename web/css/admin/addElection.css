@@ -1,39 +1,44 @@
-/* General page styling */
-body {
-    background-color: #f5f7fa; /* Matches Edit Election background */
-    font-family: 'Segoe UI', sans-serif;
+/* Core Layout & Reset */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* Updated Gradient Header to match image_0fe48b.png */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f5f7fa; /* Matches Edit Election background */
+    color: #333;
+}
+
+/* Updated Header with Overlap Space */
 .header {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); /* Deep purple to blue */
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); /* Same as image_0fe48b.png */
     color: white;
-    padding: 40px 10% 80px; /* Reduced padding for a tighter look */
+    /* Extra bottom padding (100px) creates space for the box to overlap */
+    padding: 60px 10% 100px; 
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .header-title {
-    font-size: 1.5rem; /* Matches reference size */
+    font-size: 1.5rem; /* Matches image_0fe48b.png */
     font-weight: bold;
-    margin: 0;
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-/* White Translucent Button for Header */
+/* Translucent Back Button in Header */
 .btn-back-header {
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
+    padding: 10px 20px;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
     transition: all 0.3s ease;
 }
@@ -42,61 +47,67 @@ body {
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* Form Container centered like image_0fe48b.png */
+/* Form Container with Negative Margin (The Overlap) */
 .form-container {
-    max-width: 600px; /* Reference width */
-    margin: -40px auto 50px; /* Adjust overlap */
-    padding: 2.5rem; /* Spacious padding */
-    background: #fff;
+    max-width: 650px; 
+    /* Negative margin pulls the box UP into the purple header area */
+    margin: -60px auto 50px; 
+    background: white;
+    padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    /* Stronger shadow makes the "box" look elevated */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     position: relative;
     z-index: 10;
 }
 
-/* Label Styling - Updated to match purple color in image_0fe48b.png */
-label { 
-    display: block; 
-    margin-top: 1.5rem; 
-    font-weight: bold; 
-    color: #764ba2; /* Deep purple labels */
+/* Form Group spacing */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Label Styling - Deep purple from image_0fe48b.png */
+label {
+    display: block;
+    font-weight: bold;
+    color: #764ba2;
+    margin-bottom: 0.5rem;
     font-size: 0.95rem;
 }
 
-/* Shared Input & Select Styling */
-input[type="text"],
-input[type="datetime-local"],
-select { 
-    width: 100%; 
-    padding: 0.75rem; /* Matches Edit page padding */
-    margin-top: 8px; 
-    border: 1px solid #ddd; 
-    border-radius: 6px; 
-    box-sizing: border-box;
+/* Shared Input, Select, and Textarea styling */
+input, select, textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
     font-size: 1rem;
     color: #333;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: #667eea; /* Blue focus border */
+    border-color: #667eea; /* Blue border on focus */
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-/* Primary Action Button - Matches Edit page gradient */
-.btn { 
-    margin-top: 2rem; 
-    width: 100%; 
-    padding: 0.75rem; 
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); 
-    color: white; 
-    border: none; 
-    border-radius: 6px;
-    cursor: pointer; 
+/* Main Action Button - Gradient Style */
+.btn {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
     font-size: 1rem;
     font-weight: bold;
-    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .btn:hover {
@@ -104,11 +115,21 @@ input:focus, select:focus {
     box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
 }
 
-/* Utility classes for the flex dates */
+/* Utility for side-by-side dates */
 .date-row {
     display: flex;
     gap: 20px;
 }
 .flex-1 {
     flex: 1;
+}
+
+/* Cancel link at bottom */
+.back-link {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    color: #764ba2;
+    margin-top: 1.5rem;
+    font-weight: 500;
 }
