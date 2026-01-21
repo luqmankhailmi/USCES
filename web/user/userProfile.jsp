@@ -12,7 +12,6 @@
         String studentName = (String) request.getAttribute("studentName");
         String studentNumber = (String) request.getAttribute("studentNumber");
         String studentEmail = (String) request.getAttribute("studentEmail");
-        Integer facultyId = (Integer) request.getAttribute("facultyId");
         String facultyName = (String) request.getAttribute("facultyName");
     %>
 
@@ -53,16 +52,6 @@
                     <div class="info-content">
                         <div class="info-label">Email Address</div>
                         <div class="info-value"><%= studentEmail %></div>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-id-card"></i>
-                    </div>
-                    <div class="info-content">
-                        <div class="info-label">Faculty ID</div>
-                        <div class="info-value"><%= facultyId %></div>
                     </div>
                 </div>
             </div>
