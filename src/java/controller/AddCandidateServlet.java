@@ -1,13 +1,14 @@
 package controller;
 
+import bean.CandidateBean;
 import bean.ElectionBean;
 import bean.StudentBean;
 import dao.CandidateDAO;
 import dao.ElectionDAO;
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +19,8 @@ public class AddCandidateServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-         HttpSession userSession = request.getSession(false);
+        HttpSession userSession = request.getSession(false);
         if (userSession == null || userSession.getAttribute("staffNumber") == null) {
-            // Unauthorized access, redirect back to login
             response.sendRedirect(request.getContextPath() + "/index.jsp");
             return;
         }
@@ -28,64 +28,76 @@ public class AddCandidateServlet extends HttpServlet {
         String method = request.getMethod(); 
 
         if (method.equalsIgnoreCase("GET")) {
-            try {
-                // Initialize DAOs
-                CandidateDAO candidateDao = new CandidateDAO(); 
-                ElectionDAO electionDao = new ElectionDAO();
-
-                // 1. Fetch data for dropdowns
-                // Ensure electionDao.getAllElections() is implemented
-                List<ElectionBean> electionList = electionDao.getAllElections();
-                
-                // Ensure candidateDao.getAllStudents() uses StudentBean
-                List<StudentBean> studentList = candidateDao.getAllStudents(); 
-
-                // 2. Pass data to JSP via request attributes
-                request.setAttribute("electionList", electionList);
-                request.setAttribute("studentList", studentList);
-
-                // 3. Forward to the view
-                request.getRequestDispatcher("/admin/addCandidate.jsp").forward(request, response);
-            } catch (Exception e) {
-                e.printStackTrace();
-                 // CHANGE THIS: From adminDashboard.jsp to your actual dashboard name
-                 response.sendRedirect(request.getContextPath() + "/admin_list_election.jsp?error=load_failed");
-             }
+            loadDropdowns(request);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("/admin/addCandidate.jsp");
+            rd.forward(request, response);
 
         } else if (method.equalsIgnoreCase("POST")) {
             try {
-                // Get parameters from form
-                int studentId = Integer.parseInt(request.getParameter("studentId"));
-                // Fixed: Matching the 'electionId' name usually used in JSPs
-                int electionId = Integer.parseInt(request.getParameter("electionId"));
-                String manifesto = request.getParameter("manifesto"); // Get the text area content
+                
+                String sIdStr = request.getParameter("studentId");
+                String eIdStr = request.getParameter("electionId");
+                String manifesto = request.getParameter("manifesto");
 
-                CandidateDAO dao = new CandidateDAO();
-
-                // Call the updated method with 3 arguments
-                boolean isAdded = dao.registerCandidate(studentId, electionId, manifesto);
-
-                if (isAdded) {
-                    response.sendRedirect(request.getContextPath() + "/ManageCandidateServlet?msg=CandidateAdded");
-                } else {
-                    response.sendRedirect(request.getContextPath() + "/AddCandidateServlet?error=db_error");
+                
+                if (sIdStr == null || eIdStr == null || sIdStr.isEmpty()) {
+                    throw new Exception("Please select a student and an election.");
                 }
-            } catch (NumberFormatException e) {
-                // Redirect to actual dashboard to avoid 404
-                response.sendRedirect(request.getContextPath() + "/admin_list_election.jsp?error=invalid_params");
+
+                int studentId = Integer.parseInt(sIdStr);
+                int electionId = Integer.parseInt(eIdStr);
+
+                
+                CandidateBean bean = new CandidateBean();
+                bean.setStudentId(studentId);
+                bean.setElectionId(electionId);
+                bean.setManifestoContent(manifesto);
+
+                
+                request.setAttribute("candidateBean", bean);
+
+                
+                CandidateDAO dao = new CandidateDAO();
+                boolean status = dao.registerCandidate(studentId, electionId, manifesto);
+
+                if (status) {
+                    request.setAttribute("successMsg", "Candidate added successfully!");
+
+                    
+                    RequestDispatcher rd = request.getRequestDispatcher("/ManageCandidateServlet");
+                    rd.forward(request, response);
+
+                    
+                } else {
+                    request.setAttribute("errMessage", "Failed to add candidate. Duplicate entry?");
+                    loadDropdowns(request);
+                    RequestDispatcher rd = request.getRequestDispatcher("/admin/addCandidate.jsp");
+                    rd.forward(request, response);
+                }
+            } catch (Exception e) {
+                request.setAttribute("errMessage", "Error: " + e.getMessage());
+                loadDropdowns(request);
+                RequestDispatcher rd = request.getRequestDispatcher("/admin/addCandidate.jsp");
+                rd.forward(request, response);
             }
         }
     }
 
+    private void loadDropdowns(HttpServletRequest request) {
+        CandidateDAO cDao = new CandidateDAO(); 
+        ElectionDAO eDao = new ElectionDAO();
+        request.setAttribute("electionList", eDao.getAllElections());
+        request.setAttribute("studentList", cDao.getAllStudents());
+    }
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
     }
 }
