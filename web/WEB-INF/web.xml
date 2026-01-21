@@ -104,6 +104,14 @@
         <servlet-name>UserRegisterServlet</servlet-name>
         <servlet-class>controller.UserRegisterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ManageStudentServlet</servlet-name>
+        <servlet-class>controller.ManageStudentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteStudentServlet</servlet-name>
+        <servlet-class>controller.DeleteStudentServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -207,6 +215,14 @@
     <servlet-mapping>
         <servlet-name>UserRegisterServlet</servlet-name>
         <url-pattern>/user_register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageStudentServlet</servlet-name>
+        <url-pattern>/ManageStudentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteStudentServlet</servlet-name>
+        <url-pattern>/DeleteStudentServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -103,6 +103,16 @@
                         <p>Add, edit, or remove candidates from elections</p>
                     </div>
                 </div>
+                
+                <div class="action-card" onclick="location.href='${pageContext.request.contextPath}/ManageStudentServlet'">
+                    <div class="action-icon student-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Manage Students</h3>
+                        <p>View and manage student records in the system</p>
+                    </div>
+                </div>
             </div>
         </div>
                 
