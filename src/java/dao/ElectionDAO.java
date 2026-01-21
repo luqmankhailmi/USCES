@@ -212,4 +212,21 @@ public class ElectionDAO {
         }
         return stats;
     }
+    
+    public int getFacultyByElectionId(int electionId) {
+    String sql = "SELECT faculty_id FROM election WHERE election_id = ?";
+    try (Connection conn = DBConnection.createConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setInt(1, electionId);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("faculty_id");
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return -1; // error / not found
+}
 }
