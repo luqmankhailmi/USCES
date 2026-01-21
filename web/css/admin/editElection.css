@@ -88,6 +88,8 @@ label {
 
 /* Input & Select Styling */
 input[type="text"],
+input[type="datetime-local"],
+input[type="hidden"],
 select,
 textarea {
     width: 100%;
@@ -99,26 +101,13 @@ textarea {
     background-color: #fff;
 }
 
-/* Read-only styling */
-input[readonly] {
-    background-color: #f8f9fa;
-    color: #6c757d;
-    cursor: not-allowed;
-}
-
 input[type="text"]:focus,
+input[type="datetime-local"]:focus,
 select:focus,
 textarea:focus {
     outline: none;
     border-color: #764ba2;
     box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
-}
-
-/* Textarea specific */
-textarea {
-    min-height: 120px;
-    resize: vertical;
-    font-family: inherit;
 }
 
 /* Primary Button */
@@ -135,6 +124,10 @@ textarea {
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(118, 75, 162, 0.2);
     margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .btn:hover {
@@ -169,6 +162,11 @@ textarea {
     text-decoration: underline;
 }
 
+/* Icon styling */
+.fas, .fa {
+    flex-shrink: 0;
+}
+
 /* Message Styling */
 .msg-error {
     color: #dc2626;
@@ -188,52 +186,6 @@ textarea {
     margin-bottom: 1.5rem;
     text-align: center;
     border: 1px solid #6ee7b7;
-}
-
-/* Success message inline styling (for session messages) */
-div[style*="color: green"] {
-    color: #059669 !important;
-    background: #d1fae5;
-    padding: 0.875rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    border: 1px solid #6ee7b7;
-}
-
-/* Select2 Overrides (if using Select2 library) */
-.select2-container--default .select2-selection--single {
-    height: 46px !important;
-    padding: 8px 12px !important;
-    border: 1px solid #e0e0e0 !important;
-    border-radius: 8px !important;
-    font-size: 0.95rem !important;
-}
-
-.select2-container--default.select2-container--focus .select2-selection--single {
-    outline: none !important;
-    border-color: #764ba2 !important;
-    box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1) !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 28px !important;
-    color: #333 !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 44px !important;
-}
-
-.select2-container--open .select2-dropdown {
-    border-color: #764ba2 !important;
-    border-radius: 8px !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: #764ba2 !important;
-    color: white !important;
 }
 
 /* Responsive */

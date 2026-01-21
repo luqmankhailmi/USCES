@@ -5,6 +5,7 @@ import bean.ElectionBean;
 import bean.StudentBean;
 import dao.CandidateDAO;
 import dao.ElectionDAO;
+import dao.StudentDAO;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -45,23 +46,29 @@ public class AddCandidateServlet extends HttpServlet {
                 int studentId = Integer.parseInt(sIdStr);
                 int electionId = Integer.parseInt(eIdStr);
 
+                // VALIDATION: Check if student's faculty matches election's faculty
+                StudentDAO studentDAO = new StudentDAO();
+                ElectionDAO electionDAO = new ElectionDAO();
+                
+                int studentFacultyId = studentDAO.getFacultyByStudentId(studentId);
+                int electionFacultyId = electionDAO.getFacultyByElectionId(electionId);
+                
+                if (studentFacultyId != electionFacultyId) {
+                    throw new Exception("Student's faculty does not match the election's faculty.");
+                }
                 
                 CandidateBean bean = new CandidateBean();
                 bean.setStudentId(studentId);
                 bean.setElectionId(electionId);
                 bean.setManifestoContent(manifesto);
 
-                
                 request.setAttribute("candidateBean", bean);
 
-                
                 CandidateDAO dao = new CandidateDAO();
-                
                 boolean status = dao.registerCandidate(bean);
 
                 if (status) {
                     request.setAttribute("successMsg", "Candidate added successfully!");
-                    // Forward to the list servlet
                     RequestDispatcher rd = request.getRequestDispatcher("/ManageCandidateServlet");
                     rd.forward(request, response);
                 } else {
@@ -79,24 +86,29 @@ public class AddCandidateServlet extends HttpServlet {
         }
     }
 
-  // Tiada perubahan besar pada struktur utama, hanya pastikan DAO anda 
-// memulangkan objek yang mengandungi facultyID.
-private void loadDropdowns(HttpServletRequest request) {
-    CandidateDAO cDao = new CandidateDAO(); 
-    ElectionDAO eDao = new ElectionDAO();
-    
-    // Pastikan list ini mengandungi objek dengan getFacultyID()
-    request.setAttribute("electionList", eDao.getAllElections());
-    request.setAttribute("studentList", cDao.getAllStudents());
-}
+    /**
+     * Loads all elections and students with their faculty information
+     */
+    private void loadDropdowns(HttpServletRequest request) {
+        CandidateDAO cDao = new CandidateDAO(); 
+        ElectionDAO eDao = new ElectionDAO();
+        
+        // Load all elections (they already have facultyID)
+        request.setAttribute("electionList", eDao.getAllElections());
+        
+        // Load all students (they already have facultyId from the bean)
+        request.setAttribute("studentList", cDao.getAllStudents());
+    }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 }

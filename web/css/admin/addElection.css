@@ -1,4 +1,4 @@
-/* Core Layout & Reset */
+/* Reset & Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -6,130 +6,179 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f5f7fa; /* Matches Edit Election background */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #f5f7fa;
     color: #333;
+    line-height: 1.6;
 }
 
-/* Updated Header with Overlap Space */
+/* Header Gradient - Matches Manage Candidate Page */
 .header {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); /* Same as image_0fe48b.png */
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
     color: white;
-    /* Extra bottom padding (100px) creates space for the box to overlap */
-    padding: 60px 10% 100px; 
+    padding: 1.5rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .header-title {
-    font-size: 1.5rem; /* Matches image_0fe48b.png */
-    font-weight: bold;
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0.75rem;
 }
 
-/* Translucent Back Button in Header */
-.btn-back-header {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
+/* Back to Dashboard Link */
+.header-link {
+    color: #ffffff !important;
     text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease;
 }
 
-.btn-back-header:hover {
-    background: rgba(255, 255, 255, 0.3);
+.header-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    color: #ffffff;
 }
 
-/* Form Container with Negative Margin (The Overlap) */
+.header-link i {
+    font-size: 0.9rem;
+}
+
+/* Form Container Card */
 .form-container {
-    max-width: 650px; 
-    /* Negative margin pulls the box UP into the purple header area */
-    margin: -60px auto 50px; 
-    background: white;
-    padding: 40px;
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background: #fff;
     border-radius: 12px;
-    /* Stronger shadow makes the "box" look elevated */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    position: relative;
-    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Form Group spacing */
 .form-group {
     margin-bottom: 1.5rem;
 }
 
-/* Label Styling - Deep purple from image_0fe48b.png */
+/* Labels */
 label {
     display: block;
-    font-weight: bold;
-    color: #764ba2;
     margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
     font-size: 0.95rem;
 }
 
-/* Shared Input, Select, and Textarea styling */
-input, select, textarea {
+/* Input & Select Styling */
+input[type="text"],
+input[type="datetime-local"],
+select,
+textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-    color: #333;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
     transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
 }
 
-input:focus, select:focus, textarea:focus {
+input[type="text"]:focus,
+input[type="datetime-local"]:focus,
+select:focus,
+textarea:focus {
     outline: none;
-    border-color: #667eea; /* Blue border on focus */
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #764ba2;
+    box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
 }
 
-/* Main Action Button - Gradient Style */
+/* Primary Button */
 .btn {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    width: 100%;
+    padding: 0.875rem;
+    background: #764ba2;
     color: white;
-    padding: 15px;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
     font-size: 1rem;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(118, 75, 162, 0.2);
+    margin-top: 1rem;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    transition: transform 0.3s, box-shadow 0.3s;
+    justify-content: center;
+    gap: 8px;
 }
 
 .btn:hover {
+    background: #667eea;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+    box-shadow: 0 6px 12px rgba(118, 75, 162, 0.3);
 }
 
-/* Utility for side-by-side dates */
-.date-row {
-    display: flex;
-    gap: 20px;
-}
-.flex-1 {
-    flex: 1;
+.btn:active {
+    transform: translateY(0);
 }
 
-/* Cancel link at bottom */
-.back-link {
-    display: block;
+/* Info text styling */
+.form-container p {
+    margin: 0;
+}
+
+/* Icon styling */
+.fas, .fa {
+    flex-shrink: 0;
+}
+
+/* Message Styling */
+.msg-error {
+    color: #dc2626;
+    background: #fff1f1;
+    padding: 0.875rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
     text-align: center;
-    text-decoration: none;
-    color: #764ba2;
-    margin-top: 1.5rem;
-    font-weight: 500;
+    border: 1px solid #fecaca;
+}
+
+.msg-success {
+    color: #059669;
+    background: #d1fae5;
+    padding: 0.875rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border: 1px solid #6ee7b7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .form-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
 }

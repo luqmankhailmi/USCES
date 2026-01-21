@@ -21,17 +21,19 @@ public class CandidateDAO {
      */
     public ArrayList<StudentBean> getAllStudents() {
         ArrayList<StudentBean> studentList = new ArrayList<>();
-        // UPDATE: Added student_number to the SELECT query
-        String query = "SELECT student_id, student_name, student_number FROM student";
+        // IMPORTANT: Added faculty_id to the SELECT query
+        String query = "SELECT student_id, student_name, student_number, faculty_id FROM student ORDER BY student_name ASC";
+
         try (Connection con = DBConnection.createConnection();
              PreparedStatement ps = con.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
                 StudentBean s = new StudentBean();
                 s.setStudentId(rs.getInt("student_id"));
                 s.setStudentName(rs.getString("student_name"));
-                // UPDATE: Map the student number so it appears in your JSP search results
                 s.setStudentNumber(rs.getString("student_number"));
+                s.setFacultyId(rs.getInt("faculty_id")); // CRITICAL: Set faculty_id for filtering
                 studentList.add(s);
             }
         } catch (SQLException e) {
