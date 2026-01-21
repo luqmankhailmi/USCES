@@ -122,24 +122,27 @@ public class ElectionDAO {
      * This is the "Create Object" part of your MVC flow.
      */
     public boolean addElection(ElectionBean election) {
-        String query = "INSERT INTO ELECTION (ELECTION_NAME, FACULTY_ID, START_DATE, END_DATE) VALUES (?, ?, ?, ?)";
+    String query = "INSERT INTO ELECTION (ELECTION_NAME, FACULTY_ID, START_DATE, END_DATE) VALUES (?, ?, ?, ?)";
+    
+    try (Connection con = DBConnection.createConnection();
+         PreparedStatement ps = con.prepareStatement(query)) {
         
-        try (Connection con = DBConnection.createConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            
-            ps.setString(1, election.getElectionName());
-            ps.setInt(2, election.getFacultyID());
-            
-            // Format timestamps from the Bean for Derby/SQL compatibility
-            ps.setTimestamp(3, Timestamp.valueOf(election.getStartDate())); 
-            ps.setTimestamp(4, Timestamp.valueOf(election.getEndDate()));
-            
-            return con.prepareStatement(query).executeUpdate() > 0; 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        ps.setString(1, election.getElectionName());
+        ps.setInt(2, election.getFacultyID());
+        
+        // Convert LocalDateTime to SQL Timestamp
+        ps.setTimestamp(3, Timestamp.valueOf(election.getStartDate())); 
+        ps.setTimestamp(4, Timestamp.valueOf(election.getEndDate()));
+        
+        // FIX: Execute the statement 'ps' that you actually prepared
+        return ps.executeUpdate() > 0; 
+        
+    } catch (SQLException e) {
+        System.out.println("ADD ELECTION ERROR: " + e.getMessage());
+        e.printStackTrace();
+        return false;
     }
+}
 
     public boolean updateElection(ElectionBean election) {
         String query = "UPDATE ELECTION SET ELECTION_NAME = ?, START_DATE = ?, END_DATE = ? WHERE ELECTION_ID = ?";

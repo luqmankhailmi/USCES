@@ -1,5 +1,6 @@
 package dao;
 
+import bean.ElectionBean; // Added import for Strict MVC
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,8 +11,12 @@ public class VoteDAO {
     
     /**
      * Check if a student has already voted in an election
+     * Updated to accept ElectionBean for Strict MVC compliance
      */
-    public boolean hasStudentVoted(String studentNumber, int electionId) {
+    public boolean hasStudentVoted(String studentNumber, ElectionBean election) {
+        // FIX: Extract the ID from the Bean
+        int electionId = election.getElectionID();
+        
         String query = "SELECT COUNT(*) FROM vote v " +
                       "JOIN student s ON v.student_id = s.student_id " +
                       "WHERE s.student_number = ? AND v.election_id = ?";
@@ -35,16 +40,19 @@ public class VoteDAO {
     
     /**
      * Cast a vote for a candidate
+     * Note: You may want to update this to use a VoteBean in the future
      */
     public boolean castVote(String studentNumber, int candidateId, int electionId) {
-        // First, get the student_id from student_number
         int studentId = getStudentId(studentNumber);
         if (studentId == -1) {
             return false;
         }
         
-        // Check if already voted
-        if (hasStudentVoted(studentNumber, electionId)) {
+        // Create a temporary bean to reuse the updated check method
+        ElectionBean eb = new ElectionBean();
+        eb.setElectionID(electionId);
+        
+        if (hasStudentVoted(studentNumber, eb)) {
             return false;
         }
         
@@ -64,9 +72,6 @@ public class VoteDAO {
         }
     }
     
-    /**
-     * Helper method to get student_id from student_number
-     */
     private int getStudentId(String studentNumber) {
         String query = "SELECT student_id FROM student WHERE student_number = ?";
         

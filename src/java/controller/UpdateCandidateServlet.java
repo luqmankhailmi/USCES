@@ -36,7 +36,7 @@ public class UpdateCandidateServlet extends HttpServlet {
 
                 
                 CandidateDAO dao = new CandidateDAO();
-                boolean isUpdated = dao.updateManifesto(candidate.getManifestoId(), candidate.getManifestoContent());
+                boolean isUpdated = dao.updateManifesto(candidate);
 
                 if (isUpdated) {
                     request.setAttribute("successMsg", "Candidate updated successfully!");

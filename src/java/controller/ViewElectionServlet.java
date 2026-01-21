@@ -20,7 +20,6 @@ public class ViewElectionServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-       
         HttpSession userSession = request.getSession(false);
         if (userSession == null || userSession.getAttribute("staffNumber") == null) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
@@ -33,30 +32,32 @@ public class ViewElectionServlet extends HttpServlet {
             try {
                 int electionId = Integer.parseInt(idParam);
                 
-               
                 ElectionDAO electionDao = new ElectionDAO();
                 CandidateDAO candidateDao = new CandidateDAO();
                 AdminProfileDAO adminDAO = new AdminProfileDAO();
                 
+                // 1. STRICT MVC: Wrap ID into a Bean
+                ElectionBean queryBean = new ElectionBean();
+                queryBean.setElectionID(electionId);
                 
-                ElectionBean election = electionDao.getElectionById(electionId);
+                // 2. FIX: Pass the 'queryBean' instead of the raw 'electionId'
+                ElectionBean election = electionDao.getElectionById(queryBean);
                 
                 if (election != null) {
-                    Map<String, Integer> statistics = electionDao.getElectionStatistics(electionId);
-                    ArrayList<CandidateBean> candidateList = candidateDao.fetchCandidatesByElection(electionId);
+                    // Pass the bean to all methods to match updated DAO signatures
+                    Map<String, Integer> statistics = electionDao.getElectionStatistics(queryBean);
+                    ArrayList<CandidateBean> candidateList = candidateDao.fetchCandidatesByElection(queryBean);
+                    
                     String facultyName = adminDAO.getFaculty(election.getFacultyID());
 
-                    
                     request.setAttribute("election", election);
                     request.setAttribute("facultyName", facultyName);
                     request.setAttribute("stats", statistics);
                     request.setAttribute("candidateList", candidateList);
 
-                    
                     RequestDispatcher rd = request.getRequestDispatcher("/admin/viewElection.jsp");
                     rd.forward(request, response);
                 } else {
-                   
                     request.setAttribute("errMessage", "The requested election does not exist.");
                     forwardToList(request, response);
                 }
@@ -70,9 +71,6 @@ public class ViewElectionServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Helper method to forward back to the list controller
-     */
     private void forwardToList(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         RequestDispatcher rd = request.getRequestDispatcher("/admin_list_election");

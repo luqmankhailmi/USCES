@@ -1,5 +1,6 @@
 package controller;
 
+import bean.ElectionBean; // Added for Strict MVC
 import dao.VoteDAO;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ public class SubmitVoteServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        // Check session
+        // 1. Check session
         HttpSession userSession = request.getSession(false);
         String studentNumber = null;
         
@@ -25,7 +26,7 @@ public class SubmitVoteServlet extends HttpServlet {
             return;
         }
         
-        // Get form parameters
+        // 2. Get form parameters
         String electionIdParam = request.getParameter("electionId");
         String candidateIdParam = request.getParameter("candidateId");
         
@@ -34,15 +35,19 @@ public class SubmitVoteServlet extends HttpServlet {
                 int electionId = Integer.parseInt(electionIdParam);
                 int candidateId = Integer.parseInt(candidateIdParam);
                 
+                // 3. STRICT MVC: Wrap ID into a Bean
+                ElectionBean queryBean = new ElectionBean();
+                queryBean.setElectionID(electionId);
+                
                 VoteDAO voteDAO = new VoteDAO();
                 
-                // Check if student has already voted
-                if (voteDAO.hasStudentVoted(studentNumber, electionId)) {
+                // 4. FIX: Pass the 'queryBean' instead of 'electionId'
+                if (voteDAO.hasStudentVoted(studentNumber, queryBean)) {
                     response.sendRedirect(request.getContextPath() + "/student_vote?id=" + electionId);
                     return;
                 }
                 
-                // Submit the vote
+                // 5. Submit the vote
                 boolean success = voteDAO.castVote(studentNumber, candidateId, electionId);
                 
                 if (success) {
