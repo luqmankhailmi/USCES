@@ -116,6 +116,10 @@
                                 <td class="action-buttons">
                                    
                                     <% if (canVote) { %>
+                                        <a href="${pageContext.request.contextPath}/view_candidates?id=<%= election.getElectionID() %>"
+                                           class="btn-action btn-view">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
                                         <a href="${pageContext.request.contextPath}/student_vote?id=<%= election.getElectionID() %>"
                                            class="btn-action btn-vote">
                                             <i class="fas fa-check-circle"></i> Vote Now

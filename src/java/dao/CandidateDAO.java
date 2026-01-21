@@ -107,10 +107,11 @@ public class CandidateDAO {
      */
     public ArrayList<CandidateBean> fetchCandidatesByElection(ElectionBean election) {
         ArrayList<CandidateBean> list = new ArrayList<>();
-        String query = "SELECT c.candidate_id, s.student_number, s.student_name, e.election_name " +
+        String query = "SELECT c.candidate_id, s.student_number, s.student_name, e.election_name, m.manifesto_content " +
                        "FROM candidate c " + 
                        "INNER JOIN student s ON c.student_id = s.student_id " +
                        "INNER JOIN election e ON c.election_id = e.election_id " +
+                       "LEFT JOIN manifesto m ON c.manifesto_id = m.manifesto_id " +
                        "WHERE c.election_id = ?";
 
         try (Connection con = DBConnection.createConnection();
@@ -124,6 +125,7 @@ public class CandidateDAO {
                     candidate.setStudentName(rs.getString("student_name"));
                     candidate.setStudentNumber(rs.getString("student_number"));
                     candidate.setElectionName(rs.getString("election_name"));
+                    candidate.setManifestoContent(rs.getString("manifesto_content"));
                     list.add(candidate);
                 }
             }
@@ -141,11 +143,14 @@ public class CandidateDAO {
         int id = query.getCandidateId(); 
 
         // FIX: Added 'm.manifesto_content' and 'JOIN manifesto m'
-        String sql = "SELECT c.*, s.student_name, e.election_name, m.manifesto_content " +
+        // UPDATED: Added student_number, student_email, faculty_id, and faculty_name
+        String sql = "SELECT c.*, s.student_name, s.student_number, s.student_email, s.faculty_id, " +
+                     "f.faculty_name, e.election_name, m.manifesto_content " +
                      "FROM candidate c " +
                      "JOIN student s ON c.student_id = s.student_id " +
+                     "JOIN faculty f ON s.faculty_id = f.faculty_id " +
                      "JOIN election e ON c.election_id = e.election_id " +
-                     "JOIN manifesto m ON c.manifesto_id = m.manifesto_id " + // Added this line
+                     "JOIN manifesto m ON c.manifesto_id = m.manifesto_id " +
                      "WHERE c.candidate_id = ?";
 
         try (Connection conn = DBConnection.createConnection();
@@ -156,10 +161,16 @@ public class CandidateDAO {
                 if (rs.next()) {
                     candidate = new CandidateBean();
                     candidate.setCandidateId(rs.getInt("candidate_id"));
-                    candidate.setManifestoId(rs.getInt("manifesto_id")); // Capture this for the update
+                    candidate.setStudentId(rs.getInt("student_id"));
+                    candidate.setManifestoId(rs.getInt("manifesto_id"));
+                    candidate.setElectionId(rs.getInt("election_id"));
+                    candidate.setFacultyId(rs.getInt("faculty_id"));
 
                     // These map directly to your JSP ${candidate.property} tags
                     candidate.setStudentName(rs.getString("student_name"));
+                    candidate.setStudentNumber(rs.getString("student_number"));
+                    candidate.setStudentEmail(rs.getString("student_email"));
+                    candidate.setFacultyName(rs.getString("faculty_name"));
                     candidate.setElectionName(rs.getString("election_name"));
                     candidate.setManifestoContent(rs.getString("manifesto_content"));
                 }

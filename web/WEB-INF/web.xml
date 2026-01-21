@@ -112,6 +112,14 @@
         <servlet-name>DeleteStudentServlet</servlet-name>
         <servlet-class>controller.DeleteStudentServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewCandidateProfileServlet</servlet-name>
+        <servlet-class>controller.ViewCandidateProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewCandidatesServlet</servlet-name>
+        <servlet-class>controller.ViewCandidatesServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -223,6 +231,14 @@
     <servlet-mapping>
         <servlet-name>DeleteStudentServlet</servlet-name>
         <url-pattern>/DeleteStudentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCandidateProfileServlet</servlet-name>
+        <url-pattern>/view_candidate_profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCandidatesServlet</servlet-name>
+        <url-pattern>/view_candidates</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

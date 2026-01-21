@@ -91,21 +91,27 @@
                             
                             <div class="candidates-grid">
                                 <% for (CandidateBean candidate : candidateList) { %>
-                                    <label class="candidate-card">
-                                        <input type="radio" name="candidateId" value="<%= candidate.getCandidateId() %>" required>
-                                        <div class="candidate-content">
-                                            <div class="candidate-avatar">
-                                                <i class="fas fa-user"></i>
+                                    <div class="candidate-wrapper">
+                                        <label class="candidate-card">
+                                            <input type="radio" name="candidateId" value="<%= candidate.getCandidateId() %>" required>
+                                            <div class="candidate-content">
+                                                <div class="candidate-avatar">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                                <div class="candidate-info">
+                                                    <h4><%= candidate.getStudentName() %></h4>
+                                                    <p class="candidate-id"><%= candidate.getStudentNumber() %></p>
+                                                </div>
+                                                <div class="radio-check">
+                                                    <i class="fas fa-check-circle"></i>
+                                                </div>
                                             </div>
-                                            <div class="candidate-info">
-                                                <h4><%= candidate.getStudentName() %></h4>
-                                                <p class="candidate-id"><%= candidate.getStudentNumber() %></p>
-                                            </div>
-                                            <div class="radio-check">
-                                                <i class="fas fa-check-circle"></i>
-                                            </div>
-                                        </div>
-                                    </label>
+                                        </label>
+                                        <a href="${pageContext.request.contextPath}/view_candidate_profile?id=<%= candidate.getCandidateId() %>" 
+                                           class="btn-view">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </div>
                                 <% } %>
                             </div>
                             
