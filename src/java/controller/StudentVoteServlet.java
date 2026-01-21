@@ -19,7 +19,7 @@ public class StudentVoteServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        // Check session
+        
         HttpSession userSession = request.getSession(false);
         String studentNumber = null;
         
@@ -30,47 +30,54 @@ public class StudentVoteServlet extends HttpServlet {
             return;
         }
         
-        // Get election ID from parameter
+       
         String idParam = request.getParameter("id");
         
         if (idParam != null && !idParam.isEmpty()) {
             try {
                 int electionId = Integer.parseInt(idParam);
                 
+                
                 ElectionDAO electionDAO = new ElectionDAO();
                 CandidateDAO candidateDAO = new CandidateDAO();
                 VoteDAO voteDAO = new VoteDAO();
                 
-                // Get election details
-                ElectionBean election = electionDAO.getElectionById(electionId);
+                
+                ElectionBean queryBean = new ElectionBean();
+                queryBean.setElectionID(electionId);
+                
+                
+                ElectionBean election = electionDAO.getElectionById(queryBean);
                 
                 if (election != null) {
-                    // Check if election is ongoing
+                    
                     java.time.LocalDateTime now = java.time.LocalDateTime.now();
+                    
                     if (now.isBefore(election.getStartDate())) {
                         request.setAttribute("errorMessage", "This election has not started yet.");
                         request.setAttribute("election", election);
                         request.getRequestDispatcher("/user/vote.jsp").forward(request, response);
                         return;
                     } else if (now.isAfter(election.getEndDate())) {
-                        // Redirect to results page
+                        
                         response.sendRedirect(request.getContextPath() + "/view_results?id=" + electionId);
                         return;
                     }
                     
-                    // Check if student has already voted
-                    boolean hasVoted = voteDAO.hasStudentVoted(studentNumber, electionId);
                     
-                    // Get candidates for this election
-                    ArrayList<CandidateBean> candidateList = candidateDAO.fetchCandidatesByElection(electionId);
+                    boolean hasVoted = voteDAO.hasStudentVoted(studentNumber, queryBean);
                     
-                    // Set attributes
+                    
+                    ArrayList<CandidateBean> candidateList = candidateDAO.fetchCandidatesByElection(queryBean);
+                    
+                   
                     request.setAttribute("election", election);
                     request.setAttribute("candidateList", candidateList);
                     request.setAttribute("hasVoted", hasVoted);
                     
                     request.getRequestDispatcher("/user/vote.jsp").forward(request, response);
                 } else {
+                    
                     response.sendRedirect(request.getContextPath() + "/user_list_election");
                 }
                 

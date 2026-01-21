@@ -1,55 +1,78 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="bean.ElectionBean"%>
+<%@page import="bean.StudentBean"%>
+<%@page import="java.util.List"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Add New Candidate</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/addCandidate.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/editCandidate.css">
+    <style>
+        .msg-error { color: #d9534f; background: #f2dede; padding: 10px; border-radius: 4px; margin-bottom: 10px; text-align: center; }
+        .msg-success { color: #3c763d; background: #dff0d8; padding: 10px; border-radius: 4px; margin-bottom: 10px; text-align: center; }
+    </style>
 </head>
 <body>
-
     <div class="header">
         <div class="header-title">Add New Candidate</div>
     </div>
 
     <div class="form-container">
-        <form action="${pageContext.request.contextPath}/AddCandidateServlet" method="POST">
+    <%-- Display error/success messages --%>
+    <% if(request.getAttribute("errMessage") != null) { %>
+        <div class="msg-error"><%= request.getAttribute("errMessage") %></div>
+    <% } %>
 
-            <label>Select Student</label>
-            <select name="studentId" required>
-                <option value="">-- Select Student --</option>
-                <c:forEach var="student" items="${studentList}">
-                    <option value="${student.studentId}">
-                        ${student.studentName} (ID: ${student.studentId})
+    <form action="${pageContext.request.contextPath}/AddCandidateServlet" method="POST">
+        
+        <div class="form-group">
+            <label>Search Student (Type Name or Number)</label>
+            <%-- The name="studentId" ensures the ID is sent to the Servlet --%>
+            <input type="text" name="studentId" list="studentData" placeholder="Search..." autocomplete="off" required>
+            
+            <datalist id="studentData">
+                <% 
+                    List<StudentBean> students = (List<StudentBean>) request.getAttribute("studentList");
+                    if(students != null) {
+                        for(StudentBean s : students) {
+                %>
+                    <%-- 
+                        Value = The ID (What the server gets)
+                        Label/Text = Name + Number (What the user searches for)
+                    --%>
+                    <option value="<%= s.getStudentId() %>">
+                        <%= s.getStudentName() %> - <%= s.getStudentNumber() %>
                     </option>
-                </c:forEach>
-            </select>
+                <%      }
+                    } 
+                %>
+            </datalist>
+        </div>
 
+        <div class="form-group">
             <label>Programmes (Election)</label>
             <select name="electionId" required>
-                <option value="">-- Select Election --</option>
-                <c:forEach var="election" items="${electionList}">
-                    <option value="${election.electionID}">
-                        ${election.electionName}
-                    </option>
-                </c:forEach>
+                <option value="" disabled selected>-- Select Election --</option>
+                <% 
+                    List<ElectionBean> elections = (List<ElectionBean>) request.getAttribute("electionList");
+                    if(elections != null) {
+                        for(ElectionBean e : elections) {
+                %>
+                    <option value="<%= e.getElectionID() %>"><%= e.getElectionName() %></option>
+                <%      }
+                    } 
+                %>
             </select>
+        </div>
 
-            <p style="font-size: 0.8rem; color: #666; margin-bottom: 1rem;">
-                * A default manifesto will be created automatically.
-            </p>
-
-            <%-- Add this inside your <form> before the submit button --%>
+        <div class="form-group">
             <label>Candidate Manifesto</label>
-            <textarea name="manifesto" rows="5" placeholder="Enter candidate's vision and goals..." required 
-                      style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; margin-bottom: 1rem;"></textarea>
-            <button class="btn" type="submit">Add Candidate</button>
-        </form>
+            <textarea name="manifesto" placeholder="Enter vision..." required></textarea>
+        </div>
 
-        <a href="${pageContext.request.contextPath}/ManageCandidateServlet" class="back-link">Back to Manage Candidates</a>
-    </div>
-
+        <button type="submit" class="btn">Add Candidate</button>
+        <a href="${pageContext.request.contextPath}/admin_list_election" class="back-link">Cancel</a>
+    </form>
+</div>
 </body>
 </html>

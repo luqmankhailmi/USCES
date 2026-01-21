@@ -5,24 +5,18 @@
  */
 package controller;
 
-import bean.AdminBean;
-import dao.AdminProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author User
+ * @author HP
  */
-public class AdminProfileServlet extends HttpServlet {
+public class GetEligibleStudentsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,46 +28,20 @@ public class AdminProfileServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        HttpSession userSession = request.getSession(false);
-        String staffNumber = null;
-
-        if (userSession != null && userSession.getAttribute("staffNumber") != null) {
-            staffNumber = (String) userSession.getAttribute("staffNumber");
-        } else {
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
-            return;
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet GetEligibleStudentsServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet GetEligibleStudentsServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-
-        AdminProfileDAO adminProfileDAO = new AdminProfileDAO();
-        try {
-            AdminBean admin = adminProfileDAO.getAdminDetails(staffNumber);
-
-            if (admin != null) {
-                // Get faculty name
-                String facultyName = adminProfileDAO.getFaculty(admin.getFacultyId());
-                if (facultyName == null) {
-                    facultyName = "Unknown Faculty";
-                }
-
-                
-                request.setAttribute("adminName", admin.getAdminName());
-                request.setAttribute("staffNumber", admin.getStaffNumber());
-                request.setAttribute("facultyId", admin.getFacultyId());
-                request.setAttribute("facultyName", facultyName);
-                request.setAttribute("adminEmail", admin.getAdminEmail());
-            } else {
-                request.setAttribute("error", "Admin not found");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Database error: " + e.getMessage());
-        }
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/adminProfile.jsp");
-        dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

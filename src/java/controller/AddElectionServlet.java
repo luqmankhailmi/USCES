@@ -1,10 +1,12 @@
 package controller;
 
+import bean.ElectionBean; // Use your Bean
 import bean.FacultyBean;
 import dao.FacultyDAO;
 import dao.ElectionDAO;
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,63 +18,74 @@ public class AddElectionServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        HttpSession userSession = request.getSession(false);
-        String staffNumber = null;
         
-        if (userSession != null && userSession.getAttribute("staffNumber") != null) {
-            staffNumber = (String) userSession.getAttribute("staffNumber");
-        } else {
+        HttpSession userSession = request.getSession(false);
+        if (userSession == null || userSession.getAttribute("staffNumber") == null) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
             return;
         }
         
         String method = request.getMethod();
 
+        
         if (method.equalsIgnoreCase("GET")) {
-            try {
-                FacultyDAO facultyDao = new FacultyDAO();
-                List<FacultyBean> facultyList = facultyDao.getAllFaculties();
-                
-                request.setAttribute("facultyList", facultyList);
-                // Ensure this path matches your Web Pages folder structure
-                request.getRequestDispatcher("/admin/addElection.jsp").forward(request, response);
-            } catch (Exception e) {
-                e.printStackTrace();
-                // Redirecting to the Servlet mapping is safer than the JSP file
-                response.sendRedirect(request.getContextPath() + "/admin_list_election?error=load_failed");
-            }
-
-        } else if (method.equalsIgnoreCase("POST")) {
+            loadFacultyList(request);
+            request.getRequestDispatcher("/admin/addElection.jsp").forward(request, response);
+        } 
+        
+        
+        else if (method.equalsIgnoreCase("POST")) {
             try {
                 String electionName = request.getParameter("electionName");
                 String facultyIdStr = request.getParameter("facultyId");
-                String startDate = request.getParameter("startDate");
-                String endDate = request.getParameter("endDate");
+                String startDateStr = request.getParameter("startDate");
+                String endDateStr = request.getParameter("endDate");
 
-                // Basic Validation: Prevent NullPointerException or NumberFormatException
-                if (electionName == null || facultyIdStr == null || startDate == null || endDate == null) {
-                    response.sendRedirect(request.getContextPath() + "/AddElectionServlet?error=missing_data");
+                if (electionName == null || facultyIdStr == null || startDateStr == null || endDateStr == null) {
+                    request.setAttribute("errMessage", "Please fill in all required fields.");
+                    loadFacultyList(request);
+                    request.getRequestDispatcher("/admin/addElection.jsp").forward(request, response);
                     return;
                 }
 
-                int facultyId = Integer.parseInt(facultyIdStr);
+                
+                ElectionBean election = new ElectionBean();
+                election.setElectionName(electionName);
+                election.setFacultyID(Integer.parseInt(facultyIdStr));
 
+                
+                java.time.LocalDateTime start = java.time.LocalDateTime.parse(startDateStr);
+                java.time.LocalDateTime end = java.time.LocalDateTime.parse(endDateStr);
+
+                election.setStartDate(start);
+                election.setEndDate(end);
+
+                // 3. PASS THE BEAN TO THE DAO (Strict MVC)
                 ElectionDAO electionDao = new ElectionDAO();
-                boolean isAdded = electionDao.addElection(electionName, facultyId, startDate, endDate);
+                boolean isAdded = electionDao.addElection(election); // Updated to pass object
 
                 if (isAdded) {
-                    // Redirect to the ALIST servlet mapping as defined in your web.xml
-                    response.sendRedirect(request.getContextPath() + "/admin_list_election?msg=success");
+                    request.setAttribute("successMsg", "New election created successfully!");
+                    // Forwarding to the list servlet to refresh data
+                    request.getRequestDispatcher("/admin_list_election").forward(request, response);
                 } else {
-                    response.sendRedirect(request.getContextPath() + "/AddElectionServlet?error=db_error");
+                    request.setAttribute("errMessage", "Database error: Could not save election.");
+                    loadFacultyList(request);
+                    request.getRequestDispatcher("/admin/addElection.jsp").forward(request, response);
                 }
-            } catch (NumberFormatException e) {
-                response.sendRedirect(request.getContextPath() + "/AddElectionServlet?error=invalid_id");
             } catch (Exception e) {
-                e.printStackTrace();
-                response.sendRedirect(request.getContextPath() + "/AddElectionServlet?error=unknown");
+                request.setAttribute("errMessage", "Error: " + e.getMessage());
+                loadFacultyList(request);
+                request.getRequestDispatcher("/admin/addElection.jsp").forward(request, response);
             }
         }
+    }
+
+    // Helper method to keep processRequest clean
+    private void loadFacultyList(HttpServletRequest request) {
+        FacultyDAO facultyDao = new FacultyDAO();
+        List<FacultyBean> facultyList = facultyDao.getAllFaculties();
+        request.setAttribute("facultyList", facultyList);
     }
 
     @Override
@@ -85,10 +98,5 @@ public class AddElectionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "Handles election creation and faculty data loading";
     }
 }

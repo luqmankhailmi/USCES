@@ -12,36 +12,39 @@ public class CandidateDetailServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      response.setContentType("text/html;charset=UTF-8");
-    try {
-        // 1. Get the ID from the URL (e.g., ?id=2)
-        String idParam = request.getParameter("id");
+        response.setContentType("text/html;charset=UTF-8");
         
-        if (idParam != null && !idParam.isEmpty()) {
-            int candidateId = Integer.parseInt(idParam);
+        try {
             
-            // 2. Fetch data from Database
-            CandidateDAO dao = new CandidateDAO();
-            CandidateBean candidate = dao.getCandidateById(candidateId);
+            String idParam = request.getParameter("id");
+            
+            if (idParam != null && !idParam.isEmpty()) {
+                int candidateId = Integer.parseInt(idParam);
+                
+                
+                CandidateBean queryBean = new CandidateBean();
+                queryBean.setCandidateId(candidateId);
+                
+                
+                CandidateDAO dao = new CandidateDAO();
+                
+                CandidateBean candidate = dao.getCandidateById(queryBean);
 
-            if (candidate != null) {
-                // 3. Map database values to JSP variables
-                request.setAttribute("candidateId", candidate.getCandidateId());
-                request.setAttribute("manifestoId", candidate.getManifestoId());
-                request.setAttribute("studentName", candidate.getStudentName());
-                request.setAttribute("electionName", candidate.getElectionName());
-                request.setAttribute("manifestoContent", candidate.getManifestoContent());
+                if (candidate != null) {
+                    
+                    request.setAttribute("candidate", candidate);
 
-                // 4. FORWARD DIRECTLY TO EDIT PAGE (Ignoring viewCandidate.jsp)
-                request.getRequestDispatcher("admin/editCandidate.jsp").forward(request, response);
-                return;
+                    
+                    request.getRequestDispatcher("admin/editCandidate.jsp").forward(request, response);
+                    return;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    // Fallback to the list if something goes wrong
-    response.sendRedirect("ManageCandidateServlet");
+        
+        // Fallback to the list if ID is missing or candidate isn't found
+        response.sendRedirect("ManageCandidateServlet");
     }
 
     @Override

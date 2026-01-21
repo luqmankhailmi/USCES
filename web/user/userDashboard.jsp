@@ -114,6 +114,7 @@
                                 <td><%= election.getEndDate().format(formatter) %></td>
                                 <td><span class="status-badge <%= statusClass %>"><%= status %></span></td>
                                 <td class="action-buttons">
+                                   
                                     <% if (canVote) { %>
                                         <a href="${pageContext.request.contextPath}/student_vote?id=<%= election.getElectionID() %>"
                                            class="btn-action btn-vote">

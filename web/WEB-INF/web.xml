@@ -93,6 +93,14 @@
         <servlet-class>controller.DeleteElectionServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ApplyCandidateServlet</servlet-name>
+        <servlet-class>controller.ApplyCandidateServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetEligibleStudentsServlet</servlet-name>
+        <servlet-class>controller.GetEligibleStudentsServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>UserRegisterServlet</servlet-name>
         <servlet-class>controller.UserRegisterServlet</servlet-class>
     </servlet>
@@ -187,6 +195,14 @@
     <servlet-mapping>
         <servlet-name>DeleteElectionServlet</servlet-name>
         <url-pattern>/DeleteElectionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApplyCandidateServlet</servlet-name>
+        <url-pattern>/ApplyCandidateServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetEligibleStudentsServlet</servlet-name>
+        <url-pattern>/GetEligibleStudentsServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserRegisterServlet</servlet-name>

@@ -192,6 +192,33 @@ body {
 }
 
 /* Action Buttons */
+
+/* --- Added Apply Button Styles --- */
+.btn-apply {
+    background: #f59e0b; /* Amber 500 */
+    color: white;
+}
+
+.btn-apply:hover {
+    background: #d97706; /* Amber 600 */
+    transform: translateY(-1px);
+    color: white; /* Ensures text stays white */
+}
+
+/* Update the action buttons container to handle multiple buttons better */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap; /* Prevents overlap on smaller screens */
+}
+
+/* Ensure consistent button sizing */
+.btn-action, .btn-disabled {
+    min-width: 110px; /* Gives a uniform look when buttons are side-by-side */
+    justify-content: center;
+}
+
+
 .action-buttons {
     display: flex;
     gap: 0.5rem;

@@ -44,21 +44,21 @@ public class AdminLoginServlet extends HttpServlet {
             String adminValidate = loginDAO.authenticateAdmin(loginBean);
             
             if (adminValidate.equals("SUCCESS")) {
-                // Login successful - create session
+                
                 HttpSession session = request.getSession();
                 session.setAttribute("staffNumber", staffNumber);
 
-                // Redirect to home page or dashboard
+                
                 response.sendRedirect(request.getContextPath() + "/admin_list_election");
 
             } else {
-                // Login failed - send back to login page with error
+                
                 request.setAttribute("errorMessage", "Invalid username or password");
                 request.getRequestDispatcher("/auth/loginAdmin.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Database error - send to error page
+            
             request.setAttribute("errorMessage", "Database connection error. Please try again later.");
             request.getRequestDispatcher("/auth/loginAdmin.jsp").forward(request, response);
         }
