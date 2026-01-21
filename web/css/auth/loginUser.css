@@ -141,6 +141,52 @@ form {
     transform: translateY(0);
 }
 
+/* Register Link */
+.register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.register-link a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    body {
+        padding: 1rem;
+    }
+
+    .back-btn {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.625rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .login-box {
+        padding: 2rem 1.5rem;
+    }
+
+    .login-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .login-header i {
+        font-size: 3rem;
+    }
+}
+
 /* Responsive */
 @media (max-width: 640px) {
     body {

@@ -35,6 +35,10 @@
                     Login <i class="fas fa-sign-in-alt"></i>
                 </button>
             </form>
+
+            <div class="register-link">
+                Don't have an account? <a href="${pageContext.request.contextPath}/auth/registerUser.jsp">Register here</a>
+            </div>
         </div>
     </div>
     
