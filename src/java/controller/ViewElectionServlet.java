@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.format.DateTimeFormatter; // ADD THIS IMPORT
+import java.time.LocalDateTime;
+
 
 public class ViewElectionServlet extends HttpServlet {
 
@@ -44,7 +47,26 @@ public class ViewElectionServlet extends HttpServlet {
                 ElectionBean election = electionDao.getElectionById(queryBean);
                 
                 if (election != null) {
-                    
+                    if (election != null) {
+            // --- FIXED DATE FORMATTING LOGIC ---
+                    try {
+                        // Define the professional display format
+                        DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd, yyyy, hh:mm a");
+
+                        // Get LocalDateTime objects directly from the bean
+                        LocalDateTime start = election.getStartDate();
+                        LocalDateTime end = election.getEndDate();
+
+                        // Format them into Strings for the JSP
+                        if (start != null && end != null) {
+                            request.setAttribute("formattedStart", start.format(outputFormat));
+                            request.setAttribute("formattedEnd", end.format(outputFormat));
+                        }
+                    } catch (Exception e) {
+                        // Fallback to raw objects if formatting fails
+                        request.setAttribute("formattedStart", election.getStartDate());
+                        request.setAttribute("formattedEnd", election.getEndDate());
+                    }
                     Map<String, Integer> statistics = electionDao.getElectionStatistics(queryBean);
                     ArrayList<CandidateBean> candidateList = candidateDao.fetchCandidatesByElection(queryBean);
                     
@@ -60,6 +82,7 @@ public class ViewElectionServlet extends HttpServlet {
                 } else {
                     request.setAttribute("errMessage", "The requested election does not exist.");
                     forwardToList(request, response);
+                }
                 }
                 
             } catch (NumberFormatException e) {
