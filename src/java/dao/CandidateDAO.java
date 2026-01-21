@@ -19,21 +19,27 @@ public class CandidateDAO {
      * Fetches all registered students to populate the "Select Student" dropdown.
      */
    // Change return type to StudentBean
-    public ArrayList<StudentBean> getAllStudents() { // Use StudentBean
-        ArrayList<StudentBean> studentList = new ArrayList<>();
-        String query = "SELECT student_id, student_name FROM student";
-        try (Connection con = DBConnection.createConnection();
-             PreparedStatement ps = con.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                StudentBean s = new StudentBean(); // Use StudentBean
-                s.setStudentId(rs.getInt("student_id"));
-                s.setStudentName(rs.getString("student_name"));
-                studentList.add(s);
-            }
-        } catch (SQLException e) { e.printStackTrace(); }
-        return studentList;
-    }
+    public ArrayList<StudentBean> getAllStudents() {
+    ArrayList<StudentBean> studentList = new ArrayList<>();
+    // 1. ADD student_number to the SELECT statement
+    String query = "SELECT student_id, student_name, student_number FROM student"; 
+    
+    try (Connection con = DBConnection.createConnection();
+         PreparedStatement ps = con.prepareStatement(query);
+         ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) {
+            StudentBean s = new StudentBean();
+            s.setStudentId(rs.getInt("student_id"));
+            s.setStudentName(rs.getString("student_name"));
+            
+            // 2. FETCH the student_number from the result set
+            s.setStudentNumber(rs.getString("student_number")); 
+            
+            studentList.add(s);
+        }
+    } catch (SQLException e) { e.printStackTrace(); }
+    return studentList;
+}
 
     /**
      * Registers a new candidate.
