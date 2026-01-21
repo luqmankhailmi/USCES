@@ -79,12 +79,16 @@ public class AddCandidateServlet extends HttpServlet {
         }
     }
 
-    private void loadDropdowns(HttpServletRequest request) {
-        CandidateDAO cDao = new CandidateDAO(); 
-        ElectionDAO eDao = new ElectionDAO();
-        request.setAttribute("electionList", eDao.getAllElections());
-        request.setAttribute("studentList", cDao.getAllStudents());
-    }
+  // Tiada perubahan besar pada struktur utama, hanya pastikan DAO anda 
+// memulangkan objek yang mengandungi facultyID.
+private void loadDropdowns(HttpServletRequest request) {
+    CandidateDAO cDao = new CandidateDAO(); 
+    ElectionDAO eDao = new ElectionDAO();
+    
+    // Pastikan list ini mengandungi objek dengan getFacultyID()
+    request.setAttribute("electionList", eDao.getAllElections());
+    request.setAttribute("studentList", cDao.getAllStudents());
+}
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
