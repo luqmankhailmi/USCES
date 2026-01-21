@@ -1,127 +1,93 @@
 /* Core Layout */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: sans-serif;
-    background: #f5f7fa;
-    color: #333;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
 }
 
-/* Header matching the gradient theme from adminDashboard */
+/* Header matching the dark blue theme */
 .header {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: #0b3c8c;
+    padding: 15px 25px;
     color: white;
-    padding: 1.5rem 2rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
 }
 
 .header-title {
-    font-size: 1.5rem;
+    font-size: 22px;
     font-weight: bold;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
-/* Form Container matching adminDashboard card style */
+/* Form Container matching manage candidate card style */
 .form-container {
     max-width: 600px;
-    margin: 2rem auto;
+    margin: 40px auto;
     background: white;
-    padding: 2rem;
+    padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-/* Form Group */
-.form-group {
-    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 /* Label Styling */
 label {
     display: block;
     font-weight: bold;
-    color: #764ba2;
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
+    color: #0b3c8c;
+    margin-bottom: 8px;
 }
 
 /* Input, Select, and Textarea styling */
 input, select, textarea {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 8px 0 20px;
+    border: 1px solid #ccc;
     border-radius: 6px;
-    font-size: 1rem;
-    font-family: sans-serif;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 16px;
+    box-sizing: border-box; /* Critical for keeping alignment */
 }
 
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-/* Read-Only fields styling */
+/* Specifically for Read-Only fields to make them look disabled */
 input[readonly] {
-    background-color: #f5f7fa;
+    background-color: #f0f0f0;
     color: #666;
     cursor: not-allowed;
-    border-color: #e0e0e0;
+    border-color: #ddd;
 }
 
 /* Styling for the manifesto text box */
 textarea {
     resize: vertical;
     min-height: 150px;
-    font-family: sans-serif;
+    font-family: Arial, sans-serif;
 }
 
-/* Main Button matching adminDashboard gradient theme */
+/* Main Button Class matching manage candidate */
 .btn {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: #0b3c8c;
     color: white;
-    padding: 0.75rem 1.5rem;
+    padding: 12px 20px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    font-size: 1rem;
+    font-size: 16px;
     font-weight: bold;
-    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+    background: #093679;
 }
 
-.btn:active {
-    transform: translateY(0);
-}
-
-/* Footer Links Section */
-.footer-links {
-    margin-top: 1.5rem;
-}
-
-/* Back Link styling */
+/* Link at the bottom */
 .back-link {
     display: block;
+    margin-top: 15px;
     text-align: center;
     text-decoration: none;
-    color: #764ba2;
-    font-weight: 500;
-    padding: 0.5rem;
-    transition: color 0.3s;
+    color: #0b3c8c;
 }
 
 .back-link:hover {
-    color: #667eea;
     text-decoration: underline;
 }
