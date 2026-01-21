@@ -79,17 +79,22 @@ public class CandidateDAO {
      * Updates candidate manifesto using CandidateBean.
      */
     public boolean updateManifesto(CandidateBean candidate) {
-        String query = "UPDATE manifesto SET manifesto_content = ? WHERE manifesto_id = ?";
-        try (Connection con = DBConnection.createConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setString(1, candidate.getManifestoContent());
-            ps.setInt(2, candidate.getManifestoId());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+    // We must update the 'manifesto' table where the actual text is stored
+    String query = "UPDATE manifesto SET manifesto_content = ? WHERE manifesto_id = ?";
+    
+    try (Connection con = DBConnection.createConnection();
+         PreparedStatement ps = con.prepareStatement(query)) {
+        
+        ps.setString(1, candidate.getManifestoContent());
+        ps.setInt(2, candidate.getManifestoId()); // Must not be 0
+        
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace(); // This will show errors in the NetBeans Output console
+        return false;
     }
+}
 
     /**
      * Fetches all candidates for a specific election.

@@ -16,46 +16,40 @@ public class UpdateCandidateServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession userSession = request.getSession(false);
-        if (userSession == null || userSession.getAttribute("staffNumber") == null) {
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
-            return;
-        }
-        
-        try {
-            
-            String cIdStr = request.getParameter("candidateId");
-            String mIdStr = request.getParameter("manifestoId");
-            String newContent = request.getParameter("manifestoContent");
+    if (userSession == null || userSession.getAttribute("staffNumber") == null) {
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        return;
+    }
+    
+    try {
+        String cIdStr = request.getParameter("candidateId");
+        String mIdStr = request.getParameter("manifestoId");
+        String newContent = request.getParameter("manifestoContent");
 
-            if (cIdStr != null && mIdStr != null) {
-                
-                CandidateBean candidate = new CandidateBean();
-                candidate.setCandidateId(Integer.parseInt(cIdStr));
-                candidate.setManifestoId(Integer.parseInt(mIdStr));
-                candidate.setManifestoContent(newContent);
+        if (cIdStr != null && mIdStr != null) {
+            CandidateBean candidate = new CandidateBean();
+            candidate.setCandidateId(Integer.parseInt(cIdStr));
+            candidate.setManifestoId(Integer.parseInt(mIdStr));
+            candidate.setManifestoContent(newContent);
 
-                
-                CandidateDAO dao = new CandidateDAO();
-                boolean isUpdated = dao.updateManifesto(candidate);
+            CandidateDAO dao = new CandidateDAO();
+            boolean isUpdated = dao.updateManifesto(candidate);
 
-                if (isUpdated) {
-                    request.setAttribute("successMsg", "Candidate updated successfully!");
-                    
-                    request.setAttribute("candidateBean", candidate); 
-                    
-                    RequestDispatcher rd = request.getRequestDispatcher("/CandidateDetailServlet?id=" + candidate.getCandidateId());
-                    rd.forward(request, response);
-                } else {
-                    request.setAttribute("errMessage", "Failed to save changes.");
-                    RequestDispatcher rd = request.getRequestDispatcher("/CandidateDetailServlet?id=" + cIdStr + "&mode=edit");
-                    rd.forward(request, response);
-                }
+            if (isUpdated) {
+                // Store message in session so it survives the redirect
+                userSession.setAttribute("successMsg", "Candidate updated successfully!");
+                // REDIRECT back to details to re-fetch names via the DAO
+                response.sendRedirect(request.getContextPath() + "/CandidateDetailServlet?id=" + cIdStr);
+                return;
+            } else {
+                request.setAttribute("errMessage", "Update failed in database.");
             }
-        } catch (Exception e) {
-            request.setAttribute("errMessage", "Update Error: " + e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher("/ManageCandidateServlet");
-            rd.forward(request, response);
         }
+    } catch (Exception e) {
+        request.setAttribute("errMessage", "Error: " + e.getMessage());
+    }
+    // Fallback if update fails
+    request.getRequestDispatcher("/CandidateDetailServlet?id=" + request.getParameter("candidateId") + "&mode=edit").forward(request, response);
     }
 
     @Override
