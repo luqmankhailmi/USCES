@@ -21,7 +21,8 @@ public class CandidateDAO {
      */
     public ArrayList<StudentBean> getAllStudents() {
         ArrayList<StudentBean> studentList = new ArrayList<>();
-        String query = "SELECT student_id, student_name FROM student";
+        // UPDATE: Added student_number to the SELECT query
+        String query = "SELECT student_id, student_name, student_number FROM student";
         try (Connection con = DBConnection.createConnection();
              PreparedStatement ps = con.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
@@ -29,6 +30,8 @@ public class CandidateDAO {
                 StudentBean s = new StudentBean();
                 s.setStudentId(rs.getInt("student_id"));
                 s.setStudentName(rs.getString("student_name"));
+                // UPDATE: Map the student number so it appears in your JSP search results
+                s.setStudentNumber(rs.getString("student_number"));
                 studentList.add(s);
             }
         } catch (SQLException e) {
@@ -80,21 +83,21 @@ public class CandidateDAO {
      */
     public boolean updateManifesto(CandidateBean candidate) {
     // We must update the 'manifesto' table where the actual text is stored
-    String query = "UPDATE manifesto SET manifesto_content = ? WHERE manifesto_id = ?";
-    
-    try (Connection con = DBConnection.createConnection();
-         PreparedStatement ps = con.prepareStatement(query)) {
-        
-        ps.setString(1, candidate.getManifestoContent());
-        ps.setInt(2, candidate.getManifestoId()); // Must not be 0
-        
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected > 0;
-    } catch (SQLException e) {
-        e.printStackTrace(); // This will show errors in the NetBeans Output console
-        return false;
+        String query = "UPDATE manifesto SET manifesto_content = ? WHERE manifesto_id = ?";
+
+        try (Connection con = DBConnection.createConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, candidate.getManifestoContent());
+            ps.setInt(2, candidate.getManifestoId()); // Must not be 0
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace(); // This will show errors in the NetBeans Output console
+            return false;
+        }
     }
-}
 
     /**
      * Fetches all candidates for a specific election.
@@ -132,38 +135,38 @@ public class CandidateDAO {
      * Fetches candidate details by ID.
      */
     public CandidateBean getCandidateById(CandidateBean query) {
-    CandidateBean candidate = null;
-    int id = query.getCandidateId(); 
+        CandidateBean candidate = null;
+        int id = query.getCandidateId(); 
 
-    // FIX: Added 'm.manifesto_content' and 'JOIN manifesto m'
-    String sql = "SELECT c.*, s.student_name, e.election_name, m.manifesto_content " +
-                 "FROM candidate c " +
-                 "JOIN student s ON c.student_id = s.student_id " +
-                 "JOIN election e ON c.election_id = e.election_id " +
-                 "JOIN manifesto m ON c.manifesto_id = m.manifesto_id " + // Added this line
-                 "WHERE c.candidate_id = ?";
+        // FIX: Added 'm.manifesto_content' and 'JOIN manifesto m'
+        String sql = "SELECT c.*, s.student_name, e.election_name, m.manifesto_content " +
+                     "FROM candidate c " +
+                     "JOIN student s ON c.student_id = s.student_id " +
+                     "JOIN election e ON c.election_id = e.election_id " +
+                     "JOIN manifesto m ON c.manifesto_id = m.manifesto_id " + // Added this line
+                     "WHERE c.candidate_id = ?";
 
-    try (Connection conn = DBConnection.createConnection();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        
-        ps.setInt(1, id);
-        try (ResultSet rs = ps.executeQuery()) {
-            if (rs.next()) {
-                candidate = new CandidateBean();
-                candidate.setCandidateId(rs.getInt("candidate_id"));
-                candidate.setManifestoId(rs.getInt("manifesto_id")); // Capture this for the update
-                
-                // These map directly to your JSP ${candidate.property} tags
-                candidate.setStudentName(rs.getString("student_name"));
-                candidate.setElectionName(rs.getString("election_name"));
-                candidate.setManifestoContent(rs.getString("manifesto_content"));
+        try (Connection conn = DBConnection.createConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    candidate = new CandidateBean();
+                    candidate.setCandidateId(rs.getInt("candidate_id"));
+                    candidate.setManifestoId(rs.getInt("manifesto_id")); // Capture this for the update
+
+                    // These map directly to your JSP ${candidate.property} tags
+                    candidate.setStudentName(rs.getString("student_name"));
+                    candidate.setElectionName(rs.getString("election_name"));
+                    candidate.setManifestoContent(rs.getString("manifesto_content"));
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return candidate;
     }
-    return candidate;
-}
 
     /**
      * Deletes candidate and their linked data.
@@ -239,22 +242,46 @@ public class CandidateDAO {
     }
     
     public ArrayList<CandidateBean> getAllCandidates() {
-    ArrayList<CandidateBean> list = new ArrayList<>();
-    String query = "SELECT c.candidate_id, s.student_name, e.election_name " +
-                   "FROM candidate c " +
-                   "INNER JOIN student s ON c.student_id = s.student_id " +
-                   "INNER JOIN election e ON c.election_id = e.election_id"; 
-    try (Connection con = DBConnection.createConnection();
-         PreparedStatement ps = con.prepareStatement(query);
-         ResultSet rs = ps.executeQuery()) {
-        while (rs.next()) {
-            CandidateBean cb = new CandidateBean();
-            cb.setCandidateId(rs.getInt("candidate_id"));
-            cb.setStudentName(rs.getString("student_name"));
-            cb.setElectionName(rs.getString("election_name"));
-            list.add(cb);
+        ArrayList<CandidateBean> list = new ArrayList<>();
+        String query = "SELECT c.candidate_id, s.student_name, e.election_name " +
+                       "FROM candidate c " +
+                       "INNER JOIN student s ON c.student_id = s.student_id " +
+                       "INNER JOIN election e ON c.election_id = e.election_id"; 
+        try (Connection con = DBConnection.createConnection();
+             PreparedStatement ps = con.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                CandidateBean cb = new CandidateBean();
+                cb.setCandidateId(rs.getInt("candidate_id"));
+                cb.setStudentName(rs.getString("student_name"));
+                cb.setElectionName(rs.getString("election_name"));
+                list.add(cb);
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
+    }
+    
+    public ArrayList<StudentBean> getStudentsByFaculty(int facultyId) {
+        ArrayList<StudentBean> studentList = new ArrayList<>();
+        // Filter students by their faculty_id to match the election requirements
+        String query = "SELECT student_id, student_name, student_number FROM student WHERE faculty_id = ?";
+
+        try (Connection con = DBConnection.createConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, facultyId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    StudentBean s = new StudentBean();
+                    s.setStudentId(rs.getInt("student_id"));
+                    s.setStudentName(rs.getString("student_name"));
+                    s.setStudentNumber(rs.getString("student_number"));
+                    studentList.add(s);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) { e.printStackTrace(); }
-    return list;
-}
+        return studentList;
+    }
 }

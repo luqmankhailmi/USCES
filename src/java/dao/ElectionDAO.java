@@ -122,27 +122,27 @@ public class ElectionDAO {
      * This is the "Create Object" part of your MVC flow.
      */
     public boolean addElection(ElectionBean election) {
-    String query = "INSERT INTO ELECTION (ELECTION_NAME, FACULTY_ID, START_DATE, END_DATE) VALUES (?, ?, ?, ?)";
-    
-    try (Connection con = DBConnection.createConnection();
-         PreparedStatement ps = con.prepareStatement(query)) {
-        
-        ps.setString(1, election.getElectionName());
-        ps.setInt(2, election.getFacultyID());
-        
-        // Convert LocalDateTime to SQL Timestamp
-        ps.setTimestamp(3, Timestamp.valueOf(election.getStartDate())); 
-        ps.setTimestamp(4, Timestamp.valueOf(election.getEndDate()));
-        
-        // FIX: Execute the statement 'ps' that you actually prepared
-        return ps.executeUpdate() > 0; 
-        
-    } catch (SQLException e) {
-        System.out.println("ADD ELECTION ERROR: " + e.getMessage());
-        e.printStackTrace();
-        return false;
+        String query = "INSERT INTO ELECTION (ELECTION_NAME, FACULTY_ID, START_DATE, END_DATE) VALUES (?, ?, ?, ?)";
+
+        try (Connection con = DBConnection.createConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, election.getElectionName());
+            ps.setInt(2, election.getFacultyID());
+
+            // Convert LocalDateTime to SQL Timestamp
+            ps.setTimestamp(3, Timestamp.valueOf(election.getStartDate())); 
+            ps.setTimestamp(4, Timestamp.valueOf(election.getEndDate()));
+
+            // FIX: Execute the statement 'ps' that you actually prepared
+            return ps.executeUpdate() > 0; 
+
+        } catch (SQLException e) {
+            System.out.println("ADD ELECTION ERROR: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
-}
 
     public boolean updateElection(ElectionBean election) {
         String query = "UPDATE ELECTION SET ELECTION_NAME = ?, START_DATE = ?, END_DATE = ? WHERE ELECTION_ID = ?";
@@ -176,40 +176,40 @@ public class ElectionDAO {
         return new ElectionBean(id, name, facId, start, end);
     }
     
-    /**
- * NEW: Get statistics (Vote count per candidate)
- * This follows Strict MVC by accepting an ElectionBean.
- */
-public Map<String, Integer> getElectionStatistics(ElectionBean election) {
-    Map<String, Integer> stats = new HashMap<>();
-    
-    // Extract ID from the Bean
-    int electionId = election.getElectionID();
-    
-    // This query joins candidate and student tables to get names, 
-    // and left joins the vote table to count the votes.
-    String query = "SELECT s.student_name, COUNT(v.vote_id) as vote_count " +
-                   "FROM candidate c " +
-                   "JOIN student s ON c.student_id = s.student_id " +
-                   "LEFT JOIN vote v ON c.candidate_id = v.candidate_id " +
-                   "WHERE c.election_id = ? " +
-                   "GROUP BY s.student_name";
-    
-    try (Connection conn = DBConnection.createConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
-        
-        ps.setInt(1, electionId);
-        
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                // Map student name to their vote count
-                stats.put(rs.getString("student_name"), rs.getInt("vote_count"));
+     /**
+     * NEW: Get statistics (Vote count per candidate)
+     * This follows Strict MVC by accepting an ElectionBean.
+     */
+    public Map<String, Integer> getElectionStatistics(ElectionBean election) {
+        Map<String, Integer> stats = new HashMap<>();
+
+        // Extract ID from the Bean
+        int electionId = election.getElectionID();
+
+        // This query joins candidate and student tables to get names, 
+        // and left joins the vote table to count the votes.
+        String query = "SELECT s.student_name, COUNT(v.vote_id) as vote_count " +
+                       "FROM candidate c " +
+                       "JOIN student s ON c.student_id = s.student_id " +
+                       "LEFT JOIN vote v ON c.candidate_id = v.candidate_id " +
+                       "WHERE c.election_id = ? " +
+                       "GROUP BY s.student_name";
+
+        try (Connection conn = DBConnection.createConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setInt(1, electionId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    // Map student name to their vote count
+                    stats.put(rs.getString("student_name"), rs.getInt("vote_count"));
+                }
             }
+        } catch (SQLException e) {
+            System.out.println("STATS ERROR: " + e.getMessage());
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        System.out.println("STATS ERROR: " + e.getMessage());
-        e.printStackTrace();
+        return stats;
     }
-    return stats;
-}
 }
