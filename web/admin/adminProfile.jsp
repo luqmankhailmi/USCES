@@ -12,16 +12,12 @@
         String adminName = (String) request.getAttribute("adminName");
         String staffNumber = (String) request.getAttribute("staffNumber");
         String adminEmail = (String) request.getAttribute("adminEmail");
-        Integer facultyId = (Integer) request.getAttribute("facultyId");
-        String facultyName = (String) request.getAttribute("facultyName");
     %>
-
     <!-- Back Button -->
     <a href="${pageContext.request.contextPath}/admin_list_election" class="back-btn">
         <i class="fas fa-arrow-left"></i>
         Back to Dashboard
     </a>
-
     <!-- Profile Container -->
     <div class="profile-container">
         <div class="profile-box">
@@ -33,7 +29,6 @@
                 <h2><%= adminName %></h2>
                 <p class="staff-id">Staff ID: <%= staffNumber %></p>
             </div>
-
             <!-- Profile Information -->
             <div class="profile-info">
                 <div class="info-item">
@@ -45,29 +40,7 @@
                         <div class="info-value"><%= adminEmail %></div>
                     </div>
                 </div>
-
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div class="info-content">
-                        <div class="info-label">Faculty</div>
-                        <div class="info-value"><%= facultyName %></div>
-                    </div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-icon">
-                        <i class="fas fa-id-badge"></i>
-                    </div>
-                    <div class="info-content">
-                        <div class="info-label">Faculty ID</div>
-                        <div class="info-value"><%= facultyId %></div>
-                    </div>
-                </div>
             </div>
-
-
         </div>
     </div>
 </body>
