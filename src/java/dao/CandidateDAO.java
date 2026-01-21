@@ -297,4 +297,27 @@ public boolean registerCandidate(int studentId, int electionId, String manifesto
     }
     return success;
 }
+
+/**
+     * NEW: Checks if a student has already applied for a specific election.
+     * Required for StudentApplyServlet logic.
+     */
+    public boolean hasAlreadyApplied(int studentId, int electionId) {
+        String query = "SELECT COUNT(*) FROM candidate WHERE student_id = ? AND election_id = ?";
+        try (Connection con = DBConnection.createConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            
+            ps.setInt(1, studentId);
+            ps.setInt(2, electionId);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

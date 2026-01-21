@@ -115,10 +115,12 @@
                                 <td><span class="status-badge <%= statusClass %>"><%= status %></span></td>
                                 <td class="action-buttons">
                                     <%-- 1. Apply Button (Visible if the election hasn't ended) --%>
-                                    <% if (!status.equals("Ended")) { %>
-                                        <a href="${pageContext.request.contextPath}/apply_candidate?id=<%= election.getElectionID() %>" 
-                                           class="btn-action btn-apply">
-                                            <i class="fas fa-edit"></i> Apply
+                                    <% 
+                                        // Logic: Can only apply if the election hasn't started yet
+                                        if (now.isBefore(election.getStartDate())) { 
+                                    %>
+                                        <a href="ApplyCandidateServlet?id=<%= election.getElectionID() %>" class="btn-action btn-apply">
+                                            <i class="fas fa-edit"></i> Apply to be Candidate
                                         </a>
                                     <% } %>
                                     <% if (canVote) { %>

@@ -92,6 +92,10 @@
         <servlet-name>DeleteElectionServlet</servlet-name>
         <servlet-class>controller.DeleteElectionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ApplyCandidateServlet</servlet-name>
+        <servlet-class>controller.ApplyCandidateServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
         <url-pattern>/user_login</url-pattern>
@@ -183,6 +187,10 @@
     <servlet-mapping>
         <servlet-name>DeleteElectionServlet</servlet-name>
         <url-pattern>/DeleteElectionServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApplyCandidateServlet</servlet-name>
+        <url-pattern>/ApplyCandidateServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
