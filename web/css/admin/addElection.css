@@ -1,24 +1,24 @@
 /* General page styling */
 body {
-    background-color: #f4f7f6;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa; /* Matches Edit Election background */
+    font-family: 'Segoe UI', sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/* Purple Gradient Header - Perfectly matches Manage Candidates */
+/* Updated Gradient Header to match image_0fe48b.png */
 .header {
-    background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); /* Deep purple to blue */
     color: white;
-    padding: 60px 10% 100px; /* Extra bottom padding to facilitate the overlap */
+    padding: 40px 10% 80px; /* Reduced padding for a tighter look */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .header-title {
-    font-size: 28px;
+    font-size: 1.5rem; /* Matches reference size */
     font-weight: bold;
     margin: 0;
     display: flex;
@@ -30,42 +30,37 @@ body {
 .btn-back-header {
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .btn-back-header:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: translateX(-3px);
 }
 
-/* Overlapping Card Container */
+/* Form Container centered like image_0fe48b.png */
 .form-container {
-    max-width: 650px; 
-    margin: -60px auto 50px; /* Negative margin creates the overlap effect */
-    padding: 40px;
+    max-width: 600px; /* Reference width */
+    margin: -40px auto 50px; /* Adjust overlap */
+    padding: 2.5rem; /* Spacious padding */
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     position: relative;
     z-index: 10;
 }
 
-/* Form Labels */
+/* Label Styling - Updated to match purple color in image_0fe48b.png */
 label { 
     display: block; 
-    margin-top: 22px; 
-    font-weight: 600; 
-    color: #2d3436;
-    font-size: 0.9rem;
-    letter-spacing: 0.3px;
+    margin-top: 1.5rem; 
+    font-weight: bold; 
+    color: #764ba2; /* Deep purple labels */
+    font-size: 0.95rem;
 }
 
 /* Shared Input & Select Styling */
@@ -73,44 +68,47 @@ input[type="text"],
 input[type="datetime-local"],
 select { 
     width: 100%; 
-    padding: 12px 15px; 
+    padding: 0.75rem; /* Matches Edit page padding */
     margin-top: 8px; 
-    border: 1px solid #dfe6e9; 
-    border-radius: 8px; 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
     box-sizing: border-box;
-    font-size: 15px;
+    font-size: 1rem;
     color: #333;
-    background-color: #fff;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 input:focus, select:focus {
     outline: none;
-    border-color: #6c5ce7;
-    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+    border-color: #667eea; /* Blue focus border */
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-/* Primary Action Button (Purple) */
+/* Primary Action Button - Matches Edit page gradient */
 .btn { 
-    margin-top: 35px; 
+    margin-top: 2rem; 
     width: 100%; 
-    padding: 15px; 
-    background: #6c5ce7; 
+    padding: 0.75rem; 
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); 
     color: white; 
     border: none; 
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer; 
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
     transition: all 0.3s ease;
 }
 
 .btn:hover {
-    background: #5849c4;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+    box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+}
+
+/* Utility classes for the flex dates */
+.date-row {
+    display: flex;
+    gap: 20px;
+}
+.flex-1 {
+    flex: 1;
 }
