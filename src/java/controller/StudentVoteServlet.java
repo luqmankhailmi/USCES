@@ -19,7 +19,7 @@ public class StudentVoteServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        // Check session
+        // 1. Session & Security Check
         HttpSession userSession = request.getSession(false);
         String studentNumber = null;
         
@@ -30,47 +30,56 @@ public class StudentVoteServlet extends HttpServlet {
             return;
         }
         
-        // Get election ID from parameter
+        // 2. Extract raw data from request
         String idParam = request.getParameter("id");
         
         if (idParam != null && !idParam.isEmpty()) {
             try {
                 int electionId = Integer.parseInt(idParam);
                 
+                // Initialize DAOs
                 ElectionDAO electionDAO = new ElectionDAO();
                 CandidateDAO candidateDAO = new CandidateDAO();
                 VoteDAO voteDAO = new VoteDAO();
                 
-                // Get election details
-                ElectionBean election = electionDAO.getElectionById(electionId);
+                // 3. STRICT MVC: Wrap ID into a Bean before calling the Model layer
+                ElectionBean queryBean = new ElectionBean();
+                queryBean.setElectionID(electionId);
+                
+                // 4. Get election details using the Bean
+                ElectionBean election = electionDAO.getElectionById(queryBean);
                 
                 if (election != null) {
-                    // Check if election is ongoing
+                    // 5. Business Logic: Check election timeline
                     java.time.LocalDateTime now = java.time.LocalDateTime.now();
+                    
                     if (now.isBefore(election.getStartDate())) {
                         request.setAttribute("errorMessage", "This election has not started yet.");
                         request.setAttribute("election", election);
                         request.getRequestDispatcher("/user/vote.jsp").forward(request, response);
                         return;
                     } else if (now.isAfter(election.getEndDate())) {
-                        // Redirect to results page
+                        // Redirect to results if the election is finished
                         response.sendRedirect(request.getContextPath() + "/view_results?id=" + electionId);
                         return;
                     }
                     
-                    // Check if student has already voted
-                    boolean hasVoted = voteDAO.hasStudentVoted(studentNumber, electionId);
+                    // 6. STRICT MVC: Check if student has voted using the Bean
+                    // This assumes you updated VoteDAO to accept an ElectionBean
+                    boolean hasVoted = voteDAO.hasStudentVoted(studentNumber, queryBean);
                     
-                    // Get candidates for this election
-                    ArrayList<CandidateBean> candidateList = candidateDAO.fetchCandidatesByElection(electionId);
+                    // 7. STRICT MVC: Get candidates using the Bean
+                    // This assumes you updated CandidateDAO to accept an ElectionBean
+                    ArrayList<CandidateBean> candidateList = candidateDAO.fetchCandidatesByElection(queryBean);
                     
-                    // Set attributes
+                    // 8. Prepare data for the View (JSP)
                     request.setAttribute("election", election);
                     request.setAttribute("candidateList", candidateList);
                     request.setAttribute("hasVoted", hasVoted);
                     
                     request.getRequestDispatcher("/user/vote.jsp").forward(request, response);
                 } else {
+                    // Election ID doesn't exist in DB
                     response.sendRedirect(request.getContextPath() + "/user_list_election");
                 }
                 

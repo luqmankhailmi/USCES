@@ -1,8 +1,9 @@
 package controller;
 
+import bean.CandidateBean; // 1. IMPORT THE BEAN
 import dao.CandidateDAO;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher; // Required for forward
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,6 @@ public class DeleteCandidateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // 1. LOGIN CHECK
         HttpSession userSession = request.getSession(false);
         if (userSession == null || userSession.getAttribute("staffNumber") == null) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
@@ -23,17 +23,21 @@ public class DeleteCandidateServlet extends HttpServlet {
         }
         
         String idStr = request.getParameter("id");
-        String message = ""; 
         
         if (idStr != null && !idStr.isEmpty()) {
             try {
+               
                 int candidateId = Integer.parseInt(idStr);
+
+                
+                CandidateBean candidate = new CandidateBean();
+                candidate.setCandidateId(candidateId);
+
+                
                 CandidateDAO dao = new CandidateDAO();
-                
-                boolean isDeleted = dao.deleteCandidate(candidateId);
-                
+                boolean isDeleted = dao.deleteCandidate(candidate); // Pass the object, not the ID
+
                 if (isDeleted) {
-                    // Lecturer Requirement: Use request attributes for feedback
                     request.setAttribute("successMsg", "Candidate deleted successfully!");
                 } else {
                     request.setAttribute("errMessage", "Failed to delete candidate.");
@@ -44,9 +48,6 @@ public class DeleteCandidateServlet extends HttpServlet {
             }
         }
         
-        // 2. FORWARD TO CONTROLLER (Lecturer Requirement)
-        // We forward to ManageCandidateServlet so it can refresh the list 
-        // and then display manageCandidate.jsp
         RequestDispatcher rd = request.getRequestDispatcher("/ManageCandidateServlet");
         rd.forward(request, response);
     }

@@ -38,31 +38,37 @@ public class AddElectionServlet extends HttpServlet {
             try {
                 String electionName = request.getParameter("electionName");
                 String facultyIdStr = request.getParameter("facultyId");
-                String startDate = request.getParameter("startDate");
-                String endDate = request.getParameter("endDate");
+                String startDateStr = request.getParameter("startDate");
+                String endDateStr = request.getParameter("endDate");
 
-                
-                if (electionName == null || facultyIdStr == null || startDate == null || endDate == null) {
+                if (electionName == null || facultyIdStr == null || startDateStr == null || endDateStr == null) {
                     request.setAttribute("errMessage", "Please fill in all required fields.");
                     loadFacultyList(request);
                     request.getRequestDispatcher("/admin/addElection.jsp").forward(request, response);
                     return;
                 }
 
-                
+                // 1. CREATE THE BEAN OBJECT
                 ElectionBean election = new ElectionBean();
                 election.setElectionName(electionName);
                 election.setFacultyID(Integer.parseInt(facultyIdStr));
-                
-                
+
+                // 2. CONVERT STRINGS TO LOCALDATETIME (Required for your DAO/Bean)
+                // HTML datetime-local format is "2026-01-21T18:30"
+                java.time.LocalDateTime start = java.time.LocalDateTime.parse(startDateStr);
+                java.time.LocalDateTime end = java.time.LocalDateTime.parse(endDateStr);
+
+                election.setStartDate(start);
+                election.setEndDate(end);
+
+                // 3. PASS THE BEAN TO THE DAO (Strict MVC)
                 ElectionDAO electionDao = new ElectionDAO();
-                boolean isAdded = electionDao.addElection(electionName, Integer.parseInt(facultyIdStr), startDate, endDate);
+                boolean isAdded = electionDao.addElection(election); // Updated to pass object
 
                 if (isAdded) {
-                    
                     request.setAttribute("successMsg", "New election created successfully!");
-                    RequestDispatcher rd = request.getRequestDispatcher("/admin_list_election");
-                    rd.forward(request, response);
+                    // Forwarding to the list servlet to refresh data
+                    request.getRequestDispatcher("/admin_list_election").forward(request, response);
                 } else {
                     request.setAttribute("errMessage", "Database error: Could not save election.");
                     loadFacultyList(request);
