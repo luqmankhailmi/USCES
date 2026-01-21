@@ -26,7 +26,7 @@ public class SubmitVoteServlet extends HttpServlet {
             return;
         }
         
-        // 2. Get form parameters
+        
         String electionIdParam = request.getParameter("electionId");
         String candidateIdParam = request.getParameter("candidateId");
         
@@ -35,26 +35,26 @@ public class SubmitVoteServlet extends HttpServlet {
                 int electionId = Integer.parseInt(electionIdParam);
                 int candidateId = Integer.parseInt(candidateIdParam);
                 
-                // 3. STRICT MVC: Wrap ID into a Bean
+                
                 ElectionBean queryBean = new ElectionBean();
                 queryBean.setElectionID(electionId);
                 
                 VoteDAO voteDAO = new VoteDAO();
                 
-                // 4. FIX: Pass the 'queryBean' instead of 'electionId'
+                
                 if (voteDAO.hasStudentVoted(studentNumber, queryBean)) {
                     response.sendRedirect(request.getContextPath() + "/student_vote?id=" + electionId);
                     return;
                 }
                 
-                // 5. Submit the vote
+                
                 boolean success = voteDAO.castVote(studentNumber, candidateId, electionId);
                 
                 if (success) {
-                    // Redirect back to vote page (will show "already voted" message)
+                    
                     response.sendRedirect(request.getContextPath() + "/student_vote?id=" + electionId);
                 } else {
-                    // Error occurred
+                    
                     request.setAttribute("errorMessage", "Failed to submit vote. Please try again.");
                     request.getRequestDispatcher("/student_vote?id=" + electionId).forward(request, response);
                 }

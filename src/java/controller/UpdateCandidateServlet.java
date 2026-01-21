@@ -36,9 +36,9 @@ public class UpdateCandidateServlet extends HttpServlet {
             boolean isUpdated = dao.updateManifesto(candidate);
 
             if (isUpdated) {
-                // Store message in session so it survives the redirect
+                
                 userSession.setAttribute("successMsg", "Candidate updated successfully!");
-                // REDIRECT back to details to re-fetch names via the DAO
+                
                 response.sendRedirect(request.getContextPath() + "/CandidateDetailServlet?id=" + cIdStr);
                 return;
             } else {
@@ -48,7 +48,7 @@ public class UpdateCandidateServlet extends HttpServlet {
     } catch (Exception e) {
         request.setAttribute("errMessage", "Error: " + e.getMessage());
     }
-    // Fallback if update fails
+    
     request.getRequestDispatcher("/CandidateDetailServlet?id=" + request.getParameter("candidateId") + "&mode=edit").forward(request, response);
     }
 

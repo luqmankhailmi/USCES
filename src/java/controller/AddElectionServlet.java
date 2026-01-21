@@ -48,13 +48,12 @@ public class AddElectionServlet extends HttpServlet {
                     return;
                 }
 
-                // 1. CREATE THE BEAN OBJECT
+                
                 ElectionBean election = new ElectionBean();
                 election.setElectionName(electionName);
                 election.setFacultyID(Integer.parseInt(facultyIdStr));
 
-                // 2. CONVERT STRINGS TO LOCALDATETIME (Required for your DAO/Bean)
-                // HTML datetime-local format is "2026-01-21T18:30"
+                
                 java.time.LocalDateTime start = java.time.LocalDateTime.parse(startDateStr);
                 java.time.LocalDateTime end = java.time.LocalDateTime.parse(endDateStr);
 

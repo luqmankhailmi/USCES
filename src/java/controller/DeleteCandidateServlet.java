@@ -35,7 +35,7 @@ public class DeleteCandidateServlet extends HttpServlet {
 
                 
                 CandidateDAO dao = new CandidateDAO();
-                boolean isDeleted = dao.deleteCandidate(candidate); // Pass the object, not the ID
+                boolean isDeleted = dao.deleteCandidate(candidate); 
 
                 if (isDeleted) {
                     request.setAttribute("successMsg", "Candidate deleted successfully!");

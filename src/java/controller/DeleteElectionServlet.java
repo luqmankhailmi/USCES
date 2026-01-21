@@ -24,14 +24,14 @@ public class DeleteElectionServlet extends HttpServlet {
         
         if (electionIdStr != null && !electionIdStr.isEmpty()) {
             try {
-                // 2. RETRIEVE DATA FROM VIEW
+                
                 int electionId = Integer.parseInt(electionIdStr);
                 
-                // 3. CREATE THE MODEL OBJECT (ElectionBean)
+                
                 ElectionBean election = new ElectionBean();
                 election.setElectionID(electionId);
                 
-                // 4. PASS THE OBJECT TO DAO
+               
                 dao.ElectionDAO electionDAO = new dao.ElectionDAO();
                 boolean isDeleted = electionDAO.deleteElection(election); // Passing Bean object
                 
@@ -46,7 +46,7 @@ public class DeleteElectionServlet extends HttpServlet {
             }
         }
 
-        // 5. FORWARD TO LIST CONTROLLER
+        
         RequestDispatcher rd = request.getRequestDispatcher("/admin_list_election");
         rd.forward(request, response);
     }

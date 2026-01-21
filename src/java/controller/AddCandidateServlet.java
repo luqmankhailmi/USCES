@@ -45,18 +45,18 @@ public class AddCandidateServlet extends HttpServlet {
                 int studentId = Integer.parseInt(sIdStr);
                 int electionId = Integer.parseInt(eIdStr);
 
-                // 1. STRICT MVC: Populate the Bean (Model)
+                
                 CandidateBean bean = new CandidateBean();
                 bean.setStudentId(studentId);
                 bean.setElectionId(electionId);
                 bean.setManifestoContent(manifesto);
 
-                // Attach to request in case we need to return to form with existing data
+                
                 request.setAttribute("candidateBean", bean);
 
-                // 2. Pass the Bean object to the DAO
+                
                 CandidateDAO dao = new CandidateDAO();
-                // FIX: Pass 'bean' instead of (studentId, electionId, manifesto)
+                
                 boolean status = dao.registerCandidate(bean);
 
                 if (status) {

@@ -58,7 +58,7 @@ public class AdminProfileServlet extends HttpServlet {
                     facultyName = "Unknown Faculty";
                 }
 
-                // Set attributes
+                
                 request.setAttribute("adminName", admin.getAdminName());
                 request.setAttribute("staffNumber", admin.getStaffNumber());
                 request.setAttribute("facultyId", admin.getFacultyId());

@@ -36,15 +36,15 @@ public class ViewElectionServlet extends HttpServlet {
                 CandidateDAO candidateDao = new CandidateDAO();
                 AdminProfileDAO adminDAO = new AdminProfileDAO();
                 
-                // 1. STRICT MVC: Wrap ID into a Bean
+                
                 ElectionBean queryBean = new ElectionBean();
                 queryBean.setElectionID(electionId);
                 
-                // 2. FIX: Pass the 'queryBean' instead of the raw 'electionId'
+                
                 ElectionBean election = electionDao.getElectionById(queryBean);
                 
                 if (election != null) {
-                    // Pass the bean to all methods to match updated DAO signatures
+                    
                     Map<String, Integer> statistics = electionDao.getElectionStatistics(queryBean);
                     ArrayList<CandidateBean> candidateList = candidateDao.fetchCandidatesByElection(queryBean);
                     

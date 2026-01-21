@@ -32,11 +32,11 @@ public class ManageCandidateServlet extends HttpServlet {
             if (electionIdParam != null && !electionIdParam.isEmpty()) {
                 int electionId = Integer.parseInt(electionIdParam);
 
-                // 1. STRICT MVC: Wrap the ID into a Bean
+                
                 ElectionBean electionQuery = new ElectionBean();
                 electionQuery.setElectionID(electionId);
 
-                // 2. FIX: Pass the Bean instead of the raw int
+                
                 candidateList = dao.fetchCandidatesByElection(electionQuery);
                 
                 request.setAttribute("selectedElectionId", electionId);
