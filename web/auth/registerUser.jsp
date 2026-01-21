@@ -1,3 +1,5 @@
+<%@page import="dao.RegisterDAO"%>
+<%@page import="java.sql.ResultSet"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,12 +38,22 @@
                     <label for="facultyId">Faculty</label>
                     <select id="facultyId" name="facultyId" required>
                         <option value="">Select your faculty</option>
-                        <!-- Faculty options will be populated dynamically from database -->
-                        <option value="1">Faculty of Engineering</option>
-                        <option value="2">Faculty of Science</option>
-                        <option value="3">Faculty of Arts</option>
-                        <option value="4">Faculty of Business</option>
-                        <option value="5">Faculty of Medicine</option>
+                        <%
+                            // Fetch faculties dynamically from database
+                            RegisterDAO registerDAO = new RegisterDAO();
+                            ResultSet faculties = registerDAO.getAllFaculties();
+                            
+                            if (faculties != null) {
+                                while (faculties.next()) {
+                                    int facultyId = faculties.getInt("faculty_id");
+                                    String facultyName = faculties.getString("faculty_name");
+                        %>
+                                    <option value="<%= facultyId %>"><%= facultyName %></option>
+                        <%
+                                }
+                                faculties.close();
+                            }
+                        %>
                     </select>
                 </div>
 
@@ -52,7 +64,7 @@
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <input type="password" id="password" name="password" placeholder="Create a password (min. 6 characters)" required>
                 </div>
 
                 <div class="form-group">
@@ -81,7 +93,7 @@
         </script>
     <% } %>
 
-    <!-- Display Success Message as Alert -->
+    <!-- Display Success Message as Alert and Redirect -->
     <% 
         String successMessage = (String) request.getAttribute("successMessage");
         if (successMessage != null) {
