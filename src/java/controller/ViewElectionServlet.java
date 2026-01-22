@@ -48,22 +48,22 @@ public class ViewElectionServlet extends HttpServlet {
                 
                 if (election != null) {
                     if (election != null) {
-            // --- FIXED DATE FORMATTING LOGIC ---
+            
                     try {
-                        // Define the professional display format
+                        
                         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd, yyyy, hh:mm a");
 
-                        // Get LocalDateTime objects directly from the bean
+                       
                         LocalDateTime start = election.getStartDate();
                         LocalDateTime end = election.getEndDate();
 
-                        // Format them into Strings for the JSP
+                        
                         if (start != null && end != null) {
                             request.setAttribute("formattedStart", start.format(outputFormat));
                             request.setAttribute("formattedEnd", end.format(outputFormat));
                         }
                     } catch (Exception e) {
-                        // Fallback to raw objects if formatting fails
+                       
                         request.setAttribute("formattedStart", election.getStartDate());
                         request.setAttribute("formattedEnd", election.getEndDate());
                     }

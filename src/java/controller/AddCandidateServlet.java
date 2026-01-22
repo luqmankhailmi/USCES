@@ -46,7 +46,7 @@ public class AddCandidateServlet extends HttpServlet {
                 int studentId = Integer.parseInt(sIdStr);
                 int electionId = Integer.parseInt(eIdStr);
 
-                // VALIDATION: Check if student's faculty matches election's faculty
+                
                 StudentDAO studentDAO = new StudentDAO();
                 ElectionDAO electionDAO = new ElectionDAO();
                 

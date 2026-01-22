@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/editCandidate.css">
 </head>
 <body>
-    <!-- Updated Header to Match Manage Candidate -->
+    
     <header class="header">
         <div class="header-content">
             <h1 class="header-title">
@@ -33,7 +33,7 @@
 
         <form action="${pageContext.request.contextPath}/AddCandidateServlet" method="POST">
             
-            <!-- Election Dropdown (Primary Selection) -->
+            
             <div class="form-group">
                 <label>
                     <i class="fas fa-vote-yea"></i> Select Election Programme
@@ -54,7 +54,7 @@
                 </select>
             </div>
 
-            <!-- Student Dropdown (Filtered by Faculty) -->
+            
             <div class="form-group">
                 <label>
                     <i class="fas fa-user-graduate"></i> Select Student Candidate
@@ -78,7 +78,7 @@
                 </select>
             </div>
 
-            <!-- Manifesto Textarea -->
+           
             <div class="form-group">
                 <label>
                     <i class="fas fa-scroll"></i> Candidate Manifesto
@@ -96,7 +96,7 @@
     </div>
 
     <script>
-        // Cascading Dropdown Logic
+        
         const electionSelect = document.getElementById('electionSelect');
         const studentSelect = document.getElementById('studentSelect');
         const studentOptions = document.querySelectorAll('.student-option');
@@ -104,14 +104,14 @@
         electionSelect.addEventListener('change', function() {
             const selectedFacultyId = this.options[this.selectedIndex].getAttribute('data-faculty');
             
-            // Reset student dropdown
+            
             studentSelect.value = '';
             studentSelect.disabled = false;
             
-            // Clear existing options except the placeholder
+            
             studentSelect.innerHTML = '<option value="" disabled selected>-- Select a student --</option>';
             
-            // Filter and show only students from the selected faculty
+            
             let hasStudents = false;
             studentOptions.forEach(option => {
                 const studentFacultyId = option.getAttribute('data-faculty');
@@ -125,7 +125,7 @@
                 }
             });
             
-            // If no students found for this faculty
+            
             if (!hasStudents) {
                 studentSelect.innerHTML = '<option value="" disabled selected>-- No students found for this faculty --</option>';
                 studentSelect.disabled = true;

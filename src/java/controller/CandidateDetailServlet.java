@@ -43,7 +43,7 @@ public class CandidateDetailServlet extends HttpServlet {
             e.printStackTrace();
         }
         
-        // Fallback to the list if ID is missing or candidate isn't found
+        
         response.sendRedirect("ManageCandidateServlet");
     }
 

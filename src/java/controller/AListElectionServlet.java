@@ -45,15 +45,10 @@ public class AListElectionServlet extends HttpServlet {
                     facultyName = "Unknown Faculty";
                 }
                 
-                // Fetch ALL elections or faculty-specific elections?
-                // Using getAllElections() from your provided DAO to ensure 
-                // data appears if faculty filtering is too strict.
+                
                 List<ElectionBean> electionList = electionDAO.getAllElections();
                 
-                // If you want to strictly filter by the admin's faculty, use:
-                // List<ElectionBean> electionList = electionDAO.fetchElection(faculty_id);
-                
-                // Set attributes (Matching your admin_list_election.jsp variables)
+
                 request.setAttribute("adminName", adminName);
                 request.setAttribute("facultyName", facultyName);
                 request.setAttribute("electionList", electionList);
@@ -66,7 +61,7 @@ public class AListElectionServlet extends HttpServlet {
             request.setAttribute("error", "Database error: " + e.getMessage());
         }
         
-        // Updated path to match your actual dashboard filename from the screenshot
+      
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/adminDashboard.jsp");
         dispatcher.forward(request, response);
     }

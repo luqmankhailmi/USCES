@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/editCandidate.css">
 </head>
 <body>
-    <!-- Updated Header to Match Manage Candidate -->
+    
     <header class="header">
         <div class="header-content">
             <h1 class="header-title">

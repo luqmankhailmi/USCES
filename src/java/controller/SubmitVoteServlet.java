@@ -15,7 +15,7 @@ public class SubmitVoteServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        // 1. Check session
+        
         HttpSession userSession = request.getSession(false);
         String studentNumber = null;
         

@@ -81,7 +81,7 @@ public class AddElectionServlet extends HttpServlet {
         }
     }
 
-    // Helper method to keep processRequest clean
+    
     private void loadFacultyList(HttpServletRequest request) {
         FacultyDAO facultyDao = new FacultyDAO();
         List<FacultyBean> facultyList = facultyDao.getAllFaculties();

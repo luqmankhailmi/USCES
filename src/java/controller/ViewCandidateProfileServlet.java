@@ -15,7 +15,7 @@ public class ViewCandidateProfileServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        // Check session
+        
         HttpSession userSession = request.getSession(false);
         if (userSession == null || userSession.getAttribute("studentNumber") == null) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
@@ -51,7 +51,7 @@ public class ViewCandidateProfileServlet extends HttpServlet {
             request.setAttribute("errorMessage", "An error occurred while retrieving candidate information.");
         }
         
-        // If there's an error, redirect back to dashboard
+        
         response.sendRedirect(request.getContextPath() + "/user_list_election");
     }
 

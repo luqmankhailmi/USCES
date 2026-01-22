@@ -20,7 +20,7 @@ public class ManageStudentServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
-        // Check session
+        
         HttpSession userSession = request.getSession(false);
         String staffNumber = null;
         
@@ -36,20 +36,20 @@ public class ManageStudentServlet extends HttpServlet {
         UserProfileDAO userDAO = new UserProfileDAO();
         
         try {
-            // Get all faculties for filter dropdown
+            
             ArrayList<FacultyBean> facultyList = facultyDAO.getAllFaculties();
             request.setAttribute("facultyList", facultyList);
             
-            // Get facultyId parameter for filtering
+            
             String facultyIdParam = request.getParameter("facultyId");
             ArrayList<StudentBean> studentList;
             
             if (facultyIdParam != null && !facultyIdParam.isEmpty()) {
-                // Filter by faculty
+                
                 int facultyId = Integer.parseInt(facultyIdParam);
                 studentList = studentDAO.fetchStudentsByFaculty(facultyId);
             } else {
-                // Get all students
+                
                 studentList = studentDAO.fetchAllStudents();
             }
             

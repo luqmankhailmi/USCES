@@ -12,7 +12,7 @@
 </head>
 <body>
     <%
-        // Get the existing session
+        
         HttpSession userSession = request.getSession(false);
         String staffNumber = null;
         
@@ -23,12 +23,12 @@
             return;
         }
         
-        // Get attributes
+        
         ArrayList<StudentBean> studentList = (ArrayList<StudentBean>) request.getAttribute("studentList");
         ArrayList<FacultyBean> facultyList = (ArrayList<FacultyBean>) request.getAttribute("facultyList");
         String adminName = (String) request.getAttribute("adminName");
         
-        // Get success/error messages
+        
         String successMsg = request.getParameter("success");
         String errorMsg = request.getParameter("error");
     %>

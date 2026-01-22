@@ -28,16 +28,16 @@ public class AdminLoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // Get login credentials from request
+        
         String staffNumber = request.getParameter("staffNumber");
         String password = request.getParameter("password");
         
-        // Create UserLoginBean with user input
+        
         AdminLoginBean loginBean = new AdminLoginBean();
         loginBean.setStaffNumber(staffNumber);
         loginBean.setPassword(password);
         
-        // Create DAO and attempt authentication
+        
         LoginDAO loginDAO = new LoginDAO();
         
         try {

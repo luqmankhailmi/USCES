@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <%-- 1. SUCCESS ALERT LOGIC --%>
+    
     <%
         String msg = request.getParameter("msg");
         if ("success".equals(msg)) {
@@ -28,29 +28,29 @@
     
     
     <%
-        // Get the existing session (don't create new one)
+        
         HttpSession userSession = request.getSession(false);
         String staffNumber = null;
         
-        // Check if session exists and has staffNumber
+        
         if (userSession != null && userSession.getAttribute("staffNumber") != null) {
             staffNumber = (String) userSession.getAttribute("staffNumber");
         } else {
-            // No session found - redirect to login
+            
             response.sendRedirect(request.getContextPath() + "/index.jsp");
             return;
         }
         
-        // Get the election list from request attribute
+        
         ArrayList<ElectionBean> electionList = (ArrayList<ElectionBean>) request.getAttribute("electionList");
         
-        // Get admin name from request attribute
+        
         String adminName = (String) request.getAttribute("adminName");
         
-        // Get faculty name from request attribute
+        
         String facultyName = (String) request.getAttribute("facultyName");
         
-        // Date formatter for displaying dates
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     %>
     

@@ -25,7 +25,7 @@
     </header>
 
     <div class="container">
-        <!-- Election Information Card -->
+        
         <div class="election-info-card">
             <h2>
                 <i class="fas fa-vote-yea"></i>
@@ -107,7 +107,7 @@
             </div>
         </div>
 
-        <!-- Registered Candidates Section -->
+        
         <div class="section-card">
             <h3>
                 <i class="fas fa-users"></i>
@@ -150,7 +150,7 @@
             </div>
         </div>
 
-        <!-- Footer Actions -->
+        
         <div class="footer-actions">
             <a href="${pageContext.request.contextPath}/admin_list_election" class="btn-action btn-back">
                 <i class="fas fa-arrow-left"></i> Back to Dashboard
