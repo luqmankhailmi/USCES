@@ -15,7 +15,7 @@ import util.DBConnection;
 
 public class ElectionDAO {
 
-    // Existing method: Fetches all elections for a faculty
+    
     public ArrayList<ElectionBean> fetchElection(int facultyID) {
         ArrayList<ElectionBean> electionList = new ArrayList<>();
         String query = "SELECT * FROM election WHERE faculty_id = ?";
@@ -74,31 +74,30 @@ public class ElectionDAO {
 
     /**
      * UPDATED: Accepts ElectionBean instead of int.
-     * This follows Strict MVC and fixes your Servlet error.
      */
     public boolean deleteElection(ElectionBean election) {
         Connection conn = null;
-        int electionId = election.getElectionID(); // Get ID from Bean
+        int electionId = election.getElectionID(); 
         
         try {
             conn = util.DBConnection.createConnection(); 
             conn.setAutoCommit(false); 
 
-            // STEP 1: Delete votes first (Foreign Key constraint)
+            
             String sql0 = "DELETE FROM vote WHERE candidate_id IN (SELECT candidate_id FROM candidate WHERE election_id = ?)";
             try (PreparedStatement ps0 = conn.prepareStatement(sql0)) {
                 ps0.setInt(1, electionId);
                 ps0.executeUpdate();
             }
 
-            // STEP 2: Delete candidates linked to this election
+            
             String sql1 = "DELETE FROM candidate WHERE election_id = ?";
             try (PreparedStatement ps1 = conn.prepareStatement(sql1)) {
                 ps1.setInt(1, electionId);
                 ps1.executeUpdate();
             }
 
-            // STEP 3: Delete the election itself
+            
             String sql2 = "DELETE FROM ELECTION WHERE ELECTION_ID = ?";
             int rows;
             try (PreparedStatement ps2 = conn.prepareStatement(sql2)) {
@@ -130,11 +129,11 @@ public class ElectionDAO {
             ps.setString(1, election.getElectionName());
             ps.setInt(2, election.getFacultyID());
 
-            // Convert LocalDateTime to SQL Timestamp
+            
             ps.setTimestamp(3, Timestamp.valueOf(election.getStartDate())); 
             ps.setTimestamp(4, Timestamp.valueOf(election.getEndDate()));
 
-            // FIX: Execute the statement 'ps' that you actually prepared
+            
             return ps.executeUpdate() > 0; 
 
         } catch (SQLException e) {
@@ -178,16 +177,14 @@ public class ElectionDAO {
     
      /**
      * NEW: Get statistics (Vote count per candidate)
-     * This follows Strict MVC by accepting an ElectionBean.
      */
     public Map<String, Integer> getElectionStatistics(ElectionBean election) {
         Map<String, Integer> stats = new HashMap<>();
 
-        // Extract ID from the Bean
+        
         int electionId = election.getElectionID();
 
-        // This query joins candidate and student tables to get names, 
-        // and left joins the vote table to count the votes.
+       
         String query = "SELECT s.student_name, COUNT(v.vote_id) as vote_count " +
                        "FROM candidate c " +
                        "JOIN student s ON c.student_id = s.student_id " +
@@ -227,6 +224,6 @@ public class ElectionDAO {
     } catch (SQLException e) {
         e.printStackTrace();
     }
-    return -1; // error / not found
+    return -1; 
 }
 }

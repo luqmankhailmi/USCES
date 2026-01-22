@@ -31,7 +31,7 @@ public class RegisterDAO {
             ps.setString(1, studentNumber);
             rs = ps.executeQuery();
             
-            return rs.next(); // Returns true if record exists
+            return rs.next(); 
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class RegisterDAO {
             ps.setString(1, email);
             rs = ps.executeQuery();
             
-            return rs.next(); // Returns true if record exists
+            return rs.next(); 
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,17 +83,17 @@ public class RegisterDAO {
         try {
             con = DBConnection.createConnection();
             
-            // Check if student number already exists
+           
             if (isStudentNumberExists(student.getStudentNumber())) {
                 return "Student ID already registered!";
             }
             
-            // Check if email already exists
+            
             if (isEmailExists(student.getStudentEmail())) {
                 return "Email already registered!";
             }
             
-            // Insert new student
+            
             String query = "INSERT INTO STUDENT (student_name, student_number, faculty_id, student_email, password) " +
                           "VALUES (?, ?, ?, ?, ?)";
             ps = con.prepareStatement(query);
@@ -101,7 +101,7 @@ public class RegisterDAO {
             ps.setString(2, student.getStudentNumber().trim());
             ps.setInt(3, student.getFacultyId());
             ps.setString(4, student.getStudentEmail().trim());
-            ps.setString(5, password); // In production, hash the password!
+            ps.setString(5, password);
             
             int rowsInserted = ps.executeUpdate();
             
@@ -141,7 +141,7 @@ public class RegisterDAO {
             e.printStackTrace();
             return null;
         }
-        // Note: Connection should be closed by the caller when done with ResultSet
+        
     }
     
     /**

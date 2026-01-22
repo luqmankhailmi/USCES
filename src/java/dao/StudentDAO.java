@@ -31,7 +31,7 @@ public class StudentDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // not found / error
+        return -1; 
     }
     
     /**
@@ -106,31 +106,29 @@ public class StudentDAO {
             con = DBConnection.createConnection();
             con.setAutoCommit(false); // Start transaction
 
-            // 1. Delete from VOTE table
             String deleteVotesSql = "DELETE FROM vote WHERE student_id = ?";
             try (PreparedStatement ps = con.prepareStatement(deleteVotesSql)) {
                 ps.setInt(1, studentId);
                 ps.executeUpdate();
             }
 
-            // 2. Delete from CANDIDATE table
             String deleteCandidateSql = "DELETE FROM candidate WHERE student_id = ?";
             try (PreparedStatement ps = con.prepareStatement(deleteCandidateSql)) {
                 ps.setInt(1, studentId);
                 ps.executeUpdate();
             }
 
-            // 3. Finally delete from STUDENT table
+            
             String deleteStudentSql = "DELETE FROM student WHERE student_id = ?";
             try (PreparedStatement ps = con.prepareStatement(deleteStudentSql)) {
                 ps.setInt(1, studentId);
                 int rowsAffected = ps.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    con.commit(); // Commit transaction
+                    con.commit(); 
                     return true;
                 } else {
-                    con.rollback(); // Student not found
+                    con.rollback(); 
                     return false;
                 }
             }
@@ -139,7 +137,7 @@ public class StudentDAO {
             e.printStackTrace();
             if (con != null) {
                 try {
-                    con.rollback(); // Rollback on error
+                    con.rollback(); 
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -148,7 +146,7 @@ public class StudentDAO {
         } finally {
             if (con != null) {
                 try {
-                    con.setAutoCommit(true); // Reset auto-commit
+                    con.setAutoCommit(true); 
                     con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();

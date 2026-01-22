@@ -14,7 +14,7 @@ public class VoteDAO {
      * Updated to accept ElectionBean for Strict MVC compliance
      */
     public boolean hasStudentVoted(String studentNumber, ElectionBean election) {
-        // FIX: Extract the ID from the Bean
+       
         int electionId = election.getElectionID();
         
         String query = "SELECT COUNT(*) FROM vote v " +
@@ -48,7 +48,7 @@ public class VoteDAO {
             return false;
         }
         
-        // Create a temporary bean to reuse the updated check method
+        
         ElectionBean eb = new ElectionBean();
         eb.setElectionID(electionId);
         

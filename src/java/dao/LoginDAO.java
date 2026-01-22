@@ -29,19 +29,19 @@ public class LoginDAO {
         ResultSet rs = null;
         
         try {
-            // Get database connection
+           
             con = DBConnection.createConnection();
             
-            // SQL query to check user credentials
+            
             String query = "SELECT * FROM student WHERE student_number = ? AND password = ?";
             ps = con.prepareStatement(query);
             ps.setString(1, studentNumber);
             ps.setString(2, password);
             
-            // Execute query
+            
             rs = ps.executeQuery();
             
-            // Check if user exists
+            
             if (rs.next()) {
                 return "SUCCESS";
             } else {
@@ -52,7 +52,7 @@ public class LoginDAO {
             e.printStackTrace();
             return "FAILURE";
         } finally {
-            // Close resources in reverse order
+            
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
@@ -63,7 +63,7 @@ public class LoginDAO {
         }
     }
     
-    // Authenticate ADMIN
+    
     public String authenticateAdmin(AdminLoginBean loginBean) {
         String staffNumber = loginBean.getStaffNumber();
         String password = loginBean.getPassword();
@@ -73,19 +73,19 @@ public class LoginDAO {
         ResultSet rs = null;
         
         try {
-            // Get database connection
+            
             con = DBConnection.createConnection();
             
-            // SQL query to check user credentials
+            
             String query = "SELECT * FROM admin WHERE staff_number = ? AND password = ?";
             ps = con.prepareStatement(query);
             ps.setString(1, staffNumber);
             ps.setString(2, password);
             
-            // Execute query
+            
             rs = ps.executeQuery();
             
-            // Check if user exists
+            
             if (rs.next()) {
                 return "SUCCESS";
             } else {
@@ -96,7 +96,7 @@ public class LoginDAO {
             e.printStackTrace();
             return "FAILURE";
         } finally {
-            // Close resources in reverse order
+            
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();

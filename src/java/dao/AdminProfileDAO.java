@@ -30,7 +30,7 @@ public class AdminProfileDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Extract data and create Student object
+                
                 String name = rs.getString("admin_name");
                 String number = rs.getString("staff_number");
                 int facultyId = rs.getInt("faculty_id");
@@ -45,7 +45,7 @@ public class AdminProfileDAO {
             e.printStackTrace();
             return null;
         } finally {
-            // Now safe to close because we've extracted the data
+            
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
