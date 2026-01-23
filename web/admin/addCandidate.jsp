@@ -117,7 +117,7 @@
                 const studentFacultyId = option.getAttribute('data-faculty');
                 
                 if (studentFacultyId === selectedFacultyId) {
-                    // Clone and add the matching option
+                    
                     const clonedOption = option.cloneNode(true);
                     clonedOption.style.display = 'block';
                     studentSelect.appendChild(clonedOption);

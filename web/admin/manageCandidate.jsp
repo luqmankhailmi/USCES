@@ -30,7 +30,7 @@
     <div class="container">
         <div class="section-header">
             <h2 class="section-title">Candidate List</h2>
-            <%-- Redirect to Servlet instead of direct JSP to ensure dropdowns load --%>
+            
             <a href="${pageContext.request.contextPath}/AddCandidateServlet" class="btn-add">
                 <i class="fas fa-plus-circle"></i> Add New Candidate
             </a>
@@ -48,7 +48,7 @@
                     </thead>
                     <tbody>
                         <%
-                            // Use List interface for better compatibility with ArrayList
+                            
                             List<CandidateBean> candidateList = (List<CandidateBean>) request.getAttribute("candidateList");
 
                             if (candidateList != null && !candidateList.isEmpty()) {
